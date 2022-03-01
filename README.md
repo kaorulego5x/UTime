@@ -1,6 +1,6 @@
-# utime
+# UTime
 
-A new Flutter project.
+東大の時間割を管理できる、基本平均点の計算機能付きモバイルアプリ
 
 ## Getting Started
 
