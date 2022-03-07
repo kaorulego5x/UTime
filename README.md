@@ -4,9 +4,9 @@
 
 ## Getting Started
 
-branch名は (例:id=1の時) 
-新機能の場合：feature/utime-1 
-修正の場合:fix/utime-1 
+branch名は (例:id=1の時)
+新機能の場合：feature/utime-1
+修正の場合:fix/utime-1
 
 A few resources to get you started if this is your first Flutter project:
 
