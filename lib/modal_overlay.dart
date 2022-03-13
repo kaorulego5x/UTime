@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
  * モーダルオーバーレイ
  */
 class ModalOverlay extends ModalRoute<void> {
-
   // ダイアログ内のWidget
   final Widget contents;
 
@@ -26,13 +25,12 @@ class ModalOverlay extends ModalRoute<void> {
   @override
   bool get maintainState => true;
 
-
   @override
   Widget buildPage(
-      BuildContext context,
-      Animation<double> animation,
-      Animation<double> secondaryAnimation,
-      ) {
+    BuildContext context,
+    Animation<double> animation,
+    Animation<double> secondaryAnimation,
+  ) {
     return Material(
       type: MaterialType.transparency,
       child: SafeArea(
@@ -42,7 +40,8 @@ class ModalOverlay extends ModalRoute<void> {
   }
 
   @override
-  Widget buildTransitions(BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation, Widget child) {
+  Widget buildTransitions(BuildContext context, Animation<double> animation,
+      Animation<double> secondaryAnimation, Widget child) {
     return FadeTransition(
       opacity: animation,
       child: ScaleTransition(

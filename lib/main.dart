@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:utime/timetables.dart';
-import 'package:utime/lecture_dialog.dart';
 
 void main() {
   runApp(const MyApp());
@@ -17,11 +16,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         fontFamily: "Noto Sans JP",
       ),
-      home:TimeTables(),
+      home: TimeTables(),
     );
   }
-
-
 }
-
-

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:utime/lecture_dialog.dart';
-
+import 'package:utime/utime_colors.dart';
 
 class TimeTables extends StatefulWidget {
   const TimeTables({Key? key}) : super(key: key);
@@ -12,7 +12,6 @@ class TimeTables extends StatefulWidget {
 }
 
 class _TimeTablesState extends State<TimeTables> {
-
   @override
   Widget build(BuildContext context) {
     // デバイスの縦幅と横幅を取得する
@@ -20,58 +19,60 @@ class _TimeTablesState extends State<TimeTables> {
     final double screenWidth = MediaQuery.of(context).size.width;
 
     //サイズ用の変数
-    final double classHeight= 0;  //1コマの高さ
-    final double classWidth=(screenWidth-28);  //1コマの横幅
+    final double classHeight = 54; //1コマの高さ
+    final double classWidth = (screenWidth - 28); //1コマの横幅
 
     return Scaffold(
       appBar: AppBar(
-        leading: Icon(Icons.menu, color: Color(0xFF2E2E2E),),
+        leading: Icon(
+          Icons.menu,
+          color: UtimeColors.textColor,
+        ),
         centerTitle: true,
-        title: Text('時間割',
+        title: Text(
+          '時間割',
           style: TextStyle(
             fontSize: 18,
-            color: Color(0xFF2E2E2E),
+            color: UtimeColors.textColor,
           ),
         ),
-        backgroundColor: Color(0xFFFFFFFF),
+        backgroundColor: UtimeColors.white,
         elevation: 0.0,
       ),
-
       body: SingleChildScrollView(
         child: Container(
-          color: Color(0xFFE4F9FB),
+          color: UtimeColors.backgroundColor,
           child: Center(
             child: Column(
-              children:[
+              children: [
                 //ターム
                 Container(
                   padding: EdgeInsets.all(16.0),
-                  child: Text('S1ターム',
+                  child: Text(
+                    'S1ターム',
                     style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
-                      color: Color(0xFF2E2E2E),),
+                      color: UtimeColors.textColor,
+                    ),
                   ),
                 ),
                 //曜日
                 Container(
                   width: double.infinity,
                   height: 24,
-                  margin: const EdgeInsets.only(left: 32.0, right:32.0,bottom:4.0),
+                  margin: const EdgeInsets.only(
+                      left: 32.0, right: 32.0, bottom: 4.0),
                   child: Row(
                     children: [
                       _day('Mon'),
-                      SizedBox(width: 12,
-                          child: Spacer()),
+                      SizedBox(width: 12, child: Spacer()),
                       _day('Tue'),
-                      SizedBox(width: 12,
-                          child: Spacer()),
+                      SizedBox(width: 12, child: Spacer()),
                       _day('Wed'),
-                      SizedBox(width: 12,
-                          child: Spacer()),
+                      SizedBox(width: 12, child: Spacer()),
                       _day('Tur'),
-                      SizedBox(width: 12,
-                          child: Spacer()),
+                      SizedBox(width: 12, child: Spacer()),
                       _day('Fri'),
                     ],
                   ),
@@ -79,7 +80,7 @@ class _TimeTablesState extends State<TimeTables> {
                 //時間割
                 Container(
                   child: Row(
-                    children:[
+                    children: [
                       //時間
                       Container(
                         width: 28,
@@ -87,116 +88,51 @@ class _TimeTablesState extends State<TimeTables> {
                         child: Center(
                           child: Column(
                             children: [
-                              Text('8:30',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(fontSize: 10, color: Color(0xFF2E2E2E),),),
-                              Container(
-                                width: 24,
-                                height: 54,
-                                alignment: Alignment.center,
-                                child: Text('1',
-                                  style: TextStyle(fontSize: 12, color: Color(0xFF2E2E2E),),),
-                              ),
-                              Text('10:15',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(fontSize: 10, color: Color(0xFF2E2E2E),),),
+                              _time('8:30'),
+                              _periodNumber('1'),
+                              _time('10:15'),
                               Spacer(),
-                              Text('10:25',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(fontSize: 10, color: Color(0xFF2E2E2E),),),
-                              Container(
-                                width: 24,
-                                height: 54,
-                                alignment: Alignment.center,
-                                child: Text('2',
-                                  style: TextStyle(fontSize: 12, color: Color(0xFF2E2E2E),),),
-                              ),
-                              Text('12:10',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(fontSize: 10, color: Color(0xFF2E2E2E),),),
+                              _time('10:25'),
+                              _periodNumber('2'),
+                              _time('12:10'),
                               Spacer(),
-                              Text('13:00',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(fontSize: 10, color: Color(0xFF2E2E2E),),),
-                              Container(
-                                width: 24,
-                                height: 54,
-                                alignment: Alignment.center,
-                                child: Text('3',
-                                  style: TextStyle(fontSize: 12, color: Color(0xFF2E2E2E),),),
-                              ),
-                              Text('14:45',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(fontSize: 10, color: Color(0xFF2E2E2E),),),
+                              _time('13:00'),
+                              _periodNumber('3'),
+                              _time('14:45'),
                               Spacer(),
-                              Text('14:55',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(fontSize: 10, color: Color(0xFF2E2E2E),),),
-                              Container(
-                                width: 24,
-                                height: 54,
-                                alignment: Alignment.center,
-                                child: Text('4',
-                                  style: TextStyle(fontSize: 12, color: Color(0xFF2E2E2E),),),
-                              ),
-                              Text('16:40',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(fontSize: 10, color: Color(0xFF2E2E2E),),),
+                              _time('14:55'),
+                              _periodNumber('4'),
+                              _time('16:40'),
                               Spacer(),
-                              Text('16:50',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(fontSize: 10, color: Color(0xFF2E2E2E),),),
-                              Container(
-                                width: 24,
-                                height: 54,
-                                alignment: Alignment.center,
-                                child: Text('5',
-                                  style: TextStyle(fontSize: 12, color: Color(0xFF2E2E2E),),),
-                              ),
-                              Text('18:35',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(fontSize: 10, color: Color(0xFF2E2E2E),),),
+                              _time('16:50'),
+                              _periodNumber('5'),
+                              _time('18:35'),
                               Spacer(),
-                              Text('18:45',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(fontSize: 10, color: Color(0xFF2E2E2E),),),
-                              Container(
-                                width: 24,
-                                height: 54,
-                                alignment: Alignment.center,
-                                child: Text('6',
-                                  style: TextStyle(fontSize: 12, color: Color(0xFF2E2E2E),),),
-                              ),
-                              Text('20:30',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(fontSize: 10, color: Color(0xFF2E2E2E),),),
+                              _time('18:45'),
+                              _periodNumber('6'),
+                              _time('20:30'),
                             ],
                           ),
                         ),
                       ),
                       //コマ
                       Expanded(
-                        child:Container(
+                        child: Container(
                           width: double.infinity,
                           height: 492,
-                          margin: const EdgeInsets.only(left: 4.0, right:32.0),
+                          margin: const EdgeInsets.only(left: 4.0, right: 32.0),
                           child: Column(
                             children: [
                               _period(),
-                              SizedBox(height: 12,
-                                  child: Spacer()),
+                              SizedBox(height: 12, child: Spacer()),
                               _period(),
-                              SizedBox(height: 12,
-                                  child: Spacer()),
+                              SizedBox(height: 12, child: Spacer()),
                               _period(),
-                              SizedBox(height: 12,
-                                  child: Spacer()),
+                              SizedBox(height: 12, child: Spacer()),
                               _period(),
-                              SizedBox(height: 12,
-                                  child: Spacer()),
+                              SizedBox(height: 12, child: Spacer()),
                               _period(),
-                              SizedBox(height: 12,
-                                  child: Spacer()),
+                              SizedBox(height: 12, child: Spacer()),
                               _period(),
                             ],
                           ),
@@ -208,29 +144,32 @@ class _TimeTablesState extends State<TimeTables> {
                 //集中講義
                 Container(
                   height: 180,
-                  margin: const EdgeInsets.only(top:12.0),
+                  margin: const EdgeInsets.only(top: 12.0),
                   child: Column(
                     children: [
                       //集中コース
                       Container(
                         height: 16,
                         alignment: Alignment.center,
-                        child: Text('集中コース',
+                        child: Text(
+                          '集中コース',
                           style: TextStyle(
                             fontSize: 10,
-                            color: Color(0xFF2E2E2E),),
+                            color: UtimeColors.textColor,
+                          ),
                         ),
                       ),
                       Expanded(
                         child: Container(
                           width: double.infinity,
-                          margin: const EdgeInsets.only(left:28.0, right:28.0),
+                          margin:
+                              const EdgeInsets.only(left: 28.0, right: 28.0),
                           decoration: BoxDecoration(
-                            color: Color(0xFFFFFFFF),
+                            color: UtimeColors.white,
                             borderRadius: BorderRadius.circular(4),
                           ),
                           child: Column(
-                            children:[
+                            children: [
                               _intensiveCourse(),
                               _intensiveCourse(),
                             ],
@@ -245,12 +184,12 @@ class _TimeTablesState extends State<TimeTables> {
           ),
         ),
       ),
-
       bottomNavigationBar: BottomNavigationBar(
         items: <BottomNavigationBarItem>[
-          BottomNavigationBarItem(icon: Icon(Icons.home), label:'時間割'),
-          BottomNavigationBarItem(icon: Icon(Icons.account_balance), label:'単位'),
-          BottomNavigationBarItem(icon: Icon(Icons.poll), label:'平均点'),
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: '時間割'),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.account_balance), label: '単位'),
+          BottomNavigationBarItem(icon: Icon(Icons.poll), label: '平均点'),
         ],
         fixedColor: Color(0xFFED6969),
         type: BottomNavigationBarType.fixed,
@@ -258,6 +197,7 @@ class _TimeTablesState extends State<TimeTables> {
     );
   }
 
+  //曜日のウィジェット（横幅infinity）
   Expanded _day(String day) {
     return (Expanded(
       child: SizedBox(
@@ -267,13 +207,42 @@ class _TimeTablesState extends State<TimeTables> {
           textAlign: TextAlign.center,
           style: TextStyle(
             fontSize: 12,
-            color: Color(0xFF2E2E2E),
+            color: UtimeColors.textColor,
           ),
         ),
       ),
     ));
   }
 
+  //時間割の区切りの時間を表示するウィジェット
+  Text _time(String time) {
+    return (Text(
+      time,
+      textAlign: TextAlign.center,
+      style: TextStyle(
+        fontSize: 10,
+        color: UtimeColors.textColor,
+      ),
+    ));
+  }
+
+  //何限かを表示するWidget（とりあえず縦幅54px）
+  Container _periodNumber(String period) {
+    return (Container(
+      width: 24,
+      height: 54,
+      alignment: Alignment.center,
+      child: Text(
+        period,
+        style: TextStyle(
+          fontSize: 12,
+          color: UtimeColors.textColor,
+        ),
+      ),
+    ));
+  }
+
+  //コマのウィジェット
   Expanded _createLecture() {
     return (Expanded(
       child: SizedBox(
@@ -284,26 +253,24 @@ class _TimeTablesState extends State<TimeTables> {
             '',
             style: TextStyle(
               fontSize: 8,
-              color: Color(0xFF2E2E2E),
+              color: UtimeColors.textColor,
             ),
           ),
           style: ElevatedButton.styleFrom(
-            primary: Color(0xFFFFFFFF),
+            primary: UtimeColors.white,
             elevation: 0,
           ),
           onPressed: () {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => LectureDialog(),
-                ));
-            // LectureDialog(context,).showLectureDialog();
+            LectureDialog(
+              context,
+            ).showLectureDialog();
           },
         ),
       ),
     ));
   }
 
+  //コマを何限かによって行でまとめたウィジェット
   Expanded _period() {
     return (Expanded(
       child: SizedBox(
@@ -326,25 +293,28 @@ class _TimeTablesState extends State<TimeTables> {
     ));
   }
 
-  Container _intensiveCourse() {
-    return (Container(
-      width: double.infinity,
-      height: 32,
-      margin: const EdgeInsets.only(top: 16.0, left: 16.0, right: 16.0),
-      child: ElevatedButton(
-        child: const Text(
-          '全学自由研究ゼミナール',
-          style: TextStyle(
-            fontSize: 10,
-            color: Color(0xFF2E2E2E),
+  //集中コースの授業のウィジェット
+  Expanded _intensiveCourse() {
+    return Expanded(
+      child: (Container(
+        width: double.infinity,
+        height: 32,
+        margin: const EdgeInsets.only(top: 16.0, left: 16.0, right: 16.0),
+        child: ElevatedButton(
+          child: Text(
+            '全学自由研究ゼミナール',
+            style: TextStyle(
+              fontSize: 10,
+              color: UtimeColors.textColor,
+            ),
           ),
+          style: ElevatedButton.styleFrom(
+            primary: UtimeColors.subject6,
+            elevation: 0,
+          ),
+          onPressed: () {},
         ),
-        style: ElevatedButton.styleFrom(
-          primary: Color(0xFFFFF1A7),
-          elevation: 0,
-        ),
-        onPressed: () {},
-      ),
-    ));
+      )),
+    );
   }
 }
