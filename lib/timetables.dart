@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:utime/lecture_dialog.dart';
 import 'package:utime/utime_colors.dart';
+import 'package:utime/lecture_dialog.dart';
 
 class TimeTables extends StatefulWidget {
   const TimeTables({Key? key}) : super(key: key);
@@ -12,8 +13,16 @@ class TimeTables extends StatefulWidget {
 }
 
 class _TimeTablesState extends State<TimeTables> {
+  //表示しているターム
+  var _term = '';
+
+  //ドロップダウンボタンで使うやつ
+  String? _SelectedKey = null;
+
   @override
   Widget build(BuildContext context) {
+    //アップバーの高さを取得
+    final double appBarHeight = AppBar().preferredSize.height;
     // デバイスの縦幅と横幅を取得する
     final double screenHeight = MediaQuery.of(context).size.height;
     final double screenWidth = MediaQuery.of(context).size.width;
@@ -24,9 +33,13 @@ class _TimeTablesState extends State<TimeTables> {
 
     return Scaffold(
       appBar: AppBar(
-        leading: Icon(
-          Icons.menu,
-          color: UtimeColors.textColor,
+        leading: IconButton(
+          icon: Icon(
+            Icons.menu,
+            color: UtimeColors.textColor,
+          ),
+          //↓なんかこれ上手くいかないです、直せる方お願いします
+          onPressed: () => _onMenuButtonTapped(),
         ),
         centerTitle: true,
         title: Text(
@@ -39,6 +52,9 @@ class _TimeTablesState extends State<TimeTables> {
         backgroundColor: UtimeColors.white,
         elevation: 0.0,
       ),
+      drawer: Drawer(
+        child: _onMenuButtonTapped(),
+      ),
       body: SingleChildScrollView(
         child: Container(
           color: UtimeColors.backgroundColor,
@@ -48,13 +64,26 @@ class _TimeTablesState extends State<TimeTables> {
                 //ターム
                 Container(
                   padding: EdgeInsets.all(16.0),
-                  child: Text(
-                    'S1ターム',
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      color: UtimeColors.textColor,
-                    ),
+                  child: DropdownButton<dynamic>(
+                    hint: Text('S1ターム',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: UtimeColors.textColor,
+                        )),
+                    items: [
+                      _dropdownMenuItem('S1'),
+                      _dropdownMenuItem('S2'),
+                      _dropdownMenuItem('A1'),
+                      _dropdownMenuItem('A2'),
+                    ],
+                    value: _SelectedKey,
+                    onChanged: (value) {
+                      setState(() {
+                        _SelectedKey = value ?? 'A';
+                      });
+                    },
                   ),
                 ),
                 //曜日
@@ -151,6 +180,7 @@ class _TimeTablesState extends State<TimeTables> {
                       Container(
                         height: 16,
                         alignment: Alignment.center,
+                        margin: EdgeInsets.only(bottom: 4),
                         child: Text(
                           '集中コース',
                           style: TextStyle(
@@ -191,7 +221,7 @@ class _TimeTablesState extends State<TimeTables> {
               icon: Icon(Icons.account_balance), label: '単位'),
           BottomNavigationBarItem(icon: Icon(Icons.poll), label: '平均点'),
         ],
-        fixedColor: Color(0xFFED6969),
+        fixedColor: UtimeColors.tabAccent,
         type: BottomNavigationBarType.fixed,
       ),
     );
@@ -242,7 +272,7 @@ class _TimeTablesState extends State<TimeTables> {
     ));
   }
 
-  //コマのウィジェット
+  //1コマのウィジェット
   Expanded _createLecture() {
     return (Expanded(
       child: SizedBox(
@@ -312,9 +342,86 @@ class _TimeTablesState extends State<TimeTables> {
             primary: UtimeColors.subject6,
             elevation: 0,
           ),
-          onPressed: () {},
+          onPressed: () {
+            LectureDialog(
+              context,
+            ).showLectureDialog();
+          },
         ),
       )),
     );
+  }
+
+  //メニューボタンをタップした時
+  _onMenuButtonTapped() {
+    return (ListView(children: <Widget>[
+      SizedBox(
+        height: 64,
+        child: DrawerHeader(
+          child: Text(
+            'UTime',
+            style: TextStyle(
+              fontSize: 18,
+              color: UtimeColors.menuAccent,
+            ),
+          ),
+          decoration: BoxDecoration(
+            color: UtimeColors.white,
+            border: Border(
+              bottom: BorderSide(color: UtimeColors.menuAccent),
+            ),
+          ),
+        ),
+      ),
+      ListTile(
+        title: Text('1年',
+            style: TextStyle(
+              fontSize: 16,
+              color: UtimeColors.menuAccent,
+            )),
+      ),
+      _listTitle('S1ターム', '1S1'),
+      _listTitle('S2ターム', '1S2'),
+      _listTitle('A1ターム', '1A1'),
+      _listTitle('A2ターム', '1A2'),
+      ListTile(
+        title: Text('2年',
+            style: TextStyle(
+              fontSize: 16,
+              color: UtimeColors.menuAccent,
+            )),
+      ),
+      _listTitle('S1ターム', '2S1'),
+      _listTitle('S2ターム', '2S2'),
+      _listTitle('A1ターム', '2A1'),
+      _listTitle('A2ターム', '2A2'),
+    ]));
+  }
+
+  //メニューに表示されているリストの要素
+  ListTile _listTitle(String t1, String t2) {
+    return (ListTile(
+      title: Text(t1),
+      onTap: () {
+        setState(() => _term = t2);
+        Navigator.pop(context);
+      },
+    ));
+  }
+
+  //ドロップダウンボタンの選択肢
+  DropdownMenuItem _dropdownMenuItem(String item) {
+    return (DropdownMenuItem(
+      child: Text(
+        item,
+        textAlign: TextAlign.center,
+        style: TextStyle(
+          fontSize: 18,
+          //fontWeight: FontWeight.bold,
+          color: UtimeColors.textColor,
+        ),
+      ),
+      value: item,
+    ));
   }
 }

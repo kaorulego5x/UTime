@@ -44,7 +44,7 @@ class LectureDialog {
                     child: Column(
                       children: [
                         Container(
-                          margin: EdgeInsets.only(top: 20, bottom: 8),
+                          margin: EdgeInsets.only(top: 28, bottom: 8),
                           child: Text(
                             'Fri 1',
                             textAlign: TextAlign.center,
@@ -195,27 +195,41 @@ class LectureDialog {
                           ),
                         ),
                         //メモ
-                        _section('メモ'),
-                        TextField(
-                          keyboardType: TextInputType.multiline,
-                          maxLines: null,
-                          decoration: InputDecoration(
-                            hintText: "メモ",
-                          ),
-                        ),
+                        Container(
+                            margin: EdgeInsets.only(top: 20, bottom: 4),
+                            child: _section('メモ')),
+                        Container(
+                            height: 136,
+                            width: 240,
+                            decoration: BoxDecoration(
+                              border: Border.all(color: UtimeColors.subject7),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: TextField(
+                              keyboardType: TextInputType.multiline,
+                              maxLines: null,
+                              decoration: InputDecoration(
+                                hintText: "　メモ",
+                                border: InputBorder.none,
+                              ),
+                            )),
                         //授業時間ボタン
-                        ToggleButtons(
-                          isSelected: isSelected,
-                          onPressed: (index) {},
-                          children: [
-                            Text('105分'),
-                            Text('90分'),
-                          ],
-                          borderWidth: 2,
-                          borderColor: UtimeColors.subject7,
-                          borderRadius: BorderRadius.circular(12.0),
-                          selectedColor: UtimeColors.white,
-                          fillColor: UtimeColors.subject7,
+                        Container(
+                          height: 32,
+                          margin: EdgeInsets.only(top: 20),
+                          child: ToggleButtons(
+                            isSelected: isSelected,
+                            onPressed: (index) {},
+                            children: [
+                              Text('105分'),
+                              Text('90分'),
+                            ],
+                            borderWidth: 2,
+                            borderColor: UtimeColors.subject7,
+                            borderRadius: BorderRadius.circular(12.0),
+                            selectedColor: UtimeColors.white,
+                            fillColor: UtimeColors.subject7,
+                          ),
                         ),
                       ],
                     ),
