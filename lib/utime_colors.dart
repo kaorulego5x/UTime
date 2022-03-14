@@ -4,8 +4,14 @@ class UtimeColors {
   //背景
   static final backgroundColor = Color(0xFFE4F9FB);
 
+  //タブのアクセントカラー
+  static final tabAccent = Color(0xFFED6969);
+
   //白
   static final white = Color(0xFFFFFFFF);
+
+  //メニューバーのアクセントカラー
+  static final menuAccent = Color(0xFF50819C);
 
   //文字の色
   //black80%
