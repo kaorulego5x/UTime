@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:utime/average_score.dart';
+import 'package:utime/credits_number.dart';
 
 import 'package:utime/lecture_dialog.dart';
 import 'package:utime/utime_colors.dart';
@@ -213,16 +215,6 @@ class _TimeTablesState extends State<TimeTables> {
             ),
           ),
         ),
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: <BottomNavigationBarItem>[
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: '時間割'),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.account_balance), label: '単位'),
-          BottomNavigationBarItem(icon: Icon(Icons.poll), label: '平均点'),
-        ],
-        fixedColor: UtimeColors.tabAccent,
-        type: BottomNavigationBarType.fixed,
       ),
     );
   }
