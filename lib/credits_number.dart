@@ -39,6 +39,7 @@ class _CreditsNumberState extends State<CreditsNumber> {
       body: SingleChildScrollView(
         child: Container(
           color: UtimeColors.backgroundColor,
+          margin: const EdgeInsets.only(bottom: 64),
           padding: const EdgeInsets.only(right: 32, left: 32),
           child: Center(
             child: Column(
