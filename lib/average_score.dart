@@ -15,7 +15,7 @@ class _AverageScoreState extends State<AverageScore> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text(
+        title: const Text(
           '平均点',
           style: TextStyle(
             fontSize: 18,

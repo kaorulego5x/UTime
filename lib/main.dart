@@ -20,32 +20,19 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         fontFamily: "Noto Sans JP",
       ),
-      home: HomePage(),
+      home: const HomePage(),
     );
   }
 }
 
 class HomePage extends StatefulWidget {
+  const HomePage({Key? key}) : super(key: key);
+
   @override
   _HomePageState createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
-  int _selectedIndex = 0;
-  late PageController _pageController;
-
-  static List<Widget> _pageList = [
-    TimeTables(),
-    CreditsNumber(),
-    AverageScore()
-  ];
-
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return CupertinoTabScaffold(
@@ -62,39 +49,14 @@ class _HomePageState extends State<HomePage> {
         tabBuilder: (context, index) {
           switch (index) {
             case 0: // 1番左のタブが選ばれた時の画面
-              return TimeTables();
+              return const TimeTables();
             case 1: // 真ん中のタブが選ばれた時の画面
-              return CreditsNumber();
+              return const CreditsNumber();
             case 2: // 1番右のタブが選ばれた時の画面
-              return AverageScore();
+              return const AverageScore();
             default:
-              return TimeTables();
+              return const TimeTables();
           }
         });
   }
 }
-/*
-      body: PageView(
-        controller: _pageController,
-        onPageChanged: _onPageChanged,
-        children: _pageList,
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: '時間割'),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.account_balance), label: '単位'),
-          BottomNavigationBarItem(icon: Icon(Icons.poll), label: '平均点'),
-        ],
-        currentIndex: _selectedIndex,
-        fixedColor: UtimeColors.tabAccent,
-        type: BottomNavigationBarType.fixed,
-        onTap: (index) {
-          _selectedIndex = index;
-
-          _pageController.animateToPage(index,
-              duration: Duration(milliseconds: 300), curve: Curves.easeIn);
-        },
-      ),
-      */
-    

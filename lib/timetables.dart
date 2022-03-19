@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:utime/average_score.dart';
-import 'package:utime/credits_number.dart';
-
 import 'package:utime/lecture_dialog.dart';
 import 'package:utime/utime_colors.dart';
-import 'package:utime/lecture_dialog.dart';
 
 class TimeTables extends StatefulWidget {
   const TimeTables({Key? key}) : super(key: key);
@@ -18,6 +14,10 @@ class _TimeTablesState extends State<TimeTables> {
   //表示しているターム
   var _term = '';
 
+  //コマのサイズ
+  var classHeight;
+  var classWidth;
+
   //ドロップダウンボタンで使うやつ
   String? _SelectedKey = null;
 
@@ -30,13 +30,13 @@ class _TimeTablesState extends State<TimeTables> {
     final double screenWidth = MediaQuery.of(context).size.width;
 
     //サイズ用の変数
-    final double classHeight = 54; //1コマの高さ
-    final double classWidth = (screenWidth - 28); //1コマの横幅
+    classHeight = 68.0; //1コマの高さ
+    classWidth = (screenWidth - 64 - 48) / 5; //1コマの横幅
 
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          icon: Icon(
+          icon: const Icon(
             Icons.menu,
             color: UtimeColors.textColor,
           ),
@@ -44,7 +44,7 @@ class _TimeTablesState extends State<TimeTables> {
           onPressed: () => _onMenuButtonTapped(),
         ),
         centerTitle: true,
-        title: Text(
+        title: const Text(
           '時間割',
           style: TextStyle(
             fontSize: 18,
@@ -65,9 +65,9 @@ class _TimeTablesState extends State<TimeTables> {
               children: [
                 //ターム
                 Container(
-                  padding: EdgeInsets.all(16.0),
+                  padding: const EdgeInsets.all(16.0),
                   child: DropdownButton<dynamic>(
-                    hint: Text('S1ターム',
+                    hint: const Text('S1ターム',
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           fontSize: 18,
@@ -97,80 +97,78 @@ class _TimeTablesState extends State<TimeTables> {
                   child: Row(
                     children: [
                       _day('Mon'),
-                      SizedBox(width: 12, child: Spacer()),
+                      const SizedBox(width: 12, child: Spacer()),
                       _day('Tue'),
-                      SizedBox(width: 12, child: Spacer()),
+                      const SizedBox(width: 12, child: Spacer()),
                       _day('Wed'),
-                      SizedBox(width: 12, child: Spacer()),
+                      const SizedBox(width: 12, child: Spacer()),
                       _day('Tur'),
-                      SizedBox(width: 12, child: Spacer()),
+                      const SizedBox(width: 12, child: Spacer()),
                       _day('Fri'),
                     ],
                   ),
                 ),
                 //時間割
-                Container(
-                  child: Row(
-                    children: [
-                      //時間
-                      Container(
-                        width: 28,
-                        height: 492,
-                        child: Center(
-                          child: Column(
-                            children: [
-                              _time('8:30'),
-                              _periodNumber('1'),
-                              _time('10:15'),
-                              Spacer(),
-                              _time('10:25'),
-                              _periodNumber('2'),
-                              _time('12:10'),
-                              Spacer(),
-                              _time('13:00'),
-                              _periodNumber('3'),
-                              _time('14:45'),
-                              Spacer(),
-                              _time('14:55'),
-                              _periodNumber('4'),
-                              _time('16:40'),
-                              Spacer(),
-                              _time('16:50'),
-                              _periodNumber('5'),
-                              _time('18:35'),
-                              Spacer(),
-                              _time('18:45'),
-                              _periodNumber('6'),
-                              _time('20:30'),
-                            ],
-                          ),
+                Row(
+                  children: [
+                    //時間
+                    SizedBox(
+                      width: 28,
+                      height: 492,
+                      child: Center(
+                        child: Column(
+                          children: [
+                            _time('8:30'),
+                            _periodNumber('1'),
+                            _time('10:15'),
+                            const Spacer(),
+                            _time('10:25'),
+                            _periodNumber('2'),
+                            _time('12:10'),
+                            const Spacer(),
+                            _time('13:00'),
+                            _periodNumber('3'),
+                            _time('14:45'),
+                            const Spacer(),
+                            _time('14:55'),
+                            _periodNumber('4'),
+                            _time('16:40'),
+                            const Spacer(),
+                            _time('16:50'),
+                            _periodNumber('5'),
+                            _time('18:35'),
+                            const Spacer(),
+                            _time('18:45'),
+                            _periodNumber('6'),
+                            _time('20:30'),
+                          ],
                         ),
                       ),
-                      //コマ
-                      Expanded(
-                        child: Container(
-                          width: double.infinity,
-                          height: 492,
-                          margin: const EdgeInsets.only(left: 4.0, right: 32.0),
-                          child: Column(
-                            children: [
-                              _period(),
-                              SizedBox(height: 12, child: Spacer()),
-                              _period(),
-                              SizedBox(height: 12, child: Spacer()),
-                              _period(),
-                              SizedBox(height: 12, child: Spacer()),
-                              _period(),
-                              SizedBox(height: 12, child: Spacer()),
-                              _period(),
-                              SizedBox(height: 12, child: Spacer()),
-                              _period(),
-                            ],
-                          ),
+                    ),
+                    //コマ
+                    Expanded(
+                      child: Container(
+                        width: double.infinity,
+                        height: 492,
+                        margin: const EdgeInsets.only(left: 4.0, right: 32.0),
+                        child: Column(
+                          children: [
+                            _period(),
+                            const SizedBox(height: 12, child: Spacer()),
+                            _period(),
+                            const SizedBox(height: 12, child: Spacer()),
+                            _period(),
+                            const SizedBox(height: 12, child: Spacer()),
+                            _period(),
+                            const SizedBox(height: 12, child: Spacer()),
+                            _period(),
+                            const SizedBox(height: 12, child: Spacer()),
+                            _period(),
+                          ],
                         ),
-                      )
-                    ],
-                  ),
+                      ),
+                    )
+                  ],
                 ),
                 //集中講義
                 Container(
@@ -182,8 +180,8 @@ class _TimeTablesState extends State<TimeTables> {
                       Container(
                         height: 16,
                         alignment: Alignment.center,
-                        margin: EdgeInsets.only(bottom: 4),
-                        child: Text(
+                        margin: const EdgeInsets.only(bottom: 4),
+                        child: const Text(
                           '集中コース',
                           style: TextStyle(
                             fontSize: 10,
@@ -227,7 +225,7 @@ class _TimeTablesState extends State<TimeTables> {
         child: Text(
           day,
           textAlign: TextAlign.center,
-          style: TextStyle(
+          style: const TextStyle(
             fontSize: 12,
             color: UtimeColors.textColor,
           ),
@@ -241,7 +239,7 @@ class _TimeTablesState extends State<TimeTables> {
     return (Text(
       time,
       textAlign: TextAlign.center,
-      style: TextStyle(
+      style: const TextStyle(
         fontSize: 10,
         color: UtimeColors.textColor,
       ),
@@ -256,7 +254,7 @@ class _TimeTablesState extends State<TimeTables> {
       alignment: Alignment.center,
       child: Text(
         period,
-        style: TextStyle(
+        style: const TextStyle(
           fontSize: 12,
           color: UtimeColors.textColor,
         ),
@@ -268,10 +266,10 @@ class _TimeTablesState extends State<TimeTables> {
   Expanded _createLecture() {
     return (Expanded(
       child: SizedBox(
-        width: double.infinity,
-        height: 68,
+        width: classWidth,
+        height: classHeight,
         child: ElevatedButton(
-          child: Text(
+          child: const Text(
             '',
             style: TextStyle(
               fontSize: 8,
@@ -301,13 +299,13 @@ class _TimeTablesState extends State<TimeTables> {
         child: Row(
           children: [
             _createLecture(),
-            SizedBox(width: 12, child: Spacer()),
+            const SizedBox(width: 12, child: Spacer()),
             _createLecture(),
-            SizedBox(width: 12, child: Spacer()),
+            const SizedBox(width: 12, child: Spacer()),
             _createLecture(),
-            SizedBox(width: 12, child: Spacer()),
+            const SizedBox(width: 12, child: Spacer()),
             _createLecture(),
-            SizedBox(width: 12, child: Spacer()),
+            const SizedBox(width: 12, child: Spacer()),
             _createLecture(),
           ],
         ),
@@ -323,7 +321,7 @@ class _TimeTablesState extends State<TimeTables> {
         height: 32,
         margin: const EdgeInsets.only(top: 16.0, left: 16.0, right: 16.0),
         child: ElevatedButton(
-          child: Text(
+          child: const Text(
             '全学自由研究ゼミナール',
             style: TextStyle(
               fontSize: 10,
@@ -347,7 +345,7 @@ class _TimeTablesState extends State<TimeTables> {
   //メニューボタンをタップした時
   _onMenuButtonTapped() {
     return (ListView(children: <Widget>[
-      SizedBox(
+      const SizedBox(
         height: 64,
         child: DrawerHeader(
           child: Text(
@@ -365,7 +363,7 @@ class _TimeTablesState extends State<TimeTables> {
           ),
         ),
       ),
-      ListTile(
+      const ListTile(
         title: Text('1年',
             style: TextStyle(
               fontSize: 16,
@@ -376,7 +374,7 @@ class _TimeTablesState extends State<TimeTables> {
       _listTitle('S2ターム', '1S2'),
       _listTitle('A1ターム', '1A1'),
       _listTitle('A2ターム', '1A2'),
-      ListTile(
+      const ListTile(
         title: Text('2年',
             style: TextStyle(
               fontSize: 16,
@@ -407,7 +405,7 @@ class _TimeTablesState extends State<TimeTables> {
       child: Text(
         item,
         textAlign: TextAlign.center,
-        style: TextStyle(
+        style: const TextStyle(
           fontSize: 18,
           //fontWeight: FontWeight.bold,
           color: UtimeColors.textColor,
