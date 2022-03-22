@@ -33,7 +33,7 @@ class StatusDialog {
                         color: UtimeColors.backgroundColor),
                     alignment: Alignment.center,
                     child: const Text(
-                      'ステータス',
+                      '科類選択',
                       style: TextStyle(
                         fontSize: 18,
                         color: UtimeColors.textColor,

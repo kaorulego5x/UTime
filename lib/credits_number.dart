@@ -39,12 +39,13 @@ class _CreditsNumberState extends State<CreditsNumber> {
       body: SingleChildScrollView(
         child: Container(
           color: UtimeColors.backgroundColor,
+          margin: const EdgeInsets.only(bottom: 64),
           padding: const EdgeInsets.only(right: 32, left: 32),
           child: Center(
             child: Column(
               children: [
                 //学年・科類
-                _showStatus(),
+                _showStatus('理科一類'),
                 //必要単位数
                 _showRequiredCredits(),
                 //取得単位
@@ -76,20 +77,43 @@ class _CreditsNumberState extends State<CreditsNumber> {
   }
 
   //学年・科類確認ボタンウィジェット
-  SizedBox _showStatus() {
+  SizedBox _showStatus(String course) {
     return SizedBox(
       child: Expanded(
         child: (Container(
           width: double.infinity,
-          height: 108,
+          height: 84,
           margin: const EdgeInsets.only(top: 32, bottom: 32),
           child: ElevatedButton(
-            child: const Text(
-              '理科一類',
-              style: TextStyle(
-                fontSize: 28,
-                color: UtimeColors.textColor,
-              ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                  alignment: Alignment.center,
+                  child: const Text(
+                    'あなたは',
+                    style: TextStyle(
+                      fontSize: 18,
+                      color: UtimeColors.lightTextColor,
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  width: 40,
+                  child: Spacer(),
+                ),
+                Container(
+                  alignment: Alignment.center,
+                  child: Text(
+                    course,
+                    style: const TextStyle(
+                      fontSize: 24,
+                      color: UtimeColors.textColor,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ),
+              ],
             ),
             style: ElevatedButton.styleFrom(
               primary: UtimeColors.white,
@@ -200,7 +224,7 @@ class _CreditsNumberState extends State<CreditsNumber> {
                         '/ 6',
                         style: TextStyle(
                           fontSize: 16,
-                          color: UtimeColors.textColor,
+                          color: UtimeColors.lightTextColor,
                         ),
                       ),
                     ),

@@ -8,6 +8,32 @@ class LectureDialog {
 
   //ドロップダウンボタンで使うやつ
   String? _SelectedKey = null;
+  //開講区分
+  List<String> openTermList = [
+    'S1',
+    'S2',
+    'S',
+    'A1',
+    'A2',
+    'A',
+  ];
+  //開講区分
+  List<String> creditsNumberList = [
+    '1.0',
+    '2.0',
+  ];
+  //科目区分
+  List<String> subjectTypeList = [
+    '必修科目',
+    'A',
+    'B',
+    'C',
+    'D',
+    'E',
+    'F',
+    '主題科目',
+    'その他'
+  ];
 
   //90分授業かどうか
   final isSelected = <bool>[true, false];
@@ -15,7 +41,7 @@ class LectureDialog {
   /*
    * 表示
    */
-  void showLectureDialog() {
+  void showLectureDialog(String day, String period) {
     Navigator.push(
         context,
         ModalOverlay(
@@ -45,10 +71,10 @@ class LectureDialog {
                       children: [
                         Container(
                           margin: const EdgeInsets.only(top: 28, bottom: 8),
-                          child: const Text(
-                            'Fri 1',
+                          child: Text(
+                            day + ' ' + period,
                             textAlign: TextAlign.center,
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontSize: 14,
                               fontWeight: FontWeight.bold,
                               color: UtimeColors.white,
@@ -64,6 +90,7 @@ class LectureDialog {
                   Container(
                     width: 280,
                     height: 370,
+                    padding: const EdgeInsets.only(right: 20, left: 20),
                     decoration: const BoxDecoration(
                       color: UtimeColors.white,
                       borderRadius: BorderRadius.only(
@@ -75,144 +102,21 @@ class LectureDialog {
                       children: [
                         Container(
                           margin: const EdgeInsets.only(top: 16, bottom: 20),
+                          height: 48,
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Column(
-                                children: [
-                                  Container(
-                                      height: 12,
-                                      width: 112,
-                                      margin: const EdgeInsets.only(bottom: 4),
-                                      child: _section('開講区分')),
-                                  Container(
-                                    height: 32,
-                                    width: 112,
-                                    decoration: BoxDecoration(
-                                      color: UtimeColors.subject7,
-                                      borderRadius: BorderRadius.circular(12),
-                                    ),
-                                    child: DropdownButton<dynamic>(
-                                      hint: const Text('選択して下さい',
-                                          textAlign: TextAlign.center,
-                                          style: TextStyle(
-                                            fontSize: 12,
-                                            fontWeight: FontWeight.bold,
-                                            color: UtimeColors.white,
-                                          )),
-                                      items: [
-                                        _dropdownMenuItem('S1'),
-                                        _dropdownMenuItem('S2'),
-                                        _dropdownMenuItem('S'),
-                                        _dropdownMenuItem('A1'),
-                                        _dropdownMenuItem('A2'),
-                                        _dropdownMenuItem('A'),
-                                      ],
-                                      value: _SelectedKey,
-                                      onChanged: (value) {
-                                        setState(() {
-                                          _SelectedKey = value ?? 'A';
-                                        });
-                                      },
-                                    ),
-                                  ),
-                                ],
-                              ),
+                              _showDropdown('開講区分', openTermList, 112),
                               const SizedBox(width: 16, child: Spacer()),
-                              Column(
-                                children: [
-                                  Container(
-                                      height: 12,
-                                      width: 112,
-                                      margin: const EdgeInsets.only(bottom: 4),
-                                      child: _section('単位数')),
-                                  Container(
-                                    height: 32,
-                                    width: 112,
-                                    decoration: BoxDecoration(
-                                      color: UtimeColors.subject7,
-                                      borderRadius: BorderRadius.circular(12),
-                                    ),
-                                    child: DropdownButton<dynamic>(
-                                      hint: const Text('選択して下さい',
-                                          textAlign: TextAlign.center,
-                                          style: TextStyle(
-                                            fontSize: 12,
-                                            fontWeight: FontWeight.bold,
-                                            color: UtimeColors.white,
-                                          )),
-                                      items: [
-                                        _dropdownMenuItem('2.0'),
-                                        _dropdownMenuItem('1.0'),
-                                        _dropdownMenuItem('0.5'),
-                                      ],
-                                      value: _SelectedKey,
-                                      onChanged: (value) {
-                                        setState(() {
-                                          _SelectedKey = value ?? '2.0';
-                                        });
-                                      },
-                                    ),
-                                  ),
-                                ],
-                              ),
+                              _showDropdown('単位数', creditsNumberList, 112),
                             ],
                           ),
                         ),
-                        _section('科目区分'),
-                        Container(
-                          height: 32,
-                          width: 112,
-                          decoration: BoxDecoration(
-                            color: UtimeColors.subject7,
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          child: DropdownButton<dynamic>(
-                            hint: const Text('選択して下さい',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.bold,
-                                  color: UtimeColors.white,
-                                )),
-                            items: [
-                              _dropdownMenuItem('必修科目'),
-                              _dropdownMenuItem('A'),
-                              _dropdownMenuItem('B'),
-                              _dropdownMenuItem('C'),
-                              _dropdownMenuItem('D'),
-                              _dropdownMenuItem('E'),
-                              _dropdownMenuItem('F'),
-                              _dropdownMenuItem('主題科目'),
-                              _dropdownMenuItem('その他'),
-                            ],
-                            value: _SelectedKey,
-                            onChanged: (value) {
-                              setState(() {
-                                _SelectedKey = value ?? '必修科目';
-                              });
-                            },
-                          ),
-                        ),
+                        SizedBox(
+                            height: 48,
+                            child: _showDropdown('科目区分', subjectTypeList, 240)),
                         //メモ
-                        Container(
-                            margin: const EdgeInsets.only(top: 20, bottom: 4),
-                            child: _section('メモ')),
-                        Container(
-                            height: 136,
-                            width: 240,
-                            decoration: BoxDecoration(
-                              border: Border.all(color: UtimeColors.subject7),
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            child: const TextField(
-                              keyboardType: TextInputType.multiline,
-                              maxLines: null,
-                              decoration: InputDecoration(
-                                hintText: "　メモ",
-                                border: InputBorder.none,
-                              ),
-                            )),
+                        _memo(),
                         //授業時間ボタン
                         Container(
                           height: 32,
@@ -300,20 +204,84 @@ class LectureDialog {
     ));
   }
 
-  //ドロップダウンボタンの選択肢
-  DropdownMenuItem _dropdownMenuItem(String item) {
-    return (DropdownMenuItem(
-      child: Text(
-        item,
-        textAlign: TextAlign.center,
-        style: const TextStyle(
-          fontSize: 12,
-          //fontWeight: FontWeight.bold,
-          color: UtimeColors.textColor,
+  //ドロップダウンボタン
+  Column _showDropdown(String title, List<String> itemList, double width) {
+    return Column(
+      children: [
+        Container(
+            height: 12,
+            margin: const EdgeInsets.only(bottom: 4),
+            child: _section(title)),
+        Container(
+          height: 32,
+          width: width,
+          decoration: BoxDecoration(
+            color: UtimeColors.subject7,
+            borderRadius: BorderRadius.circular(12),
+          ),
+          child: DropdownButton<dynamic>(
+            hint: const Text('選択して下さい',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.bold,
+                  color: UtimeColors.white,
+                )),
+            dropdownColor: UtimeColors.subject7,
+            style: const TextStyle(color: UtimeColors.white, fontSize: 12),
+            icon: null,
+            items: itemList.map((String items) {
+              return DropdownMenuItem(
+                value: items,
+                child: Text(items,
+                    style: const TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.bold,
+                      color: UtimeColors.white,
+                    )),
+              );
+            }).toList(),
+            value: _SelectedKey,
+            onChanged: (value) {
+              setState(() {
+                _SelectedKey = value ?? '';
+              });
+            },
+          ),
         ),
-      ),
-      value: item,
-    ));
+      ],
+    );
+  }
+
+  //メモウィジェット
+  Column _memo() {
+    return Column(
+      children: [
+        Container(
+            margin: const EdgeInsets.only(top: 20, bottom: 4),
+            child: _section('メモ')),
+        Container(
+            height: 136,
+            width: 240,
+            padding: const EdgeInsets.only(right: 12, left: 12),
+            decoration: BoxDecoration(
+              border: Border.all(color: UtimeColors.subject7),
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: const TextField(
+              keyboardType: TextInputType.multiline,
+              maxLines: null,
+              style: TextStyle(
+                color: UtimeColors.textColor,
+                fontSize: 16,
+              ),
+              decoration: InputDecoration(
+                hintText: "メモを入力",
+                border: InputBorder.none,
+              ),
+            )),
+      ],
+    );
   }
 
   void setState(Null Function() param0) {}

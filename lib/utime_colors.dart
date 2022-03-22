@@ -16,6 +16,8 @@ class UtimeColors {
   //文字の色
   //black80%
   static const textColor = Color(0xFF2E2E2E);
+  //black50%
+  static const lightTextColor = Color(0xFF808080);
 
   //科目区分
   //必修
