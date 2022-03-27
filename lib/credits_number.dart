@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:utime/credit_details_dialog.dart';
+import 'package:utime/credits_number_data.dart';
 import 'package:utime/required_credits_dialog.dart';
 import 'package:utime/show_credit_details.dart';
 import 'package:utime/status_dialog.dart';

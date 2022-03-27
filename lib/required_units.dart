@@ -1,9 +1,9 @@
 import 'package:utime/arts.dart';
 import 'package:utime/sciences.dart';
 
-class RequiredUnits {
+class CreditsNumberData {
   final String course;
-  RequiredUnits(this.course);
+  CreditsNumberData(this.course);
 
   ///ユーザーデータを取得
   getUserData() {
@@ -34,9 +34,9 @@ class RequiredUnits {
   }
 
   ///必要単位数のマップデータを返す
-  getRequiredUnits(course) {
-    Map<String, int> requiredUnits = _getMap(course);
-    return requiredUnits;
+  getCreditsNumberData(course) {
+    Map<String, int> CreditsNumberData = _getMap(course);
+    return CreditsNumberData;
   }
 
   ///科類別必要単位数のマップデータを取得

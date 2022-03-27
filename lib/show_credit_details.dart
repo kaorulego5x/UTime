@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:utime/credit_details_dialog.dart';
+import 'package:utime/credits_number_data.dart';
 import 'package:utime/required_units.dart';
 import 'package:utime/utime_colors.dart';
 
@@ -15,10 +15,10 @@ class ShowCreditDetails {
     return (showstatusWidth - 30) / 2;
   }
 
-  ///取得単位数をRequiredUnitsクラスから持ってくる
+  ///取得単位数をCreditsNumberDataクラスから持ってくる
   _getTakenUnits() {
-    RequiredUnits requiredUnits = RequiredUnits(course);
-    Map<String, int> takenUnits = requiredUnits.getTakenUnits();
+    CreditsNumberData creditsNumberData = CreditsNumberData(course);
+    Map<String, int> takenUnits = creditsNumberData.getTakenUnits();
     return takenUnits;
   }
 
@@ -42,13 +42,13 @@ class ShowCreditDetails {
     } else if (title == 'L系列') {
       return seriesL!;
     } else if (title == 'A~D系列') {
-      return seriesA! + seriesB! + seriesC! + seriesD!;
+      return seriesA! + seriesB! + seriesC! + seriesD!; //理系用
     } else if (title == 'E~F系列') {
-      return seriesE! + seriesF!;
+      return seriesE! + seriesF!; //理系用
     } else if (title == 'A~C系列') {
-      return seriesA! + seriesB! + seriesC!;
+      return seriesA! + seriesB! + seriesC!; //文系用
     } else if (title == 'D~F系列') {
-      return seriesD! + seriesE! + seriesF!;
+      return seriesD! + seriesE! + seriesF!; //文系用
     } else if (title == '主題科目') {
       return shudai!;
     } else if (title == '展開科目') {
@@ -58,17 +58,18 @@ class ShowCreditDetails {
     }
   }
 
-  ///必要単位数をRequiredUnitsクラスから持ってくる
-  _getRequiredUnits() {
-    RequiredUnits requiredUnits = RequiredUnits(course);
-    Map<String, int> takenUnits = requiredUnits.getRequiredUnits(course);
+  ///必要単位数をCreditsNumberDataクラスから持ってくる
+  _getCreditsNumberData() {
+    CreditsNumberData creditsNumberData = CreditsNumberData(course);
+    Map<String, int> takenUnits =
+        creditsNumberData.getCreditsNumberData(course);
     return takenUnits;
   }
 
   ///必要単位数を返す
-  _getRequiredUnitsSum(String course, String title) {
+  _getCreditsNumberDataSum(String course, String title) {
     //取得単位数のマップデータ
-    Map<String, int> takenUnits = _getRequiredUnits();
+    Map<String, int> takenUnits = _getCreditsNumberData();
     //値格納用変数
     int? kiso;
     int? seriesL;
@@ -174,7 +175,7 @@ class ShowCreditDetails {
                   Container(
                     margin: const EdgeInsets.only(top: 36, left: 20),
                     child: Text(
-                      '/ ' + _getRequiredUnitsSum(course, title).toString(),
+                      '/ ' + _getCreditsNumberDataSum(course, title).toString(),
                       style: const TextStyle(
                         fontSize: 16,
                         color: UtimeColors.lightTextColor,
@@ -263,7 +264,7 @@ class ShowCreditDetails {
                               margin: const EdgeInsets.only(top: 36, left: 20),
                               child: Text(
                                 '/ ' +
-                                    _getRequiredUnitsSum(course, title)
+                                    _getCreditsNumberDataSum(course, title)
                                         .toString(),
                                 style: const TextStyle(
                                   fontSize: 16,
@@ -313,7 +314,7 @@ class ShowCreditDetails {
                               //margin: const EdgeInsets.only(top: 36, left: 20),
                               child: Text(
                                 '/ ' +
-                                    _getRequiredUnitsSum(course, title)
+                                    _getCreditsNumberDataSum(course, title)
                                         .toString(),
                                 style: const TextStyle(
                                   fontSize: 16,
@@ -353,7 +354,7 @@ class ShowCreditDetails {
                               //margin: const EdgeInsets.only(top: 36, left: 20),
                               child: Text(
                                 '/ ' +
-                                    _getRequiredUnitsSum(course, title)
+                                    _getCreditsNumberDataSum(course, title)
                                         .toString(),
                                 style: const TextStyle(
                                   fontSize: 16,
