@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:utime/credit_details_dialog.dart';
 import 'package:utime/credits_number_data.dart';
-import 'package:utime/required_units.dart';
 import 'package:utime/utime_colors.dart';
 
 class ShowCreditDetails {
