@@ -23,10 +23,10 @@ class LectureDialog {
             child: Container(
               width: 280,
               height: 574,
-              decoration: BoxDecoration(
-                borderRadius: const BorderRadius.only(
-                  topRight: const Radius.circular(12),
-                  topLeft: const Radius.circular(12),
+              decoration: const BoxDecoration(
+                borderRadius: BorderRadius.only(
+                  topRight: Radius.circular(12),
+                  topLeft: Radius.circular(12),
                 ),
               ),
               child: Column(
@@ -34,18 +34,18 @@ class LectureDialog {
                   Container(
                     height: 204,
                     width: 280,
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                       color: UtimeColors.subject7,
-                      borderRadius: const BorderRadius.only(
-                        topRight: const Radius.circular(12),
-                        topLeft: const Radius.circular(12),
+                      borderRadius: BorderRadius.only(
+                        topRight: Radius.circular(12),
+                        topLeft: Radius.circular(12),
                       ),
                     ),
                     child: Column(
                       children: [
                         Container(
-                          margin: EdgeInsets.only(top: 28, bottom: 8),
-                          child: Text(
+                          margin: const EdgeInsets.only(top: 28, bottom: 8),
+                          child: const Text(
                             'Fri 1',
                             textAlign: TextAlign.center,
                             style: TextStyle(
@@ -64,17 +64,17 @@ class LectureDialog {
                   Container(
                     width: 280,
                     height: 370,
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                       color: UtimeColors.white,
-                      borderRadius: const BorderRadius.only(
-                        bottomRight: const Radius.circular(12),
-                        bottomLeft: const Radius.circular(12),
+                      borderRadius: BorderRadius.only(
+                        bottomRight: Radius.circular(12),
+                        bottomLeft: Radius.circular(12),
                       ),
                     ),
                     child: Column(
                       children: [
                         Container(
-                          margin: EdgeInsets.only(top: 16, bottom: 20),
+                          margin: const EdgeInsets.only(top: 16, bottom: 20),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
@@ -83,7 +83,7 @@ class LectureDialog {
                                   Container(
                                       height: 12,
                                       width: 112,
-                                      margin: EdgeInsets.only(bottom: 4),
+                                      margin: const EdgeInsets.only(bottom: 4),
                                       child: _section('開講区分')),
                                   Container(
                                     height: 32,
@@ -93,7 +93,7 @@ class LectureDialog {
                                       borderRadius: BorderRadius.circular(12),
                                     ),
                                     child: DropdownButton<dynamic>(
-                                      hint: Text('選択して下さい',
+                                      hint: const Text('選択して下さい',
                                           textAlign: TextAlign.center,
                                           style: TextStyle(
                                             fontSize: 12,
@@ -118,13 +118,13 @@ class LectureDialog {
                                   ),
                                 ],
                               ),
-                              SizedBox(width: 16, child: Spacer()),
+                              const SizedBox(width: 16, child: Spacer()),
                               Column(
                                 children: [
                                   Container(
                                       height: 12,
                                       width: 112,
-                                      margin: EdgeInsets.only(bottom: 4),
+                                      margin: const EdgeInsets.only(bottom: 4),
                                       child: _section('単位数')),
                                   Container(
                                     height: 32,
@@ -134,7 +134,7 @@ class LectureDialog {
                                       borderRadius: BorderRadius.circular(12),
                                     ),
                                     child: DropdownButton<dynamic>(
-                                      hint: Text('選択して下さい',
+                                      hint: const Text('選択して下さい',
                                           textAlign: TextAlign.center,
                                           style: TextStyle(
                                             fontSize: 12,
@@ -168,7 +168,7 @@ class LectureDialog {
                             borderRadius: BorderRadius.circular(12),
                           ),
                           child: DropdownButton<dynamic>(
-                            hint: Text('選択して下さい',
+                            hint: const Text('選択して下さい',
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
                                   fontSize: 12,
@@ -196,7 +196,7 @@ class LectureDialog {
                         ),
                         //メモ
                         Container(
-                            margin: EdgeInsets.only(top: 20, bottom: 4),
+                            margin: const EdgeInsets.only(top: 20, bottom: 4),
                             child: _section('メモ')),
                         Container(
                             height: 136,
@@ -205,7 +205,7 @@ class LectureDialog {
                               border: Border.all(color: UtimeColors.subject7),
                               borderRadius: BorderRadius.circular(8),
                             ),
-                            child: TextField(
+                            child: const TextField(
                               keyboardType: TextInputType.multiline,
                               maxLines: null,
                               decoration: InputDecoration(
@@ -216,11 +216,11 @@ class LectureDialog {
                         //授業時間ボタン
                         Container(
                           height: 32,
-                          margin: EdgeInsets.only(top: 20),
+                          margin: const EdgeInsets.only(top: 20),
                           child: ToggleButtons(
                             isSelected: isSelected,
                             onPressed: (index) {},
-                            children: [
+                            children: const [
                               Text('105分'),
                               Text('90分'),
                             ],
@@ -253,11 +253,11 @@ class LectureDialog {
   //タイトルのセット
   Container _titleSet(String t1, String t2) {
     return (Container(
-      margin: EdgeInsets.only(top: 12),
+      margin: const EdgeInsets.only(top: 12),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Container(
+          SizedBox(
             height: 32,
             width: 120,
             child: Text(
@@ -270,13 +270,13 @@ class LectureDialog {
               ),
             ),
           ),
-          Container(
+          SizedBox(
             height: 32,
             width: 120,
             child: Text(
               t2,
               textAlign: TextAlign.center,
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
                 color: UtimeColors.white,
@@ -293,7 +293,7 @@ class LectureDialog {
     return (Text(
       section,
       textAlign: TextAlign.center,
-      style: TextStyle(
+      style: const TextStyle(
         fontSize: 10,
         color: UtimeColors.textColor,
       ),
@@ -306,7 +306,7 @@ class LectureDialog {
       child: Text(
         item,
         textAlign: TextAlign.center,
-        style: TextStyle(
+        style: const TextStyle(
           fontSize: 12,
           //fontWeight: FontWeight.bold,
           color: UtimeColors.textColor,
