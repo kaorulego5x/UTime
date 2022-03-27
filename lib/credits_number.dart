@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:utime/credit_details_dialog.dart';
 import 'package:utime/required_credits_dialog.dart';
+import 'package:utime/show_credit_details.dart';
 import 'package:utime/status_dialog.dart';
 import 'package:utime/utime_colors.dart';
 
@@ -13,15 +14,23 @@ class CreditsNumber extends StatefulWidget {
 }
 
 class _CreditsNumberState extends State<CreditsNumber> {
-  var creditDetailsWidth;
+  //科類
+  String course = '文科一類';
+
+  //サイズ用の変数
+  double showStatusWidth = 0;
+  double creditDetailsWidth = 0;
 
   @override
   Widget build(BuildContext context) {
     // デバイスの縦幅と横幅を取得する
     final double screenHeight = MediaQuery.of(context).size.height;
     final double screenWidth = MediaQuery.of(context).size.width;
-    //単位数ウィジェットの横幅
-    creditDetailsWidth = (screenWidth - 64 - 24) / 2;
+    //学年・科類確認ボタンウィジェットの横幅
+    showStatusWidth = screenWidth - 64;
+
+    ShowCreditDetails showCreditDetails =
+        ShowCreditDetails(course, showStatusWidth, context);
 
     return Scaffold(
       appBar: AppBar(
@@ -45,29 +54,11 @@ class _CreditsNumberState extends State<CreditsNumber> {
             child: Column(
               children: [
                 //学年・科類
-                _showStatus('理科一類'),
+                _showStatus(course),
                 //必要単位数
                 _showRequiredCredits(),
                 //取得単位
-                Row(
-                  children: [
-                    _showCreditDetails('必修科目', UtimeColors.subject1),
-                    const SizedBox(width: 24, child: Spacer()),
-                    _showCreditDetails('L系列', UtimeColors.subject2),
-                  ],
-                ),
-                Row(
-                  children: [
-                    _showCreditDetails('A~D系列', UtimeColors.subject3),
-                    const SizedBox(width: 24, child: Spacer()),
-                    _showCreditDetails('E~F系列', UtimeColors.subject5),
-                  ],
-                ),
-                Row(
-                  children: [
-                    _showCreditDetails('主題科目', UtimeColors.subject6),
-                  ],
-                ),
+                showCreditDetails.showTakenCredits(course),
               ],
             ),
           ),
@@ -79,57 +70,55 @@ class _CreditsNumberState extends State<CreditsNumber> {
   //学年・科類確認ボタンウィジェット
   SizedBox _showStatus(String course) {
     return SizedBox(
-      child: Expanded(
-        child: (Container(
-          width: double.infinity,
-          height: 84,
-          margin: const EdgeInsets.only(top: 32, bottom: 32),
-          child: ElevatedButton(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Container(
-                  alignment: Alignment.center,
-                  child: const Text(
-                    'あなたは',
-                    style: TextStyle(
-                      fontSize: 18,
-                      color: UtimeColors.lightTextColor,
-                    ),
+      child: (Container(
+        width: showStatusWidth,
+        height: 84,
+        margin: const EdgeInsets.only(top: 32, bottom: 32),
+        child: ElevatedButton(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                alignment: Alignment.center,
+                child: const Text(
+                  'あなたは',
+                  style: TextStyle(
+                    fontSize: 18,
+                    color: UtimeColors.lightTextColor,
                   ),
                 ),
-                const SizedBox(
-                  width: 40,
-                  child: Spacer(),
-                ),
-                Container(
-                  alignment: Alignment.center,
-                  child: Text(
-                    course,
-                    style: const TextStyle(
-                      fontSize: 24,
-                      color: UtimeColors.textColor,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            style: ElevatedButton.styleFrom(
-              primary: UtimeColors.white,
-              elevation: 0,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8),
               ),
-            ),
-            onPressed: () {
-              StatusDialog(
-                context,
-              ).showStatusDialog();
-            },
+              const SizedBox(
+                width: 40,
+                child: Spacer(),
+              ),
+              Container(
+                alignment: Alignment.center,
+                child: Text(
+                  course,
+                  style: const TextStyle(
+                    fontSize: 24,
+                    color: UtimeColors.textColor,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ),
+            ],
           ),
-        )),
-      ),
+          style: ElevatedButton.styleFrom(
+            primary: UtimeColors.white,
+            elevation: 0,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8),
+            ),
+          ),
+          onPressed: () {
+            StatusDialog(
+              context,
+            ).showStatusDialog();
+          },
+        ),
+      )),
     );
   }
 
@@ -138,7 +127,7 @@ class _CreditsNumberState extends State<CreditsNumber> {
     return SizedBox(
       child: Expanded(
         child: (Container(
-          width: double.infinity,
+          width: showStatusWidth,
           height: 52,
           margin: const EdgeInsets.only(bottom: 32),
           child: ElevatedButton(
@@ -160,89 +149,6 @@ class _CreditsNumberState extends State<CreditsNumber> {
               RequiredCreditsDialog(
                 context,
               ).showRequiredCreditsDialog();
-            },
-          ),
-        )),
-      ),
-    );
-  }
-
-  //単位詳細確認ボタンウィジェット
-  SizedBox _showCreditDetails(String title, Color color) {
-    return SizedBox(
-      child: Expanded(
-        child: (Container(
-          width: creditDetailsWidth,
-          height: 112,
-          margin: const EdgeInsets.only(bottom: 24),
-          child: ElevatedButton(
-            child: Column(
-              children: [
-                //科目区分名
-                Container(
-                  margin: const EdgeInsets.only(top: 10),
-                  alignment: Alignment.center,
-                  width: 80,
-                  child: Stack(children: <Widget>[
-                    Container(
-                      height: 12,
-                      margin: const EdgeInsets.only(top: 12),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(8),
-                        color: color,
-                      ),
-                    ),
-                    Container(
-                      alignment: Alignment.center,
-                      child: Text(
-                        title,
-                        style: const TextStyle(
-                          fontSize: 16,
-                          color: UtimeColors.textColor,
-                        ),
-                      ),
-                    ),
-                  ]),
-                ),
-                //取得単位数/必要単位数
-                Row(
-                  children: [
-                    Container(
-                      margin: const EdgeInsets.only(top: 20, left: 40),
-                      child: const Text(
-                        '2',
-                        style: TextStyle(
-                          fontSize: 36,
-                          color: UtimeColors.textColor,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                    Container(
-                      margin: const EdgeInsets.only(top: 36, left: 20),
-                      child: const Text(
-                        '/ 6',
-                        style: TextStyle(
-                          fontSize: 16,
-                          color: UtimeColors.lightTextColor,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-            style: ElevatedButton.styleFrom(
-              primary: UtimeColors.white,
-              elevation: 0,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8),
-              ),
-            ),
-            onPressed: () {
-              CreditDetailsDialog(
-                context,
-              ).showCreditDetailsDialog();
             },
           ),
         )),

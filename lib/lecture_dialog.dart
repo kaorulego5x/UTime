@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:utime/modal_overlay.dart';
 import 'package:utime/utime_colors.dart';
 
@@ -35,8 +36,21 @@ class LectureDialog {
     'その他'
   ];
 
-  //90分授業かどうか
-  final isSelected = <bool>[true, false];
+  //変数
+  String lectureName = '科目';
+  String openTerm = '';
+  String subjectType = '';
+  double creditsNumber = 0;
+  int score = 0;
+  String teacherName = '教員';
+  String classroom = '教室';
+  String notes = '';
+  int classTime = 105;
+  Color dialogColor = UtimeColors.subject2;
+  Color dropdownColor = UtimeColors.subject3;
+
+  //105分授業かどうか
+  var isSelected = <bool>[true, false];
 
   /*
    * 表示
@@ -58,19 +72,20 @@ class LectureDialog {
               child: Column(
                 children: [
                   Container(
-                    height: 204,
+                    height: 192,
                     width: 280,
-                    decoration: const BoxDecoration(
-                      color: UtimeColors.subject7,
-                      borderRadius: BorderRadius.only(
+                    decoration: BoxDecoration(
+                      color: dialogColor,
+                      borderRadius: const BorderRadius.only(
                         topRight: Radius.circular(12),
                         topLeft: Radius.circular(12),
                       ),
                     ),
                     child: Column(
                       children: [
+                        //曜限
                         Container(
-                          margin: const EdgeInsets.only(top: 28, bottom: 8),
+                          margin: const EdgeInsets.only(top: 24, bottom: 8),
                           child: Text(
                             day + ' ' + period,
                             textAlign: TextAlign.center,
@@ -81,9 +96,9 @@ class LectureDialog {
                             ),
                           ),
                         ),
-                        _titleSet('開講科目名', '科目'),
-                        _titleSet('教員名', '教員'),
-                        _titleSet('教室', '教室'),
+                        _titleSet('開講科目名', lectureName),
+                        _titleSet('教員名', teacherName),
+                        _titleSet('教室', classroom),
                       ],
                     ),
                   ),
@@ -106,33 +121,52 @@ class LectureDialog {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              _showDropdown('開講区分', openTermList, 112),
+                              _showDropdown('開講区分', openTermList, 108),
                               const SizedBox(width: 16, child: Spacer()),
-                              _showDropdown('単位数', creditsNumberList, 112),
+                              _showDropdown('単位数', creditsNumberList, 108),
                             ],
                           ),
                         ),
                         SizedBox(
                             height: 48,
-                            child: _showDropdown('科目区分', subjectTypeList, 240)),
+                            child: _showDropdown('科目区分', subjectTypeList, 232)),
                         //メモ
                         _memo(),
                         //授業時間ボタン
                         Container(
-                          height: 32,
+                          width: 232,
                           margin: const EdgeInsets.only(top: 20),
-                          child: ToggleButtons(
-                            isSelected: isSelected,
-                            onPressed: (index) {},
-                            children: const [
-                              Text('105分'),
-                              Text('90分'),
+                          child: Row(
+                            children: [
+                              _classTimeToggle(),
+                              Container(
+                                  width: 28,
+                                  margin: const EdgeInsets.only(left: 12),
+                                  child: _section('点数')),
+                              Container(
+                                width: 80,
+                                height: 32,
+                                margin: const EdgeInsets.only(left: 4),
+                                decoration: BoxDecoration(
+                                  border: Border.all(color: dialogColor),
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                                child: TextField(
+                                  keyboardType: TextInputType.number,
+                                  inputFormatters: [
+                                    FilteringTextInputFormatter.digitsOnly
+                                  ],
+                                  style: const TextStyle(
+                                    color: UtimeColors.textColor,
+                                    fontSize: 8,
+                                  ),
+                                  decoration: const InputDecoration(
+                                    hintText: "",
+                                    border: InputBorder.none,
+                                  ),
+                                ),
+                              ),
                             ],
-                            borderWidth: 2,
-                            borderColor: UtimeColors.subject7,
-                            borderRadius: BorderRadius.circular(12.0),
-                            selectedColor: UtimeColors.white,
-                            fillColor: UtimeColors.subject7,
                           ),
                         ),
                       ],
@@ -216,18 +250,24 @@ class LectureDialog {
           height: 32,
           width: width,
           decoration: BoxDecoration(
-            color: UtimeColors.subject7,
+            color: dialogColor,
             borderRadius: BorderRadius.circular(12),
           ),
           child: DropdownButton<dynamic>(
-            hint: const Text('選択して下さい',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 12,
-                  fontWeight: FontWeight.bold,
-                  color: UtimeColors.white,
-                )),
-            dropdownColor: UtimeColors.subject7,
+            isExpanded: true,
+            underline: const SizedBox(),
+            hint: const Center(
+              child: Text('選択して下さい',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.bold,
+                    color: UtimeColors.white,
+                  )),
+            ),
+            dropdownColor: dropdownColor,
+            elevation: 0,
+            iconSize: 0,
             style: const TextStyle(color: UtimeColors.white, fontSize: 12),
             icon: null,
             items: itemList.map((String items) {
@@ -258,14 +298,14 @@ class LectureDialog {
     return Column(
       children: [
         Container(
-            margin: const EdgeInsets.only(top: 20, bottom: 4),
+            margin: const EdgeInsets.only(top: 16, bottom: 4),
             child: _section('メモ')),
         Container(
-            height: 136,
-            width: 240,
+            height: 128,
+            width: 232,
             padding: const EdgeInsets.only(right: 12, left: 12),
             decoration: BoxDecoration(
-              border: Border.all(color: UtimeColors.subject7),
+              border: Border.all(color: dialogColor),
               borderRadius: BorderRadius.circular(8),
             ),
             child: const TextField(
@@ -277,11 +317,52 @@ class LectureDialog {
               ),
               decoration: InputDecoration(
                 hintText: "メモを入力",
+                hintStyle: TextStyle(fontSize: 12),
                 border: InputBorder.none,
               ),
             )),
       ],
     );
+  }
+
+  //授業時間のトグルボタン
+  SizedBox _classTimeToggle() {
+    return SizedBox(
+      height: 32,
+      width: 108,
+      child: ToggleButtons(
+        children: const [
+          Text('105分'),
+          Text('90分'),
+        ],
+        borderWidth: 1,
+        borderColor: dialogColor, //枠の色
+        borderRadius: BorderRadius.circular(8),
+        selectedColor: UtimeColors.white, //選択されている方の文字色
+        fillColor: dialogColor, //選択されている方の背景色
+        selectedBorderColor: dialogColor, //選択されている方の枠の色
+        onPressed: (int index) {
+          setState(() {
+            for (int i = 0; i < isSelected.length; i++) {
+              if (i == index) {
+                isSelected[i] = true;
+              } else {
+                isSelected[i] = false;
+              }
+            }
+          });
+        },
+        isSelected: _classTimeSetting(classTime),
+      ),
+    );
+  }
+
+  List<bool> _classTimeSetting(int classTime) {
+    if (classTime == 105) {
+      return isSelected = <bool>[true, false];
+    } else {
+      return isSelected = <bool>[false, true];
+    }
   }
 
   void setState(Null Function() param0) {}

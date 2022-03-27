@@ -3,8 +3,9 @@ import 'package:utime/modal_overlay.dart';
 import 'package:utime/utime_colors.dart';
 
 class CreditDetailsDialog {
-  BuildContext context;
-  CreditDetailsDialog(this.context) : super();
+  final BuildContext context;
+  final String title;
+  CreditDetailsDialog(this.context, this.title) : super();
 
   /*
    * 表示
@@ -32,9 +33,9 @@ class CreditDetailsDialog {
                         ),
                         color: UtimeColors.backgroundColor),
                     alignment: Alignment.center,
-                    child: const Text(
-                      '必修科目',
-                      style: TextStyle(
+                    child: Text(
+                      title,
+                      style: const TextStyle(
                         fontSize: 18,
                         color: UtimeColors.textColor,
                       ),

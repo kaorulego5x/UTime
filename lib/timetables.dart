@@ -36,7 +36,7 @@ class _TimeTablesState extends State<TimeTables> {
     classHeight =
         (screenHeight - appBarHeight - 64 - 50 - 60 - 24 - 60) / 6; //1コマの高さ
     classWidth = (screenWidth - 64 - 48) / 5; //1コマの横幅
-    intensiveCourseWidth = screenWidth - 36 - 28 - 32;
+    intensiveCourseWidth = screenWidth - 36 - 28 - 32; //集中コースの横幅
 
     return Scaffold(
       drawer: Drawer(
@@ -146,7 +146,7 @@ class _TimeTablesState extends State<TimeTables> {
                 ),
                 //集中講義
                 Container(
-                  height: 180,
+                  //height: 180,
                   margin: const EdgeInsets.only(top: 12.0),
                   child: Column(
                     children: [
@@ -165,7 +165,6 @@ class _TimeTablesState extends State<TimeTables> {
                       ),
                       Container(
                         width: screenWidth,
-                        height: 300,
                         margin: const EdgeInsets.only(
                             left: 28.0, right: 28.0, bottom: 72),
                         padding: const EdgeInsets.only(bottom: 16),
@@ -293,32 +292,30 @@ class _TimeTablesState extends State<TimeTables> {
   }
 
   //集中コースの授業のウィジェット
-  Expanded _intensiveCourse(String title) {
-    return Expanded(
-      child: (Container(
-        width: intensiveCourseWidth,
-        height: 32,
-        margin: const EdgeInsets.only(top: 16.0, left: 16.0, right: 16.0),
-        child: ElevatedButton(
-          child: Text(
-            title,
-            style: const TextStyle(
-              fontSize: 10,
-              color: UtimeColors.textColor,
-            ),
+  Container _intensiveCourse(String title) {
+    return (Container(
+      width: intensiveCourseWidth,
+      height: 32,
+      margin: const EdgeInsets.only(top: 16.0, left: 16.0, right: 16.0),
+      child: ElevatedButton(
+        child: Text(
+          title,
+          style: const TextStyle(
+            fontSize: 10,
+            color: UtimeColors.textColor,
           ),
-          style: ElevatedButton.styleFrom(
-            primary: UtimeColors.subject6,
-            elevation: 0,
-          ),
-          onPressed: () {
-            LectureDialog(
-              context,
-            ).showLectureDialog('intensive', '');
-          },
         ),
-      )),
-    );
+        style: ElevatedButton.styleFrom(
+          primary: UtimeColors.subject6,
+          elevation: 0,
+        ),
+        onPressed: () {
+          LectureDialog(
+            context,
+          ).showLectureDialog('intensive', '');
+        },
+      ),
+    ));
   }
 
   //メニューボタンをタップした時
