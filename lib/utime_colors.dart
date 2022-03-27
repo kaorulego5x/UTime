@@ -12,10 +12,14 @@ class UtimeColors {
 
   //メニューバーのアクセントカラー
   static const menuAccent = Color(0xFF50819C);
+  //ラジオボタンのアクセントカラー
+  static const radioAccent = Color(0xFF50819C);
 
   //文字の色
   //black80%
   static const textColor = Color(0xFF2E2E2E);
+  //black50%
+  static const lightTextColor = Color(0xFF808080);
 
   //科目区分
   //必修
@@ -28,8 +32,10 @@ class UtimeColors {
   static const subject4 = Color(0xFFFFD3E0);
   //理系E~F、文系D~F
   static const subject5 = Color(0xFFE3CEF4);
-  //集中コースなど
+  //集中コース
   static const subject6 = Color(0xFFC9F5AD);
   //未定（グレー）
   static const subject7 = Color(0xffd9d9d9);
+  //展開科目
+  static const subject8 = Color(0xFFFFD29D);
 }
