@@ -1,61 +1,55 @@
-import 'package:flutter/material.dart';
-import 'package:utime/modal_overlay.dart';
-import 'package:utime/utime_colors.dart';
+import 'package:utime/arts.dart';
+import 'package:utime/sciences.dart';
 
-class CreditDetailsDialog {
-  final BuildContext context;
-  final String title;
-  CreditDetailsDialog(this.context, this.title) : super();
+class CreditsNumberData {
+  final String course;
+  CreditsNumberData(this.course);
 
-  /*
-   * 表示
-   */
-  void showCreditDetailsDialog() {
-    Navigator.push(
-        context,
-        ModalOverlay(
-          Center(
-            child: Container(
-              width: 280,
-              height: 574,
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(12),
-                  color: UtimeColors.white),
-              child: Column(
-                children: [
-                  Container(
-                    width: 280,
-                    height: 60,
-                    decoration: const BoxDecoration(
-                        borderRadius: BorderRadius.only(
-                          topRight: Radius.circular(12),
-                          topLeft: Radius.circular(12),
-                        ),
-                        color: UtimeColors.backgroundColor),
-                    alignment: Alignment.center,
-                    child: Text(
-                      title,
-                      style: const TextStyle(
-                        fontSize: 18,
-                        color: UtimeColors.textColor,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-          //backボタンを有効にするかどうか
-          isAndroidBackEnable: true,
-        ));
+  ///ユーザーデータを取得
+  getUserData() {
+    Map<String, int> userData = {
+      'kiso': 14,
+      'seriesL': 4,
+      'seriesA': 2,
+      'seriesB': 2,
+      'seriesC': 2,
+      'seriesD': 2,
+      'seriesE': 2,
+      'seriesF': 2,
+      'shudai': 2,
+      'tenkai': 0,
+      'all': 0
+    };
+    return userData;
   }
 
-  /*
-   * 非表示
-   */
-  void hideCustomDialog() {
-    Navigator.of(context).pop();
+  ///取得した単位数のマップデータ
+  getTakenUnits() {
+    Map<String, int> userData = getUserData();
+    //マップデータの値を合計
+    int sum = userData.values.reduce((a, b) => a + b);
+    int? all = userData['all'];
+    userData['all'] = sum - all!;
+    return userData;
   }
 
-  void setState(Null Function() param0) {}
+  ///必要単位数のマップデータを返す
+  getCreditsNumberData(course) {
+    Map<String, int> CreditsNumberData = _getMap(course);
+    return CreditsNumberData;
+  }
+
+  ///科類別必要単位数のマップデータを取得
+  _getMap(String course) {
+    Map<String, int> userData = getUserData();
+    Sciences sciences = Sciences(course);
+    Arts arts = Arts(course, userData);
+    if (course == '理科一類' || course == '理科二類' || course == '理科三類') {
+      return sciences.getMap(course);
+    } else if (course == '文科一類' || course == '文科二類' || course == '文科三類') {
+      return arts.getMap(course);
+    } else {
+      throw Exception('course is ' + course);
+    }
+  }
 }

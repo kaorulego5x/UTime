@@ -105,7 +105,7 @@ class ShowCreditDetails {
       return kiso!;
     } else if (title == 'L系列') {
       return seriesL!;
-    } else if (title == 'A~D系列') {
+    } else if (title == '列A~D系') {
       return seriesAtoD; //理系用(文系ならnull)
     } else if (title == 'E~F系列') {
       return seriesEtoF; //理系用(文系ならnull)
