@@ -9,7 +9,7 @@ class UserData {
   static Map defaultTimeTable = {
     "lectureName": "", // 任意の文字列（30文字以内？）
     "openTerm": "", // "s", "a", "s1", "s2", "a1", "a2", "w"
-    "subjectType": "", // ここ要相談（"kiso", "l", "a", "b", "c", "d", "e", "f", "shudai", "tenkai"）
+    "subjectType": "", // "kiso", "l", "a", "b", "c", "d", "e", "f", "shudai", "tenkai"
     "creditNumber": 0.0, // 1.0, 2.0
     "score": 0, // 0～100の整数
     "teacherName": "", // 任意の文字列（30文字以内？）
