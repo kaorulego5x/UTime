@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:utime/intensive_course_area.dart';
+import 'package:utime/lecture_data.dart';
 import 'package:utime/lecture_dialog.dart';
 import 'package:utime/utime_colors.dart';
+import 'package:utime/utime_text_styles.dart';
 
 class TimeTables extends StatefulWidget {
   const TimeTables({Key? key}) : super(key: key);
@@ -12,17 +15,20 @@ class TimeTables extends StatefulWidget {
 
 class _TimeTablesState extends State<TimeTables> {
   //表示しているターム
-  var _term = '';
+  String term = 'S1ターム';
+
+  //授業データ
+  LectureData lectureData = LectureData();
 
   //サイズ
-  var screenHeight;
-  var screenWidth;
-  var classHeight;
-  var classWidth;
-  var intensiveCourseWidth;
+  double screenHeight = 0;
+  double screenWidth = 0;
+  double classHeight = 0;
+  double classWidth = 0;
+  double intensiveCourseWidth = 0;
 
-  //ドロップダウンボタンで使うやつ
-  String? _SelectedKey = null;
+  //メニューのリスト用
+  String _termList = '';
 
   @override
   Widget build(BuildContext context) {
@@ -36,27 +42,24 @@ class _TimeTablesState extends State<TimeTables> {
     classHeight =
         (screenHeight - appBarHeight - 64 - 50 - 60 - 24 - 60) / 6; //1コマの高さ
     classWidth = (screenWidth - 64 - 48) / 5; //1コマの横幅
-    intensiveCourseWidth = screenWidth - 36 - 28 - 32; //集中コースの横幅
+    intensiveCourseWidth = screenWidth - 36 - 28 - 32; //集中講義の横幅
 
     return Scaffold(
+      //ドロワー
       drawer: Drawer(
         child: _onMenuButtonTapped(),
       ),
+      //アップバー
       appBar: AppBar(
         iconTheme: const IconThemeData(
           color: UtimeColors.textColor,
         ),
         centerTitle: true,
-        title: const Text(
-          '時間割',
-          style: TextStyle(
-            fontSize: 18,
-            color: UtimeColors.textColor,
-          ),
-        ),
+        title: const Text('時間割', style: UtimeTextStyles.appBarTitle),
         backgroundColor: UtimeColors.white,
         elevation: 0.0,
       ),
+      //本体
       body: SingleChildScrollView(
         child: Container(
           color: UtimeColors.backgroundColor,
@@ -64,7 +67,7 @@ class _TimeTablesState extends State<TimeTables> {
             child: Column(
               children: [
                 //ターム
-                _showPeriod('S1ターム'),
+                _showPeriod(term),
                 //曜日
                 Container(
                   width: screenWidth,
@@ -88,7 +91,7 @@ class _TimeTablesState extends State<TimeTables> {
                 //時間割
                 Row(
                   children: [
-                    //時間
+                    //時間・時限
                     Container(
                       width: 28,
                       margin: const EdgeInsets.only(left: 4),
@@ -128,60 +131,24 @@ class _TimeTablesState extends State<TimeTables> {
                       margin: const EdgeInsets.only(left: 4.0, right: 28.0),
                       child: Column(
                         children: [
-                          _period('1'),
+                          _period('1'), //1時間目の組
                           const SizedBox(height: 12, child: Spacer()),
-                          _period('2'),
+                          _period('2'), //2時間目の組
                           const SizedBox(height: 12, child: Spacer()),
-                          _period('3'),
+                          _period('3'), //3時間目の組
                           const SizedBox(height: 12, child: Spacer()),
-                          _period('4'),
+                          _period('4'), //4時間目の組
                           const SizedBox(height: 12, child: Spacer()),
-                          _period('5'),
+                          _period('5'), //5時間目の組
                           const SizedBox(height: 12, child: Spacer()),
-                          _period('6'),
+                          _period('6'), //6時間目の組
                         ],
                       ),
                     )
                   ],
                 ),
                 //集中講義
-                Container(
-                  //height: 180,
-                  margin: const EdgeInsets.only(top: 12.0),
-                  child: Column(
-                    children: [
-                      //集中コース
-                      Container(
-                        height: 16,
-                        alignment: Alignment.center,
-                        margin: const EdgeInsets.only(bottom: 4),
-                        child: const Text(
-                          '集中コース',
-                          style: TextStyle(
-                            fontSize: 10,
-                            color: UtimeColors.textColor,
-                          ),
-                        ),
-                      ),
-                      Container(
-                        width: screenWidth,
-                        margin: const EdgeInsets.only(
-                            left: 28.0, right: 28.0, bottom: 72),
-                        padding: const EdgeInsets.only(bottom: 16),
-                        decoration: BoxDecoration(
-                          color: UtimeColors.white,
-                          borderRadius: BorderRadius.circular(4),
-                        ),
-                        child: Column(
-                          children: [
-                            _intensiveCourse('全学自由研究ゼミナール'),
-                            _intensiveCourse('全学自由研究ゼミナール'),
-                          ],
-                        ),
-                      )
-                    ],
-                  ),
-                ),
+                _showIntensiveCourseArea(),
               ],
             ),
           ),
@@ -196,11 +163,7 @@ class _TimeTablesState extends State<TimeTables> {
         padding: const EdgeInsets.all(16.0),
         child: Text(period,
             textAlign: TextAlign.center,
-            style: const TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-              color: UtimeColors.textColor,
-            )));
+            style: UtimeTextStyles.timeTablesTerm));
   }
 
   //曜日のウィジェット
@@ -210,10 +173,7 @@ class _TimeTablesState extends State<TimeTables> {
       child: Text(
         day,
         textAlign: TextAlign.center,
-        style: const TextStyle(
-          fontSize: 12,
-          color: UtimeColors.textColor,
-        ),
+        style: UtimeTextStyles.timeTablesDay,
       ),
     ));
   }
@@ -223,14 +183,11 @@ class _TimeTablesState extends State<TimeTables> {
     return (Text(
       time,
       textAlign: TextAlign.center,
-      style: const TextStyle(
-        fontSize: 10,
-        color: UtimeColors.textColor,
-      ),
+      style: UtimeTextStyles.timeTablesTime,
     ));
   }
 
-  //何限かを表示するWidget（とりあえず縦幅54px）
+  //何限かを表示するウィジェット
   Container _periodNumber(String period) {
     return (Container(
       width: 24,
@@ -238,26 +195,20 @@ class _TimeTablesState extends State<TimeTables> {
       alignment: Alignment.center,
       child: Text(
         period,
-        style: const TextStyle(
-          fontSize: 12,
-          color: UtimeColors.textColor,
-        ),
+        style: UtimeTextStyles.timeTablesPeriod,
       ),
     ));
   }
 
-  //1コマのウィジェット
+  ///1コマのウィジェット
   SizedBox _createLecture(String day, String period) {
     return (SizedBox(
       width: classWidth,
       height: classHeight,
       child: ElevatedButton(
-        child: const Text(
+        child: Text(
           '',
-          style: TextStyle(
-            fontSize: 8,
-            color: UtimeColors.textColor,
-          ),
+          style: UtimeTextStyles.timeTablesLectureName,
         ),
         style: ElevatedButton.styleFrom(
           primary: UtimeColors.white,
@@ -266,13 +217,13 @@ class _TimeTablesState extends State<TimeTables> {
         onPressed: () {
           LectureDialog(
             context,
-          ).showLectureDialog(day, period);
+          ).showTakenLectureDialog(day, period);
         },
       ),
     ));
   }
 
-  //コマを何限かによって行でまとめたウィジェット
+  ///コマを何限かによって行でまとめたウィジェット
   SizedBox _period(String period) {
     return (SizedBox(
       child: Row(
@@ -291,31 +242,10 @@ class _TimeTablesState extends State<TimeTables> {
     ));
   }
 
-  //集中コースの授業のウィジェット
-  Container _intensiveCourse(String title) {
-    return (Container(
-      width: intensiveCourseWidth,
-      height: 32,
-      margin: const EdgeInsets.only(top: 16.0, left: 16.0, right: 16.0),
-      child: ElevatedButton(
-        child: Text(
-          title,
-          style: const TextStyle(
-            fontSize: 10,
-            color: UtimeColors.textColor,
-          ),
-        ),
-        style: ElevatedButton.styleFrom(
-          primary: UtimeColors.subject6,
-          elevation: 0,
-        ),
-        onPressed: () {
-          LectureDialog(
-            context,
-          ).showLectureDialog('intensive', '');
-        },
-      ),
-    ));
+  //集中講義エリアを表示
+  _showIntensiveCourseArea() {
+    IntensiveCourseArea intensiveCourseArea = IntensiveCourseArea(context);
+    return intensiveCourseArea.showIntensiveCourseArea();
   }
 
   //メニューボタンをタップした時
@@ -325,13 +255,7 @@ class _TimeTablesState extends State<TimeTables> {
         height: 64,
         width: 160,
         child: DrawerHeader(
-          child: Text(
-            'UTime',
-            style: TextStyle(
-              fontSize: 18,
-              color: UtimeColors.menuAccent,
-            ),
-          ),
+          child: Text('UTime', style: UtimeTextStyles.timeTablesMenuTitle),
           decoration: BoxDecoration(
             color: UtimeColors.white,
             border: Border(
@@ -341,11 +265,7 @@ class _TimeTablesState extends State<TimeTables> {
         ),
       ),
       const ListTile(
-        title: Text('1年',
-            style: TextStyle(
-              fontSize: 16,
-              color: UtimeColors.menuAccent,
-            )),
+        title: Text('1年', style: UtimeTextStyles.timeTablesMenuGrade),
       ),
       _listTitle('S1ターム', '1S1'),
       _listTitle('S2ターム', '1S2'),
@@ -370,25 +290,9 @@ class _TimeTablesState extends State<TimeTables> {
     return (ListTile(
       title: Text(t1),
       onTap: () {
-        setState(() => _term = t2);
+        setState(() => _termList = t2);
         Navigator.pop(context);
       },
-    ));
-  }
-
-  //ドロップダウンボタンの選択肢
-  DropdownMenuItem _dropdownMenuItem(String item) {
-    return (DropdownMenuItem(
-      child: Text(
-        item,
-        textAlign: TextAlign.center,
-        style: const TextStyle(
-          fontSize: 18,
-          //fontWeight: FontWeight.bold,
-          color: UtimeColors.textColor,
-        ),
-      ),
-      value: item,
     ));
   }
 }
