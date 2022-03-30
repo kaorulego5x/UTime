@@ -7,8 +7,13 @@ class UtimeColors {
   //タブのアクセントカラー
   static const tabAccent = Color(0xFFED6969);
 
+  //グレースケール
   //白
   static const white = Color(0xFFFFFFFF);
+  //薄いグレー（Coming Soonの背景）
+  static const lightGray = Color(0xffd9d9d9);
+  //濃いグレー（Coming Soonの文字色）
+  static const darkGray = Color(0xFF808080);
 
   //メニューバーのアクセントカラー
   static const menuAccent = Color(0xFF50819C);

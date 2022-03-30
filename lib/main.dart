@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:utime/average_score.dart';
+import 'package:utime/coming_soon.dart';
 import 'package:utime/credits_number.dart';
 import 'package:utime/timetables.dart';
 import 'package:utime/utime_colors.dart';
@@ -53,7 +54,9 @@ class _HomePageState extends State<HomePage> {
             case 1: // 真ん中のタブが選ばれた時の画面
               return const CreditsNumber();
             case 2: // 1番右のタブが選ばれた時の画面
-              return const AverageScore();
+              return const ComingSoon();
+            //実装したら以下のコメントアウトを外す
+            //return const AverageScore();
             default:
               return const TimeTables();
           }
