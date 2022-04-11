@@ -5,6 +5,7 @@ import 'package:utime/view/pages/timetable/lecture_dialog.dart';
 import 'package:utime/const/utime_colors.dart';
 import 'package:utime/const/utime_text_styles.dart';
 import 'package:utime/const/term.dart';
+import 'package:utime/view/widgets/modal_overlay.dart';
 
 class TimeTables extends StatefulWidget {
   const TimeTables({Key? key}) : super(key: key);
@@ -212,9 +213,7 @@ class _TimeTablesState extends State<TimeTables> {
           elevation: 0,
         ),
         onPressed: () {
-          LectureDialog(
-            context,
-          ).showTakenLectureDialog(day, period);
+          _showLectureDialog(day, period);
         },
       ),
     ));
@@ -243,6 +242,16 @@ class _TimeTablesState extends State<TimeTables> {
   _showIntensiveCourseArea() {
     IntensiveCourseArea intensiveCourseArea = IntensiveCourseArea(context);
     return intensiveCourseArea.showIntensiveCourseArea();
+  }
+
+  _showLectureDialog(String day, String period) {
+    Navigator.push(
+        context,
+        ModalOverlay(
+          LectureDialog(day: day, period: period),
+          //backボタンを有効にするかどうか
+          isAndroidBackEnable: true,
+        ));
   }
 
   //メニューボタンをタップした時
