@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:utime/modal_overlay.dart';
-import 'package:utime/utime_colors.dart';
+import 'package:utime/view/widgets/modal_overlay.dart';
+import 'package:utime/const/utime_colors.dart';
 
-class AverageDetailsDialog {
-  BuildContext context;
-  // final String term;
-  AverageDetailsDialog(this.context) : super();
+class CreditDetailsDialog {
+  final BuildContext context;
+  final String title;
+  CreditDetailsDialog(this.context, this.title) : super();
 
   /*
    * 表示
    */
-  void showAverageDetailsDialog() {
+  void showCreditDetailsDialog() {
     Navigator.push(
         context,
         ModalOverlay(
@@ -33,9 +33,9 @@ class AverageDetailsDialog {
                         ),
                         color: UtimeColors.backgroundColor),
                     alignment: Alignment.center,
-                    child: const Text(
-                      'S1ターム',
-                      style: TextStyle(
+                    child: Text(
+                      title,
+                      style: const TextStyle(
                         fontSize: 18,
                         color: UtimeColors.textColor,
                       ),

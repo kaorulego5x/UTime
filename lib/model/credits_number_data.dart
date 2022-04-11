@@ -1,5 +1,5 @@
-import 'package:utime/arts.dart';
-import 'package:utime/sciences.dart';
+import 'package:utime/model/arts.dart';
+import 'package:utime/model/sciences.dart';
 
 class CreditsNumberData {
   final String course;

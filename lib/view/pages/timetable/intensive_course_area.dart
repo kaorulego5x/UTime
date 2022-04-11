@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:utime/lecture_dialog.dart';
-import 'package:utime/utime_colors.dart';
-import 'package:utime/utime_text_styles.dart';
+import 'package:utime/view/pages/timetable/lecture_dialog.dart';
+import 'package:utime/const/utime_colors.dart';
+import 'package:utime/const/utime_text_styles.dart';
 
 class IntensiveCourseArea {
   BuildContext context;

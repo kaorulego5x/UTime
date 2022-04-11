@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:utime/intensive_course_area.dart';
-import 'package:utime/lecture_data.dart';
-import 'package:utime/lecture_dialog.dart';
-import 'package:utime/utime_colors.dart';
-import 'package:utime/utime_text_styles.dart';
+import 'package:utime/view/pages/timetable/intensive_course_area.dart';
+import 'package:utime/model/lecture_data.dart';
+import 'package:utime/view/pages/timetable/lecture_dialog.dart';
+import 'package:utime/const/utime_colors.dart';
+import 'package:utime/const/utime_text_styles.dart';
+import 'package:utime/const/term.dart';
 
 class TimeTables extends StatefulWidget {
   const TimeTables({Key? key}) : super(key: key);
-  static const String routeName = '/timeTables';
 
   @override
   State<TimeTables> createState() => _TimeTablesState();
@@ -15,7 +15,7 @@ class TimeTables extends StatefulWidget {
 
 class _TimeTablesState extends State<TimeTables> {
   //表示しているターム
-  String term = 'S1ターム';
+  Term term = Term.s1;
 
   //授業データ
   LectureData lectureData = LectureData();
@@ -26,9 +26,6 @@ class _TimeTablesState extends State<TimeTables> {
   double classHeight = 0;
   double classWidth = 0;
   double intensiveCourseWidth = 0;
-
-  //メニューのリスト用
-  String _termList = '';
 
   @override
   Widget build(BuildContext context) {
@@ -132,15 +129,15 @@ class _TimeTablesState extends State<TimeTables> {
                       child: Column(
                         children: [
                           _period('1'), //1時間目の組
-                          const SizedBox(height: 12, child: Spacer()),
+                          const SizedBox(height: 12),
                           _period('2'), //2時間目の組
-                          const SizedBox(height: 12, child: Spacer()),
+                          const SizedBox(height: 12),
                           _period('3'), //3時間目の組
-                          const SizedBox(height: 12, child: Spacer()),
+                          const SizedBox(height: 12),
                           _period('4'), //4時間目の組
-                          const SizedBox(height: 12, child: Spacer()),
+                          const SizedBox(height: 12),
                           _period('5'), //5時間目の組
-                          const SizedBox(height: 12, child: Spacer()),
+                          const SizedBox(height: 12),
                           _period('6'), //6時間目の組
                         ],
                       ),
@@ -158,10 +155,10 @@ class _TimeTablesState extends State<TimeTables> {
   }
 
   //タームを表示
-  Container _showPeriod(String period) {
+  Container _showPeriod(Term term) {
     return Container(
         padding: const EdgeInsets.all(16.0),
-        child: Text(period,
+        child: Text(term.string,
             textAlign: TextAlign.center,
             style: UtimeTextStyles.timeTablesTerm));
   }
@@ -201,7 +198,7 @@ class _TimeTablesState extends State<TimeTables> {
   }
 
   ///1コマのウィジェット
-  SizedBox _createLecture(String day, String period) {
+  SizedBox _lecture(String day, String period) {
     return (SizedBox(
       width: classWidth,
       height: classHeight,
@@ -228,15 +225,15 @@ class _TimeTablesState extends State<TimeTables> {
     return (SizedBox(
       child: Row(
         children: [
-          _createLecture('Mon', period),
-          const SizedBox(width: 12, child: Spacer()),
-          _createLecture('Tue', period),
-          const SizedBox(width: 12, child: Spacer()),
-          _createLecture('Wed', period),
-          const SizedBox(width: 12, child: Spacer()),
-          _createLecture('Tur', period),
-          const SizedBox(width: 12, child: Spacer()),
-          _createLecture('Fri', period),
+          _lecture('Mon', period),
+          const SizedBox(width: 12),
+          _lecture('Tue', period),
+          const SizedBox(width: 12),
+          _lecture('Wed', period),
+          const SizedBox(width: 12),
+          _lecture('Tur', period),
+          const SizedBox(width: 12),
+          _lecture('Fri', period),
         ],
       ),
     ));
@@ -290,7 +287,6 @@ class _TimeTablesState extends State<TimeTables> {
     return (ListTile(
       title: Text(t1),
       onTap: () {
-        setState(() => _termList = t2);
         Navigator.pop(context);
       },
     ));

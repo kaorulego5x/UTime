@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:utime/average_term.dart';
-import 'package:utime/utime_colors.dart';
+import 'package:utime/view/pages/average/average_term.dart';
+import 'package:utime/const/utime_colors.dart';
 
 class AverageScore extends StatefulWidget {
   const AverageScore({Key? key}) : super(key: key);

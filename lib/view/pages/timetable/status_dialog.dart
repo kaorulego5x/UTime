@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:utime/modal_overlay.dart';
-import 'package:utime/utime_colors.dart';
+import 'package:utime/view/widgets/modal_overlay.dart';
+import 'package:utime/const/utime_colors.dart';
 
 class StatusDialog {
   BuildContext context;
