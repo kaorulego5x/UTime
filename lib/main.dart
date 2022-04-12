@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:utime/average_score.dart';
-import 'package:utime/coming_soon.dart';
-import 'package:utime/credits_number.dart';
-import 'package:utime/timetables.dart';
-import 'package:utime/utime_colors.dart';
+import 'package:utime/view/pages/average/coming_soon.dart';
+import 'package:utime/view/pages/credits/credits_number.dart';
+import 'package:utime/view/pages/timetable/timetables.dart';
+import 'package:utime/const/utime_colors.dart';
 import 'package:flutter/cupertino.dart';
 
 void main() {

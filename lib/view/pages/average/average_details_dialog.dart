@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:utime/modal_overlay.dart';
-import 'package:utime/utime_colors.dart';
+import 'package:utime/view/widgets/modal_overlay.dart';
+import 'package:utime/const/utime_colors.dart';
 
-class RequiredCreditsDialog {
+class AverageDetailsDialog {
   BuildContext context;
-  RequiredCreditsDialog(this.context) : super();
+  // final String term;
+  AverageDetailsDialog(this.context) : super();
 
   /*
    * 表示
    */
-  void showRequiredCreditsDialog() {
+  void showAverageDetailsDialog() {
     Navigator.push(
         context,
         ModalOverlay(
@@ -33,7 +34,7 @@ class RequiredCreditsDialog {
                         color: UtimeColors.backgroundColor),
                     alignment: Alignment.center,
                     child: const Text(
-                      '必要単位数',
+                      'S1ターム',
                       style: TextStyle(
                         fontSize: 18,
                         color: UtimeColors.textColor,

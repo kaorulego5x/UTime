@@ -17,7 +17,7 @@ class ModalOverlay extends ModalRoute<void> {
   @override
   bool get opaque => false;
   @override
-  bool get barrierDismissible => false;
+  bool get barrierDismissible => true;
   @override
   Color get barrierColor => Colors.black.withOpacity(0.5);
   @override
@@ -33,9 +33,7 @@ class ModalOverlay extends ModalRoute<void> {
   ) {
     return Material(
       type: MaterialType.transparency,
-      child: SafeArea(
-        child: _buildOverlayContent(context),
-      ),
+      child: SafeArea(child: _buildOverlayContent(context)),
     );
   }
 
