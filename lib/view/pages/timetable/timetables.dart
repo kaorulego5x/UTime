@@ -159,7 +159,7 @@ class _TimeTablesState extends State<TimeTables> {
   Container _showPeriod(Term term) {
     return Container(
         padding: const EdgeInsets.all(16.0),
-        child: Text(term.string,
+        child: Text(term.label,
             textAlign: TextAlign.center,
             style: UtimeTextStyles.timeTablesTerm));
   }

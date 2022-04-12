@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:utime/const/term.dart';
 import 'package:utime/model/lecture_data.dart';
 import 'package:utime/model/lecture_dialog_list.dart';
-import 'package:utime/view/widgets/modal_overlay.dart';
 import 'package:utime/const/utime_colors.dart';
 import 'package:utime/const/utime_text_styles.dart';
 
@@ -26,9 +26,9 @@ class _LectureDialogState extends State<LectureDialog> {
   var isSelected = <bool>[true, false];
 
   //ドロップダウンボタンで使うやつ
-  final String _selectedSubjectType = "";
-  final String _selectedTermValue = "s1";
-  final String _selectedCreditsValue = "s1";
+  String? _selectedSubjectType;
+  String? _selectedOpenTerm;
+  String? _selectedCredits;
 
   @override
   Widget build(BuildContext context) {
@@ -109,13 +109,13 @@ class _LectureDialogState extends State<LectureDialog> {
                             '開講区分',
                             lectureDialogList.getOpenTermList(),
                             dataToShow['dialogColor'],
-                            _selectedTermValue),
+                            _selectedOpenTerm),
                         const SizedBox(width: 24, child: Spacer()),
                         _showSmallDropdown(
                             '単位数',
                             lectureDialogList.getCreditsNumberList(),
                             dataToShow['dialogColor'],
-                            _selectedCreditsValue),
+                            _selectedCredits),
                       ],
                     ),
                   ),
@@ -266,7 +266,7 @@ class _LectureDialogState extends State<LectureDialog> {
 
   //科目区分のドロップダウンボタン
   Column _showLargeDropdown(String title, List<String> itemList,
-      Color dialogColor, String selectedKey) {
+      Color dialogColor, String? selectedKey) {
     return Column(
       children: [
         //セクション名
@@ -331,7 +331,7 @@ class _LectureDialogState extends State<LectureDialog> {
 
   //開講区分と単位数のドロップダウンボタン
   Column _showSmallDropdown(String title, List<String> itemList,
-      Color dialogColor, String selectedKey) {
+      Color dialogColor, String? selectedKey) {
     return Column(
       children: [
         //セクション名
