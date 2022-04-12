@@ -35,15 +35,13 @@ class _LectureDialogState extends State<LectureDialog> {
   LectureData lectureData = LectureData();
   UtimeColors utimeColors = UtimeColors();
 
-  //105分授業かどうか
-  var isSelected = <bool>[true, false];
-
   //ドロップダウンボタンで使うやつ
   String? selectedSubjectType;
   String? selectedOpenTerm;
   String? selectedCredits;
-
-  int count = 0;
+  String memo = "";
+  //105分授業かどうか
+  bool isPeriodLong = true;
 
   @override
   Widget build(BuildContext context) {
@@ -298,48 +296,46 @@ class _LectureDialogState extends State<LectureDialog> {
             )),
         //ドロップダウンボタン
         Container(
-          height: 32,
-          width: 216,
-          decoration: BoxDecoration(
-            color: UtimeColors.white,
-            borderRadius: BorderRadius.circular(12),
-          ),
-          child: DropdownButton<dynamic>(
-            isExpanded: true,
-            underline: const SizedBox(),
-            hint: Center(
-              child: Text('選択して下さい',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 12,
-                    fontWeight: FontWeight.bold,
-                    color: dialogColor,
-                  )),
+            height: 32,
+            width: 216,
+            decoration: BoxDecoration(
+              color: UtimeColors.white,
+              borderRadius: BorderRadius.circular(12),
             ),
-            dropdownColor: utimeColors.getDropDownColor(dialogColor),
-            elevation: 0,
-            iconSize: 0,
-            style: const TextStyle(color: UtimeColors.white, fontSize: 12),
-            icon: null,
-            items: itemList.map((String item) {
-              return DropdownMenuItem(
-                value: item,
-                child: Text(item,
-                    style: const TextStyle(
+            child: DropdownButton<dynamic>(
+              isExpanded: true,
+              underline: const SizedBox(),
+              hint: Center(
+                child: Text('選択して下さい',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
                       fontSize: 12,
                       fontWeight: FontWeight.bold,
-                      color: UtimeColors.white,
+                      color: dialogColor,
                     )),
-              );
-            }).toList(),
-            value: selectedValue,
-            onChanged: (value) {
-              setState(() {
-                selectedSubjectType = value ?? '';
-              });
-            },
-          ),
-        ),
+              ),
+              dropdownColor: UtimeColors.white,
+              elevation: 0,
+              iconSize: 0,
+              style: const TextStyle(color: UtimeColors.white, fontSize: 12),
+              icon: null,
+              items: itemList.map((String item) {
+                return DropdownMenuItem(
+                  value: item,
+                  child: Text(item,
+                      style: TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.bold,
+                          color: dialogColor)),
+                );
+              }).toList(),
+              value: selectedValue,
+              onChanged: (value) {
+                setState(() {
+                  selectedSubjectType = value ?? '';
+                });
+              },
+            )),
       ],
     );
   }
@@ -448,8 +444,8 @@ class _LectureDialogState extends State<LectureDialog> {
       width: 108,
       child: ToggleButtons(
         children: const [
-          Text('90分'),
           Text('105分'),
+          Text('90分'),
         ],
         borderWidth: 1,
         borderColor: dialogColor, //枠の色
@@ -459,26 +455,17 @@ class _LectureDialogState extends State<LectureDialog> {
         selectedBorderColor: dialogColor, //選択されている方の枠の色
         onPressed: (int index) {
           setState(() {
-            for (int i = 0; i < isSelected.length; i++) {
-              if (i == index) {
-                isSelected[i] = true;
-              } else {
-                isSelected[i] = false;
-              }
-            }
+            isPeriodLong = index == 0;
           });
         },
-        isSelected: _classTimeSetting(classTime),
+        isSelected: _getClassPeriodFlag(isPeriodLong),
       ),
     );
   }
 
-  List<bool> _classTimeSetting(int classTime) {
-    if (classTime == 90) {
-      return isSelected = <bool>[true, false];
-    } else {
-      return isSelected = <bool>[false, true];
-    }
+  List<bool> _getClassPeriodFlag(bool isPeriodLong) {
+    if (isPeriodLong) return <bool>[true, false];
+    return <bool>[false, true];
   }
 }
 
