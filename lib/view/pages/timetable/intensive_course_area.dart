@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:utime/lecture_dialog.dart';
-import 'package:utime/utime_colors.dart';
-import 'package:utime/utime_text_styles.dart';
+import 'package:utime/view/pages/timetable/lecture_dialog.dart';
+import 'package:utime/const/utime_colors.dart';
+import 'package:utime/const/utime_text_styles.dart';
+import 'package:utime/view/widgets/modal_overlay.dart';
 
 class IntensiveCourseArea {
   BuildContext context;
@@ -80,9 +81,7 @@ class IntensiveCourseArea {
           elevation: 0,
         ),
         onPressed: () {
-          LectureDialog(
-            context,
-          ).showTakenLectureDialog('intensive', '');
+          _showLectureDialog('intensive', '');
         },
       ),
     ));
@@ -104,11 +103,19 @@ class IntensiveCourseArea {
         color: UtimeColors.intensiveAdd,
         icon: const Icon(Icons.add_circle_outline),
         onPressed: () {
-          LectureDialog(
-            context,
-          ).showDefaultLectureDialog('intensive', '');
+          _showLectureDialog('intensive', '');
         },
       ),
     ));
+  }
+
+  _showLectureDialog(String day, String period) {
+    Navigator.push(
+        context,
+        ModalOverlay(
+          LectureDialog(day: day, period: period),
+          //backボタンを有効にするかどうか
+          isAndroidBackEnable: true,
+        ));
   }
 }

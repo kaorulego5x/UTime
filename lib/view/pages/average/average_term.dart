@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:utime/utime_colors.dart';
-import 'package:utime/average_details_dialog.dart';
+import 'package:utime/const/utime_colors.dart';
+import 'package:utime/view/pages/average/average_details_dialog.dart';
 
 class AverageTerm extends StatelessWidget {
   // const AverageTerm({Key? key}) : super(key: key);

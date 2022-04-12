@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:utime/credit_details_dialog.dart';
-import 'package:utime/required_credits_dialog.dart';
-import 'package:utime/show_credit_details.dart';
-import 'package:utime/status_dialog.dart';
-import 'package:utime/utime_colors.dart';
+import 'package:utime/view/pages/credits/credit_details_dialog.dart';
+import 'package:utime/view/pages/credits/required_credits_dialog.dart';
+import 'package:utime/view/pages/credits/show_credit_details.dart';
+import 'package:utime/view/pages/timetable/status_dialog.dart';
+import 'package:utime/const/utime_colors.dart';
 
 class CreditsNumber extends StatefulWidget {
   const CreditsNumber({Key? key}) : super(key: key);

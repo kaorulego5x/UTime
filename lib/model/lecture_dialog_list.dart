@@ -4,12 +4,12 @@
 class LectureDialogList {
   //開講区分
   final List<String> _openTermList = [
+    'S',
     'S1',
     'S2',
-    'S',
+    'A',
     'A1',
     'A2',
-    'A',
   ];
   //単位数
   final List<String> _creditsNumberList = [

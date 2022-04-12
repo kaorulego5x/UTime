@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:utime/credit_details_dialog.dart';
-import 'package:utime/credits_number_data.dart';
-import 'package:utime/utime_colors.dart';
+import 'package:utime/view/pages/credits/credit_details_dialog.dart';
+import 'package:utime/model/credits_number_data.dart';
+import 'package:utime/const/utime_colors.dart';
 
 class ShowCreditDetails {
   final String course; //科類

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:utime/average_term.dart';
-import 'package:utime/utime_colors.dart';
-import 'package:utime/utime_text_styles.dart';
+import 'package:utime/view/pages/average/average_term.dart';
+import 'package:utime/const/utime_colors.dart';
+import 'package:utime/const/utime_text_styles.dart';
 
 class ComingSoon extends StatefulWidget {
   const ComingSoon({Key? key}) : super(key: key);

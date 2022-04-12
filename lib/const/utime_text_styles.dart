@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:utime/utime_colors.dart';
+import 'package:utime/const/utime_colors.dart';
 
 class UtimeTextStyles {
   //AppBarのタイトル
