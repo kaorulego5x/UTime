@@ -85,7 +85,7 @@ class UtimeTextStyles {
 
   //ComingSoonの文字
   static const comingSoonText = TextStyle(
-    fontSize: 24,
+    fontSize: 20,
     color: UtimeColors.lightTextColor,
   );
 }

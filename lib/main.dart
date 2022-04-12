@@ -45,6 +45,8 @@ class _HomePageState extends State<HomePage> {
             BottomNavigationBarItem(icon: Icon(Icons.poll), label: '平均点'),
           ],
           activeColor: UtimeColors.tabAccent,
+          backgroundColor: UtimeColors.white,
+          border: const Border(top: BorderSide(color: UtimeColors.white)),
           height: 64,
         ),
         tabBuilder: (context, index) {
