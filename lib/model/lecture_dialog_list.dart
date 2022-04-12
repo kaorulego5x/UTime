@@ -1,32 +1,32 @@
 /**
- * LectureDialogで使われてるドロップダウンボタンのリストまとめ
+ * DropdownBuilderで使われてるドロップダウンボタンのリストまとめ
  */
 class LectureDialogList {
   //開講区分
-  final List<String> _openTermList = [
-    'S',
-    'S1',
-    'S2',
-    'A',
-    'A1',
-    'A2',
+  final List<ItemModel> _openTermList = [
+    ItemModel(text: 'S1', index: 1, selected: true),
+    ItemModel(text: 'S2', index: 2, selected: false),
+    ItemModel(text: 'S', index: 3, selected: false),
+    ItemModel(text: 'A1', index: 4, selected: false),
+    ItemModel(text: 'A2', index: 5, selected: false),
+    ItemModel(text: 'A', index: 6, selected: false),
   ];
   //単位数
-  final List<String> _creditsNumberList = [
-    '1.0',
-    '2.0',
+  final List<ItemModel> _creditsNumberList = [
+    ItemModel(text: '1.0', index: 1, selected: true),
+    ItemModel(text: '2.0', index: 2, selected: false),
   ];
   //科目区分
-  final List<String> _subjectTypeList = [
-    '基礎科目',
-    'A系列',
-    'B系列',
-    'C系列',
-    'D系列',
-    'E系列',
-    'F系列',
-    '主題科目',
-    '展開科目'
+  final List<ItemModel> _subjectTypeList = [
+    ItemModel(text: '基礎科目', index: 1, selected: true),
+    ItemModel(text: 'A系列', index: 2, selected: false),
+    ItemModel(text: 'B系列', index: 3, selected: false),
+    ItemModel(text: 'C系列', index: 4, selected: false),
+    ItemModel(text: 'D系列', index: 5, selected: false),
+    ItemModel(text: 'E系列', index: 6, selected: false),
+    ItemModel(text: 'F系列', index: 7, selected: false),
+    ItemModel(text: '主題科目', index: 8, selected: false),
+    ItemModel(text: '展開科目', index: 9, selected: false),
   ];
 
   getOpenTermList() {
@@ -40,4 +40,12 @@ class LectureDialogList {
   getSubjectTypeList() {
     return _subjectTypeList;
   }
+}
+
+class ItemModel {
+  String text;
+  int index;
+  bool selected;
+
+  ItemModel({required this.text, required this.index, required this.selected});
 }
