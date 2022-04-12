@@ -7,6 +7,19 @@ import 'package:utime/const/utime_text_styles.dart';
 
 /// Timetablesで授業のコマ押したときに出てくるダイアログ
 
+enum DropDownType { openTerm, credits }
+
+extension DropDownTypeExtension on DropDownType {
+  String get label {
+    switch (this) {
+      case DropDownType.openTerm:
+        return '開講区分';
+      case DropDownType.credits:
+        return '単位数';
+    }
+  }
+}
+
 class LectureDialog extends StatefulWidget {
   final String day;
   final String period;
@@ -26,9 +39,11 @@ class _LectureDialogState extends State<LectureDialog> {
   var isSelected = <bool>[true, false];
 
   //ドロップダウンボタンで使うやつ
-  String? _selectedSubjectType;
-  String? _selectedOpenTerm;
-  String? _selectedCredits;
+  String? selectedSubjectType;
+  String? selectedOpenTerm;
+  String? selectedCredits;
+
+  int count = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -76,7 +91,7 @@ class _LectureDialogState extends State<LectureDialog> {
                           '科目区分',
                           lectureDialogList.getSubjectTypeList(),
                           dataToShow['dialogColor'],
-                          _selectedSubjectType)),
+                          selectedSubjectType)),
                   //授業情報
                   _titleSet('開講科目名', dataToShow['lectureName']),
                   _titleSet('教員名', dataToShow['teacherName']),
@@ -105,17 +120,17 @@ class _LectureDialogState extends State<LectureDialog> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        _showSmallDropdown(
-                            '開講区分',
+                        _smallDropdown(
+                            DropDownType.openTerm,
                             lectureDialogList.getOpenTermList(),
                             dataToShow['dialogColor'],
-                            _selectedOpenTerm),
+                            selectedOpenTerm),
                         const SizedBox(width: 24, child: Spacer()),
-                        _showSmallDropdown(
-                            '単位数',
+                        _smallDropdown(
+                            DropDownType.credits,
                             lectureDialogList.getCreditsNumberList(),
                             dataToShow['dialogColor'],
-                            _selectedCredits),
+                            selectedCredits),
                       ],
                     ),
                   ),
@@ -266,7 +281,7 @@ class _LectureDialogState extends State<LectureDialog> {
 
   //科目区分のドロップダウンボタン
   Column _showLargeDropdown(String title, List<String> itemList,
-      Color dialogColor, String? selectedKey) {
+      Color dialogColor, String? selectedValue) {
     return Column(
       children: [
         //セクション名
@@ -317,10 +332,10 @@ class _LectureDialogState extends State<LectureDialog> {
                     )),
               );
             }).toList(),
-            value: selectedKey,
+            value: selectedValue,
             onChanged: (value) {
               setState(() {
-                selectedKey = value ?? '';
+                selectedSubjectType = value ?? '';
               });
             },
           ),
@@ -330,15 +345,15 @@ class _LectureDialogState extends State<LectureDialog> {
   }
 
   //開講区分と単位数のドロップダウンボタン
-  Column _showSmallDropdown(String title, List<String> itemList,
-      Color dialogColor, String? selectedKey) {
+  Column _smallDropdown(DropDownType dropDownType, List<String> itemList,
+      Color dialogColor, String? selectedValue) {
     return Column(
       children: [
         //セクション名
         Container(
             height: 12,
             margin: const EdgeInsets.only(bottom: 4),
-            child: _section(title)),
+            child: _section(dropDownType.label)),
         //ドロップダウンボタン
         Container(
           height: 32,
@@ -375,10 +390,17 @@ class _LectureDialogState extends State<LectureDialog> {
                     )),
               );
             }).toList(),
-            value: selectedKey,
+            value: selectedValue,
             onChanged: (value) {
               setState(() {
-                selectedKey = value ?? '';
+                switch (dropDownType) {
+                  case DropDownType.openTerm:
+                    selectedOpenTerm = value ?? "";
+                    return;
+                  case DropDownType.credits:
+                    selectedCredits = value ?? "";
+                    return;
+                }
               });
             },
           ),
