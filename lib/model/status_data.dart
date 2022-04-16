@@ -1,3 +1,4 @@
+//ユーザーの設定を保存したりするクラス
 class StatusData {
   //学年を返す
   getGrade() {

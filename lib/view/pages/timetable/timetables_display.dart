@@ -6,7 +6,7 @@ import 'package:utime/view/pages/Timetable/lecture_dialog.dart';
 import 'package:utime/const/utime_colors.dart';
 import 'package:utime/const/utime_text_styles.dart';
 import 'package:utime/const/term.dart';
-import 'package:utime/view/pages/timetable/timetables_data.dart';
+import 'package:utime/model/timetables_data.dart';
 import 'package:utime/view/widgets/modal_overlay.dart';
 
 class TimetablesDisplay extends StatefulWidget {

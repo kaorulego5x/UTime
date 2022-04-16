@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:utime/model/status_data.dart';
 import 'package:utime/view/pages/credits/credit_details_dialog.dart';
 import 'package:utime/view/pages/credits/required_credits_dialog.dart';
 import 'package:utime/view/pages/credits/show_credit_details.dart';
@@ -14,15 +15,20 @@ class CreditsNumber extends StatefulWidget {
 }
 
 class _CreditsNumberState extends State<CreditsNumber> {
-  //科類
-  String course = '文科一類';
+  StatusData statusData = StatusData();
 
   //サイズ用の変数
   double showStatusWidth = 0;
   double creditDetailsWidth = 0;
 
+  //科類を取得
+  String _getCourse() {
+    return statusData.getCourse();
+  }
+
   @override
   Widget build(BuildContext context) {
+    String course = _getCourse();
     // デバイスの縦幅と横幅を取得する
     final double screenHeight = MediaQuery.of(context).size.height;
     final double screenWidth = MediaQuery.of(context).size.width;
