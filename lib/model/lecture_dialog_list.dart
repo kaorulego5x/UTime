@@ -19,14 +19,15 @@ class LectureDialogList {
   //科目区分
   final List<ItemModel> _subjectTypeList = [
     ItemModel(text: '基礎科目', index: 1, selected: true),
-    ItemModel(text: 'A系列', index: 2, selected: false),
-    ItemModel(text: 'B系列', index: 3, selected: false),
-    ItemModel(text: 'C系列', index: 4, selected: false),
-    ItemModel(text: 'D系列', index: 5, selected: false),
-    ItemModel(text: 'E系列', index: 6, selected: false),
-    ItemModel(text: 'F系列', index: 7, selected: false),
-    ItemModel(text: '主題科目', index: 8, selected: false),
-    ItemModel(text: '展開科目', index: 9, selected: false),
+    ItemModel(text: '総合科目L系列', index: 2, selected: false),
+    ItemModel(text: '総合科目A系列', index: 3, selected: false),
+    ItemModel(text: '総合科目B系列', index: 4, selected: false),
+    ItemModel(text: '総合科目C系列', index: 5, selected: false),
+    ItemModel(text: '総合科目D系列', index: 6, selected: false),
+    ItemModel(text: '総合科目E系列', index: 7, selected: false),
+    ItemModel(text: '総合科目F系列', index: 8, selected: false),
+    ItemModel(text: '主題科目', index: 9, selected: false),
+    ItemModel(text: '展開科目', index: 10, selected: false),
   ];
 
   getOpenTermList() {

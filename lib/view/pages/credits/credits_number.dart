@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:utime/view/pages/credits/credit_details_dialog.dart';
 import 'package:utime/view/pages/credits/required_credits_dialog.dart';
 import 'package:utime/view/pages/credits/show_credit_details.dart';
-import 'package:utime/view/pages/timetable/status_dialog.dart';
+import 'package:utime/view/pages/Timetable/status_dialog.dart';
 import 'package:utime/const/utime_colors.dart';
 
 class CreditsNumber extends StatefulWidget {

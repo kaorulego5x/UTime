@@ -30,7 +30,7 @@ class UtimeColors {
   //必修
   static const subject1 = Color(0xFFB1E3FF);
   static const darkSubject1 = Color(0xFFA3D4EF);
-  //L系列
+  //総合科目L系列
   static const subject2 = Color(0xFFFFF1A5);
   static const darkSubject2 = Color(0xFFF8E68A);
   //理系A~D、文系A~C
@@ -42,7 +42,7 @@ class UtimeColors {
   //理系E~F、文系D~F
   static const subject5 = Color(0xFFE4DAFF);
   static const darkSubject5 = Color(0xFFD1C5F1);
-  //集中講義
+  //主題科目
   static const subject6 = Color(0xFFCDEFC1);
   static const darkSubject6 = Color(0xFFB5DEA7);
   //未定（グレー）
@@ -56,6 +56,52 @@ class UtimeColors {
   static const intensiveAdd = Color(0xffd9d9d9);
   //LectureDialogのゴミ箱アイコンの色
   static const deleteIcon = Color(0xffd9d9d9);
+
+  //科類と科目区分を受け取って対応する色を返す
+  Color getLectureColor(String course, String subjectType) {
+    //全科類共通
+    if (subjectType == '基礎科目') {
+      return UtimeColors.subject1;
+    } else if (subjectType == '総合科目L系列') {
+      return UtimeColors.subject2;
+    } else if (subjectType == '総合科目A系列') {
+      return UtimeColors.subject3;
+    } else if (subjectType == '総合科目B系列') {
+      return UtimeColors.subject3;
+    } else if (subjectType == '総合科目C系列') {
+      return UtimeColors.subject3;
+    } else if (subjectType == '総合科目E系列') {
+      return UtimeColors.subject5;
+    } else if (subjectType == '総合科目F系列') {
+      return UtimeColors.subject5;
+    } else if (subjectType == '展開科目') {
+      return UtimeColors.subject8;
+    } else if (subjectType == '主題科目') {
+      return UtimeColors.subject6;
+    } else if (subjectType == '') {
+      //未定
+      return UtimeColors.subject7;
+    }
+
+    //文理別
+    if (course == '理科一類' || course == '理科二類' || course == '理科三類') {
+      if (subjectType == '総合科目D系列') {
+        return UtimeColors.subject3;
+      }
+    } else if (course == '文科一類' || course == '文科二類' || course == '文科三類') {
+      if (subjectType == '総合科目D系列') {
+        return UtimeColors.subject5;
+      }
+      if (subjectType == '人文科学') {
+        return UtimeColors.subject4;
+      }
+      if (subjectType == '社会科学') {
+        return UtimeColors.subject4;
+      }
+    }
+
+    throw Exception('subjectType is ' + subjectType);
+  }
 
   ///dialogColorに応じてdropButtonColorを返す(途中)
   Color getDropDownColor(Color dialogColor) {

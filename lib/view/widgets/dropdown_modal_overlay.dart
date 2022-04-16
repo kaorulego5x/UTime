@@ -18,7 +18,7 @@ class DropdownModalOverlay extends ModalRoute<void> {
   @override
   bool get opaque => false;
   @override
-  bool get barrierDismissible => false;
+  bool get barrierDismissible => true;
   @override
   Color get barrierColor => Colors.transparent;
   @override

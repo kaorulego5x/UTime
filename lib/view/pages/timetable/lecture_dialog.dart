@@ -1,22 +1,14 @@
 import 'package:flutter/material.dart';
-//<<<<<<< HEAD:lib/view/pages/timetable/lecture_dialog.dart
+//<<<<<<< HEAD:lib/view/pages/Timetable/lecture_dialog.dart
 import 'package:utime/const/term.dart';
 import 'package:utime/model/lecture_data.dart';
 import 'package:utime/model/lecture_dialog_list.dart';
 import 'package:utime/const/utime_colors.dart';
 import 'package:utime/const/utime_text_styles.dart';
 
-import '../../../dropdown_builder.dart';
-/*=======
-import 'package:utime/dropdown_builder.dart';
-import 'package:utime/lecture_data.dart';
-import 'package:utime/lecture_dialog_list.dart';
-import 'package:utime/modal_overlay.dart';
-import 'package:utime/utime_colors.dart';
-import 'package:utime/utime_text_styles.dart';
->>>>>>> 38ea686f70972c42f35178dd91b69d68fee8dc65:lib/lecture_dialog.dart*/
+import '../../widgets/dropdown_builder.dart';
 
-/// Timetablesで授業のコマ押したときに出てくるダイアログ
+/// TimetablesDisplayで授業のコマ押したときに出てくるダイアログ
 
 enum DropDownType { openTerm, credits }
 
@@ -60,11 +52,17 @@ class _LectureDialogState extends State<LectureDialog> {
   GlobalKey _widgetKey2 = GlobalKey();
   GlobalKey _widgetKey3 = GlobalKey();
 
+  //wiget作成時の処理
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     final String day = widget.day;
     final String period = widget.period;
-    final Map dataToShow = lectureData.getLectureData(day, period);
+    Map _dataToShow = lectureData.getLectureData(day, period);
 
     return Center(
       child: Container(
@@ -83,7 +81,7 @@ class _LectureDialogState extends State<LectureDialog> {
               height: 256,
               width: 280,
               decoration: BoxDecoration(
-                color: dataToShow['dialogColor'],
+                color: _dataToShow['dialogColor'],
                 borderRadius: const BorderRadius.only(
                   topRight: Radius.circular(12),
                   topLeft: Radius.circular(12),
@@ -93,7 +91,7 @@ class _LectureDialogState extends State<LectureDialog> {
                 children: [
                   //曜限
                   Container(
-                    margin: const EdgeInsets.only(top: 24, bottom: 16),
+                    margin: const EdgeInsets.only(top: 24, bottom: 12),
                     child: Text(day + ' ' + period,
                         textAlign: TextAlign.center,
                         style: UtimeTextStyles.lectureDialogDayPeriod),
@@ -106,12 +104,12 @@ class _LectureDialogState extends State<LectureDialog> {
                       child: _showLargeDropdown(
                           '科目区分',
                           lectureDialogList.getSubjectTypeList(),
-                          dataToShow['dialogColor'],
+                          _dataToShow['dialogColor'],
                           selectedSubjectType)),
                   //授業情報
-                  _titleSet('開講科目名', dataToShow['lectureName']),
-                  _titleSet('教員名', dataToShow['teacherName']),
-                  _titleSet('教室', dataToShow['classroom']),
+                  _titleSet('開講科目名', _dataToShow['lectureName']),
+                  _titleSet('教員名', _dataToShow['teacherName']),
+                  _titleSet('教室', _dataToShow['classroom']),
                 ],
               ),
             ),
@@ -143,7 +141,7 @@ class _LectureDialogState extends State<LectureDialog> {
                               DropDownType.openTerm,
                               '開講区分',
                               lectureDialogList.getOpenTermList(),
-                              dataToShow['dialogColor'],
+                              _dataToShow['dialogColor'],
                               selectedOpenTerm),
                         ),
                         const SizedBox(width: 24, child: Spacer()),
@@ -154,23 +152,24 @@ class _LectureDialogState extends State<LectureDialog> {
                               DropDownType.credits,
                               '単位数',
                               lectureDialogList.getCreditsNumberList(),
-                              dataToShow['dialogColor'],
+                              _dataToShow['dialogColor'],
                               selectedCredits),
                         ),
                       ],
                     ),
                   ),
                   //メモ
-                  _memo(dataToShow['dialogColor']),
+                  _memo(_dataToShow['dialogColor']),
                   //授業時間ボタン
                   Container(
                     width: 232,
-                    margin: const EdgeInsets.only(top: 20),
+                    margin: const EdgeInsets.only(top: 12),
                     child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         //授業時間ボタン
-                        _classTimeToggle(
-                            dataToShow['classTime'], dataToShow['dialogColor']),
+                        _classTimeToggle(_dataToShow['classTime'],
+                            _dataToShow['dialogColor']),
                         //点数入力欄
                         /* Container(
                                   width: 28,
@@ -205,7 +204,12 @@ class _LectureDialogState extends State<LectureDialog> {
                           iconSize: 24,
                           color: UtimeColors.deleteIcon,
                           icon: const Icon(Icons.delete),
-                          onPressed: () {},
+                          onPressed: () {
+                            setState(() {
+                              _dataToShow = lectureData
+                                  .setDefaultLectureData(_dataToShow);
+                            });
+                          },
                         )
                       ],
                     ),
@@ -466,10 +470,12 @@ class _LectureDialogState extends State<LectureDialog> {
           Text('105分'),
           Text('90分'),
         ],
+        textStyle: const TextStyle(fontSize: 12, color: UtimeColors.textColor),
         borderWidth: 1,
         borderColor: dialogColor, //枠の色
         borderRadius: BorderRadius.circular(8),
         selectedColor: UtimeColors.white, //選択されている方の文字色
+
         fillColor: dialogColor, //選択されている方の背景色
         selectedBorderColor: dialogColor, //選択されている方の枠の色
         onPressed: (int index) {

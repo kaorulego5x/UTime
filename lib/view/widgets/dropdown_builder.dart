@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:utime/const/utime_colors.dart';
-import 'package:utime/dropdown_modal_overlay.dart';
+import 'package:utime/view/widgets/dropdown_modal_overlay.dart';
 import 'package:utime/model/lecture_dialog_list.dart';
 
 class DropdownBuilder {
@@ -56,7 +56,7 @@ class DropdownBuilder {
   void showOpenTermDropdownList(
       double width, Color dialogColor, RenderBox box) {
     List listItems = getOpenTermList();
-    showDropdownList(320, width, dialogColor, listItems, box);
+    showDropdownList(224, width, dialogColor, listItems, box);
   }
 
   /*
@@ -65,7 +65,7 @@ class DropdownBuilder {
   void showCreditsNumberDropdownList(
       double width, Color dialogColor, RenderBox box) {
     List listItems = getCreditsNumberList();
-    showDropdownList(136, width, dialogColor, listItems, box);
+    showDropdownList(76, width, dialogColor, listItems, box);
   }
 
   /*
@@ -86,18 +86,35 @@ class DropdownBuilder {
             borderRadius: BorderRadius.circular(12), color: dropdownColor),
         child: ListView.builder(
           itemCount: listItems.length,
+          itemExtent: 36,
           itemBuilder: (context, index) {
+            //背景
             return Container(
-              height: 56,
-              margin:
-                  const EdgeInsets.only(top: 4, bottom: 4, left: 8, right: 8),
-              decoration: BoxDecoration(
-                color: listItems[index].selected
-                    ? dialogColor //選択されていないときの背景色
-                    : dropdownColor, //選択されているときの背景色
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: ListTile(
+                margin:
+                    const EdgeInsets.only(top: 4, bottom: 4, left: 8, right: 8),
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  color: listItems[index].selected
+                      ? dialogColor //選択されていないときの背景色
+                      : dropdownColor, //選択されているときの背景色
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                //要素
+                child: GestureDetector(
+                  //onTap: setState(() {
+                  //  selectedIndex = index;
+                  //}),
+                  child: Text(
+                    listItems[index].text,
+                    style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                        color: UtimeColors.white),
+                    textAlign: TextAlign.center,
+                  ),
+                )
+
+                /*ListTile(
                 selected: selectedIndex == index ? true : false,
                 selectedColor: UtimeColors.white,
                 textColor: UtimeColors.white,
@@ -109,11 +126,12 @@ class DropdownBuilder {
                 },
                 title: Text(
                   listItems[index].text,
-                  style: const TextStyle(fontWeight: FontWeight.bold),
+                  style: const TextStyle(
+                      fontWeight: FontWeight.bold, fontSize: 16),
                   textAlign: TextAlign.center,
                 ),
-              ),
-            );
+              ),*/
+                );
 
             /*Positioned(
               right: (offset.dx + size.width) / 2,

@@ -39,15 +39,15 @@ class ShowCreditDetails {
 
     if (title == '基礎科目') {
       return kiso!;
-    } else if (title == 'L系列') {
+    } else if (title == '総合科目L系列') {
       return seriesL!;
-    } else if (title == 'A~D系列') {
+    } else if (title == 'A~総合科目D系列') {
       return seriesA! + seriesB! + seriesC! + seriesD!; //理系用
-    } else if (title == 'E~F系列') {
+    } else if (title == 'E~総合科目F系列') {
       return seriesE! + seriesF!; //理系用
-    } else if (title == 'A~C系列') {
+    } else if (title == 'A~総合科目C系列') {
       return seriesA! + seriesB! + seriesC!; //文系用
-    } else if (title == 'D~F系列') {
+    } else if (title == 'D~総合科目F系列') {
       return seriesD! + seriesE! + seriesF!; //文系用
     } else if (title == '主題科目') {
       return shudai!;
@@ -103,15 +103,15 @@ class ShowCreditDetails {
 
     if (title == '基礎科目') {
       return kiso!;
-    } else if (title == 'L系列') {
+    } else if (title == '総合科目L系列') {
       return seriesL!;
     } else if (title == '列A~D系') {
       return seriesAtoD; //理系用(文系ならnull)
-    } else if (title == 'E~F系列') {
+    } else if (title == 'E~総合科目F系列') {
       return seriesEtoF; //理系用(文系ならnull)
-    } else if (title == 'A~C系列') {
+    } else if (title == 'A~総合科目C系列') {
       return seriesAtoC; //文系用(理系ならnull)
-    } else if (title == 'D~F系列') {
+    } else if (title == 'D~総合科目F系列') {
       return seriesDtoF; //文系用(理系ならnull)
     } else if (title == '主題科目') {
       return shudai!;
@@ -394,14 +394,14 @@ class ShowCreditDetails {
           children: [
             _showCreditDetails('基礎科目', UtimeColors.subject1),
             const SizedBox(width: 30, child: Spacer()),
-            _showCreditDetails('L系列', UtimeColors.subject2),
+            _showCreditDetails('総合科目L系列', UtimeColors.subject2),
           ],
         ),
         Row(
           children: [
-            _showCreditDetails('A~D系列', UtimeColors.subject3),
+            _showCreditDetails('A~総合科目D系列', UtimeColors.subject3),
             const SizedBox(width: 30, child: Spacer()),
-            _showCreditDetails('E~F系列', UtimeColors.subject5),
+            _showCreditDetails('E~総合科目F系列', UtimeColors.subject5),
           ],
         ),
         Row(
@@ -421,14 +421,14 @@ class ShowCreditDetails {
         ),
         Row(
           children: [
-            _showCreditDetails('L系列', UtimeColors.subject2),
+            _showCreditDetails('総合科目L系列', UtimeColors.subject2),
             const SizedBox(width: 30, child: Spacer()),
-            _showCreditDetails('A~C系列', UtimeColors.subject3),
+            _showCreditDetails('A~総合科目C系列', UtimeColors.subject3),
           ],
         ),
         Row(
           children: [
-            _showCreditDetails('D~F系列', UtimeColors.subject5),
+            _showCreditDetails('D~総合科目F系列', UtimeColors.subject5),
             const SizedBox(width: 30, child: Spacer()),
             _showCreditDetails('主題科目', UtimeColors.subject6),
           ],

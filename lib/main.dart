@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:utime/view/pages/average/coming_soon.dart';
 import 'package:utime/view/pages/credits/credits_number.dart';
-import 'package:utime/view/pages/timetable/timetables.dart';
+import 'package:utime/view/pages/Timetable/Timetables_display.dart';
 import 'package:utime/const/utime_colors.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -51,7 +51,7 @@ class _HomePageState extends State<HomePage> {
         tabBuilder: (context, index) {
           switch (index) {
             case 0: // 1番左のタブが選ばれた時の画面
-              return const TimeTables();
+              return const TimetablesDisplay();
             case 1: // 真ん中のタブが選ばれた時の画面
               return const CreditsNumber();
             case 2: // 1番右のタブが選ばれた時の画面
@@ -59,7 +59,7 @@ class _HomePageState extends State<HomePage> {
             //実装したら以下のコメントアウトを外す
             //return const AverageScore();
             default:
-              return const TimeTables();
+              return const TimetablesDisplay();
           }
         });
   }

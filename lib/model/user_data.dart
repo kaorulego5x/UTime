@@ -3,13 +3,14 @@ import 'dart:convert';
 // ↑ 使う全ファイルでこれを書いて！
 
 // ありえるパラメータをリストにして、リストにないものは弾く処理
-// TimeTable クラスにする？
+// Timetable クラスにする？
 
 class UserData {
-  static Map defaultTimeTable = {
+  static Map<String, dynamic> defaultTimetable = {
     "lectureName": "", // 任意の文字列（30文字以内？）
     "openTerm": "", // "s", "a", "s1", "s2", "a1", "a2", "w"
-    "subjectType": "", // "kiso", "l", "a", "b", "c", "d", "e", "f", "shudai", "tenkai"
+    "subjectType":
+        "", // "kiso", "l", "a", "b", "c", "d", "e", "f", "shudai", "tenkai"
     "creditNumber": 0.0, // 1.0, 2.0
     "score": 0, // 0～100の整数
     "teacherName": "", // 任意の文字列（30文字以内？）
@@ -18,33 +19,34 @@ class UserData {
     "classTime": 90 // 105
   };
 
-  static Map defaultTimeTableList6 = {
-    "1": defaultTimeTable,
-    "2": defaultTimeTable,
-    "3": defaultTimeTable,
-    "4": defaultTimeTable,
-    "5": defaultTimeTable,
-    "6": defaultTimeTable,
+  static Map defaultTimetableList6 = {
+    "1": defaultTimetable,
+    "2": defaultTimetable,
+    "3": defaultTimetable,
+    "4": defaultTimetable,
+    "5": defaultTimetable,
+    "6": defaultTimetable,
   };
 
-  static Map defaultTermTimeTables = {
-    "Mon": defaultTimeTableList6,
-    "Tue": defaultTimeTableList6,
-    "Wed": defaultTimeTableList6,
-    "Thu": defaultTimeTableList6,
-    "Fri": defaultTimeTableList6,
+  static Map defaultTermTimetablesDisplay = {
+    "Mon": defaultTimetableList6,
+    "Tue": defaultTimetableList6,
+    "Wed": defaultTimetableList6,
+    "Thu": defaultTimetableList6,
+    "Tur": defaultTimetableList6,
+    "Fri": defaultTimetableList6,
     "intensive": []
   };
 
-  static Map defaultTermTimeTablesList8 = {
-    "1s1": defaultTermTimeTables,
-    "1s2": defaultTermTimeTables,
-    "1a1": defaultTermTimeTables,
-    "1a2": defaultTermTimeTables,
-    "2s1": defaultTermTimeTables,
-    "2s2": defaultTermTimeTables,
-    "2a1": defaultTermTimeTables,
-    "2a2": defaultTermTimeTables,
+  static Map defaultTermTimetablesDisplayList8 = {
+    "1s1": defaultTermTimetablesDisplay,
+    "1s2": defaultTermTimetablesDisplay,
+    "1a1": defaultTermTimetablesDisplay,
+    "1a2": defaultTermTimetablesDisplay,
+    "2s1": defaultTermTimetablesDisplay,
+    "2s2": defaultTermTimetablesDisplay,
+    "2a1": defaultTermTimetablesDisplay,
+    "2a2": defaultTermTimetablesDisplay,
   };
 
   // JSONの形式
@@ -52,7 +54,7 @@ class UserData {
     "course": "l1", // "l2", "l3", "s1", "s2", "s3"
     "grade": "1", // "2"
     "selectedTerm": "s1", // "s2", "a1", "a2"
-    "timeTables": defaultTermTimeTablesList8,
+    "TimetablesDisplay": defaultTermTimetablesDisplayList8,
   };
 
   /** 簡単な形で保存されてたらこれでいいけど、今回はJSON形式だから使えない */
@@ -79,10 +81,8 @@ class UserData {
   void setUserData(userData) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String userString = jsonEncode(userData);
-    await prefs.setString("user", userString);   // ここawaitいるか分からない
+    await prefs.setString("user", userString); // ここawaitいるか分からない
   }
-
-
 
   /// 表示する時はこんな感じ（関数名はこうではなくそのまま取得できると思う）
   /// 「科類を取得 → 表示する」例
@@ -93,15 +93,13 @@ class UserData {
     return course;
   }
 
-
-  /// 保存する時はこんな感じ（関数名はこうではなくそのままできると思う） 
+  /// 保存する時はこんな感じ（関数名はこうではなくそのままできると思う）
   /// 一度 userData を取得してから、その中の科類の key に対する value を変更して「科類を保存する」例
   void setCourse(course) async {
     Map userData = await getUserData();
     userData["course"] = course;
     setUserData(userData);
   }
-
 
   Future<String> getGrade() async {
     String grade = "";
@@ -116,7 +114,6 @@ class UserData {
     setUserData(userData);
   }
 
-
   Future<String> getSelectedTerm() async {
     String selectedTerm = "";
     Map userData = await getUserData();
@@ -130,30 +127,32 @@ class UserData {
     setUserData(userData);
   }
 
-  Future<Map> getTermTimeTables(String? yearTerm) async {
-    Map termTimeTable;
+  Future<Map> getTermTimetablesDisplay(String? yearTerm) async {
+    Map termTimetable;
     Map userData = await getUserData();
-    termTimeTable = userData["timeTables"][yearTerm];
-    return termTimeTable;
+    termTimetable = userData["TimetablesDisplay"][yearTerm];
+    return termTimetable;
   }
 
-
-  Future<Map> getTimeTable(String? yearTerm, String? day, period) async {
-    Map timeTable;
+  Future<Map> getTimetable(String? yearTerm, String? day, period) async {
+    Map Timetable;
     Map userData = await getUserData();
-    timeTable = userData["timeTables"][yearTerm][day][period];
-    return timeTable;
+    Timetable = userData["TimetablesDisplay"][yearTerm][day][period];
+    return Timetable;
   }
 
-  void setTimeTable({Map? timeTable, String? yearTerm, String? day, String period = "0"}) async {
+  void setTimetable(
+      {Map? Timetable,
+      String? yearTerm,
+      String? day,
+      String period = "0"}) async {
     Map userData = await getUserData();
-    Map termTimeTables = userData["timeTables"][yearTerm];
-    if(day == "intensive"){
-      termTimeTables[day].add(timeTable);
-    }else{
-      termTimeTables[day][period] = timeTable;
+    Map termTimetablesDisplay = userData["TimetablesDisplay"][yearTerm];
+    if (day == "intensive") {
+      termTimetablesDisplay[day].add(Timetable);
+    } else {
+      termTimetablesDisplay[day][period] = Timetable;
     }
     setUserData(userData);
   }
-
 }

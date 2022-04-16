@@ -1,23 +1,26 @@
 import 'package:flutter/material.dart';
-import 'package:utime/view/pages/timetable/intensive_course_area.dart';
+import 'package:utime/model/status_data.dart';
+import 'package:utime/view/pages/Timetable/intensive_course_area.dart';
 import 'package:utime/model/lecture_data.dart';
-import 'package:utime/view/pages/timetable/lecture_dialog.dart';
+import 'package:utime/view/pages/Timetable/lecture_dialog.dart';
 import 'package:utime/const/utime_colors.dart';
 import 'package:utime/const/utime_text_styles.dart';
 import 'package:utime/const/term.dart';
+import 'package:utime/view/pages/timetable/timetables_data.dart';
 import 'package:utime/view/widgets/modal_overlay.dart';
 
-class TimeTables extends StatefulWidget {
-  const TimeTables({Key? key}) : super(key: key);
+class TimetablesDisplay extends StatefulWidget {
+  const TimetablesDisplay({Key? key}) : super(key: key);
 
   @override
-  State<TimeTables> createState() => _TimeTablesState();
+  State<TimetablesDisplay> createState() => _TimetablesDisplayState();
 }
 
-class _TimeTablesState extends State<TimeTables> {
-  //表示しているターム
-  Term term = Term.s1;
-
+class _TimetablesDisplayState extends State<TimetablesDisplay> {
+  //表示する時間割データ
+  TimetablesData timetablesData = TimetablesData();
+  //ユーザーのステータスのデータ
+  StatusData statusData = StatusData();
   //授業データ
   LectureData lectureData = LectureData();
 
@@ -38,9 +41,12 @@ class _TimeTablesState extends State<TimeTables> {
 
     //サイズ用の変数
     classHeight =
-        (screenHeight - appBarHeight - 64 - 50 - 60 - 24 - 60) / 6; //1コマの高さ
+        (screenHeight - appBarHeight - 64 - 50 - 60 - 24 - 108) / 6; //1コマの高さ
     classWidth = (screenWidth - 64 - 48) / 5; //1コマの横幅
     intensiveCourseWidth = screenWidth - 36 - 28 - 32; //集中講義の横幅
+
+    //表示するターム
+    Term term = timetablesData.getTerm();
 
     return Scaffold(
       //ドロワー
@@ -65,7 +71,7 @@ class _TimeTablesState extends State<TimeTables> {
             child: Column(
               children: [
                 //ターム
-                _showPeriod(term),
+                _showPeriod(timetablesData.getTerm()),
                 //曜日
                 Container(
                   width: screenWidth,
@@ -129,17 +135,17 @@ class _TimeTablesState extends State<TimeTables> {
                       margin: const EdgeInsets.only(left: 4.0, right: 28.0),
                       child: Column(
                         children: [
-                          _period('1'), //1時間目の組
+                          _period(term, '1'), //1時間目の組
                           const SizedBox(height: 12),
-                          _period('2'), //2時間目の組
+                          _period(term, '2'), //2時間目の組
                           const SizedBox(height: 12),
-                          _period('3'), //3時間目の組
+                          _period(term, '3'), //3時間目の組
                           const SizedBox(height: 12),
-                          _period('4'), //4時間目の組
+                          _period(term, '4'), //4時間目の組
                           const SizedBox(height: 12),
-                          _period('5'), //5時間目の組
+                          _period(term, '5'), //5時間目の組
                           const SizedBox(height: 12),
-                          _period('6'), //6時間目の組
+                          _period(term, '6'), //6時間目の組
                         ],
                       ),
                     )
@@ -161,7 +167,7 @@ class _TimeTablesState extends State<TimeTables> {
         padding: const EdgeInsets.all(16.0),
         child: Text(term.label,
             textAlign: TextAlign.center,
-            style: UtimeTextStyles.timeTablesTerm));
+            style: UtimeTextStyles.TimetablesDisplayTerm));
   }
 
   //曜日のウィジェット
@@ -171,7 +177,7 @@ class _TimeTablesState extends State<TimeTables> {
       child: Text(
         day,
         textAlign: TextAlign.center,
-        style: UtimeTextStyles.timeTablesDay,
+        style: UtimeTextStyles.TimetablesDisplayDay,
       ),
     ));
   }
@@ -181,7 +187,7 @@ class _TimeTablesState extends State<TimeTables> {
     return (Text(
       time,
       textAlign: TextAlign.center,
-      style: UtimeTextStyles.timeTablesTime,
+      style: UtimeTextStyles.TimetablesDisplayTime,
     ));
   }
 
@@ -193,23 +199,26 @@ class _TimeTablesState extends State<TimeTables> {
       alignment: Alignment.center,
       child: Text(
         period,
-        style: UtimeTextStyles.timeTablesPeriod,
+        style: UtimeTextStyles.TimetablesDisplayPeriod,
       ),
     ));
   }
 
   ///1コマのウィジェット
-  SizedBox _lecture(String day, String period) {
+  SizedBox _lecture(Term term, String day, String period) {
+    String yearTerm = timetablesData.getYearTerm(statusData.getGrade(), 's1');
+    Map<String, dynamic> lectureBoxData = timetablesData.getLectureBoxData(
+        statusData.getCourse(), yearTerm, day, period);
     return (SizedBox(
       width: classWidth,
       height: classHeight,
       child: ElevatedButton(
         child: Text(
-          '',
-          style: UtimeTextStyles.timeTablesLectureName,
+          lectureBoxData["lectureName"],
+          style: UtimeTextStyles.TimetablesDisplayLectureName,
         ),
         style: ElevatedButton.styleFrom(
-          primary: UtimeColors.white,
+          primary: lectureBoxData["lectureColor"],
           elevation: 0,
         ),
         onPressed: () {
@@ -220,19 +229,19 @@ class _TimeTablesState extends State<TimeTables> {
   }
 
   ///コマを何限かによって行でまとめたウィジェット
-  SizedBox _period(String period) {
+  SizedBox _period(Term term, String period) {
     return (SizedBox(
       child: Row(
         children: [
-          _lecture('Mon', period),
+          _lecture(term, 'Mon', period),
           const SizedBox(width: 12),
-          _lecture('Tue', period),
+          _lecture(term, 'Tue', period),
           const SizedBox(width: 12),
-          _lecture('Wed', period),
+          _lecture(term, 'Wed', period),
           const SizedBox(width: 12),
-          _lecture('Tur', period),
+          _lecture(term, 'Tur', period),
           const SizedBox(width: 12),
-          _lecture('Fri', period),
+          _lecture(term, 'Fri', period),
         ],
       ),
     ));
@@ -261,7 +270,8 @@ class _TimeTablesState extends State<TimeTables> {
         height: 64,
         width: 160,
         child: DrawerHeader(
-          child: Text('UTime', style: UtimeTextStyles.timeTablesMenuTitle),
+          child:
+              Text('UTime', style: UtimeTextStyles.TimetablesDisplayMenuTitle),
           decoration: BoxDecoration(
             color: UtimeColors.white,
             border: Border(
@@ -271,7 +281,7 @@ class _TimeTablesState extends State<TimeTables> {
         ),
       ),
       const ListTile(
-        title: Text('1年', style: UtimeTextStyles.timeTablesMenuGrade),
+        title: Text('1年', style: UtimeTextStyles.TimetablesDisplayMenuGrade),
       ),
       _listTitle('S1ターム', '1S1'),
       _listTitle('S2ターム', '1S2'),
