@@ -88,4 +88,10 @@ class UtimeTextStyles {
     fontSize: 20,
     color: UtimeColors.lightTextColor,
   );
+
+  //科類選択Radioの文字
+  static const courseListText = TextStyle(
+    fontSize: 16,
+    color: UtimeColors.textColor,
+  );
 }

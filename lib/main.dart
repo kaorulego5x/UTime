@@ -38,10 +38,24 @@ class _HomePageState extends State<HomePage> {
     return CupertinoTabScaffold(
         tabBar: CupertinoTabBar(
           items: const <BottomNavigationBarItem>[
-            BottomNavigationBarItem(icon: Icon(Icons.home), label: '時間割'),
             BottomNavigationBarItem(
-                icon: Icon(Icons.account_balance), label: '単位'),
-            BottomNavigationBarItem(icon: Icon(Icons.poll), label: '平均点'),
+                icon: Icon(
+                  Icons.home,
+                  size: 28,
+                ),
+                label: '時間割'),
+            BottomNavigationBarItem(
+                icon: Icon(
+                  Icons.account_balance,
+                  size: 28,
+                ),
+                label: '単位'),
+            BottomNavigationBarItem(
+                icon: Icon(
+                  Icons.poll,
+                  size: 28,
+                ),
+                label: '平均点'),
           ],
           activeColor: UtimeColors.tabAccent,
           backgroundColor: UtimeColors.white,

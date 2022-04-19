@@ -165,7 +165,7 @@ class ShowCreditDetails {
                   //取得単位数
                   Container(
                     margin: const EdgeInsets.only(top: 20, left: 12),
-                    width: 60, //危ないハードコーディングしてます,
+                    width: 60, //危ないハードコーディングしてます
                     child: Center(
                       child: Text(
                         _getTakenUnitsSum(title).toString(),

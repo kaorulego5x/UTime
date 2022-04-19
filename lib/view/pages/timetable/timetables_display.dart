@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:utime/model/status_data.dart';
+import 'package:utime/model/settings.dart';
 import 'package:utime/view/pages/Timetable/intensive_course_area.dart';
 import 'package:utime/model/lecture_data.dart';
 import 'package:utime/view/pages/Timetable/lecture_dialog.dart';
@@ -20,7 +20,7 @@ class _TimetablesDisplayState extends State<TimetablesDisplay> {
   //表示する時間割データ
   TimetablesData timetablesData = TimetablesData();
   //ユーザーのステータスのデータ
-  StatusData statusData = StatusData();
+  Settings settings = Settings();
   //授業データ
   LectureData lectureData = LectureData();
 
@@ -206,9 +206,9 @@ class _TimetablesDisplayState extends State<TimetablesDisplay> {
 
   ///1コマのウィジェット
   SizedBox _lecture(Term term, String day, String period) {
-    String yearTerm = timetablesData.getYearTerm(statusData.getGrade(), 's1');
+    String yearTerm = timetablesData.getYearTerm(settings.getGrade(), 's1');
     Map<String, dynamic> lectureBoxData = timetablesData.getLectureBoxData(
-        statusData.getCourse(), yearTerm, day, period);
+        settings.getCourse(), yearTerm, day, period);
     return (SizedBox(
       width: classWidth,
       height: classHeight,
