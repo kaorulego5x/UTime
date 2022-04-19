@@ -16,14 +16,15 @@ class TimetablesData {
   }
 
   //現在表示するタームを返す
-  getTerm() {
+  /*getTerm() {
     Term term = Term.s1; //要編集
     return term;
-  }
+  }*/
 
-  //gradeとtermからyearTermを返す
-  getYearTerm(String grade, String term) {
-    return grade + term;
+  //現在表示するタームを返す
+  String getYearTerm() {
+    YearTerm yearTerm = YearTerm.oneS1;
+    return yearTerm.label;
   }
 
   //１コマのデータを取ってくる

@@ -46,7 +46,7 @@ class _TimetablesDisplayState extends State<TimetablesDisplay> {
     intensiveCourseWidth = screenWidth - 36 - 28 - 32; //集中講義の横幅
 
     //表示するターム
-    Term term = timetablesData.getTerm();
+    String yearTerm = timetablesData.getYearTerm();
 
     return Scaffold(
       //ドロワー
@@ -71,7 +71,7 @@ class _TimetablesDisplayState extends State<TimetablesDisplay> {
             child: Column(
               children: [
                 //ターム
-                _showPeriod(timetablesData.getTerm()),
+                _showPeriod(yearTerm),
                 //曜日
                 Container(
                   width: screenWidth,
@@ -135,17 +135,17 @@ class _TimetablesDisplayState extends State<TimetablesDisplay> {
                       margin: const EdgeInsets.only(left: 4.0, right: 28.0),
                       child: Column(
                         children: [
-                          _period(term, '1'), //1時間目の組
+                          _period(yearTerm, '1'), //1時間目の組
                           const SizedBox(height: 12),
-                          _period(term, '2'), //2時間目の組
+                          _period(yearTerm, '2'), //2時間目の組
                           const SizedBox(height: 12),
-                          _period(term, '3'), //3時間目の組
+                          _period(yearTerm, '3'), //3時間目の組
                           const SizedBox(height: 12),
-                          _period(term, '4'), //4時間目の組
+                          _period(yearTerm, '4'), //4時間目の組
                           const SizedBox(height: 12),
-                          _period(term, '5'), //5時間目の組
+                          _period(yearTerm, '5'), //5時間目の組
                           const SizedBox(height: 12),
-                          _period(term, '6'), //6時間目の組
+                          _period(yearTerm, '6'), //6時間目の組
                         ],
                       ),
                     )
@@ -162,10 +162,10 @@ class _TimetablesDisplayState extends State<TimetablesDisplay> {
   }
 
   //タームを表示
-  Container _showPeriod(Term term) {
+  Container _showPeriod(String yearTerm) {
     return Container(
         padding: const EdgeInsets.all(16.0),
-        child: Text(term.label,
+        child: Text(yearTerm,
             textAlign: TextAlign.center,
             style: UtimeTextStyles.TimetablesDisplayTerm));
   }
@@ -205,8 +205,7 @@ class _TimetablesDisplayState extends State<TimetablesDisplay> {
   }
 
   ///1コマのウィジェット
-  SizedBox _lecture(Term term, String day, String period) {
-    String yearTerm = timetablesData.getYearTerm(settings.getGrade(), 's1');
+  SizedBox _lecture(String yearTerm, String day, String period) {
     Map<String, dynamic> lectureBoxData = timetablesData.getLectureBoxData(
         settings.getCourse(), yearTerm, day, period);
     return (SizedBox(
@@ -229,19 +228,19 @@ class _TimetablesDisplayState extends State<TimetablesDisplay> {
   }
 
   ///コマを何限かによって行でまとめたウィジェット
-  SizedBox _period(Term term, String period) {
+  SizedBox _period(String yearTerm, String period) {
     return (SizedBox(
       child: Row(
         children: [
-          _lecture(term, 'Mon', period),
+          _lecture(yearTerm, 'Mon', period),
           const SizedBox(width: 12),
-          _lecture(term, 'Tue', period),
+          _lecture(yearTerm, 'Tue', period),
           const SizedBox(width: 12),
-          _lecture(term, 'Wed', period),
+          _lecture(yearTerm, 'Wed', period),
           const SizedBox(width: 12),
-          _lecture(term, 'Tur', period),
+          _lecture(yearTerm, 'Tur', period),
           const SizedBox(width: 12),
-          _lecture(term, 'Fri', period),
+          _lecture(yearTerm, 'Fri', period),
         ],
       ),
     ));
@@ -306,7 +305,16 @@ class _TimetablesDisplayState extends State<TimetablesDisplay> {
     return (ListTile(
       title: Text(t1),
       onTap: () {
+        //要編集：設定にt2を渡す処理
         Navigator.pop(context);
+        //描き直すべき？
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) {
+              return const TimetablesDisplay();
+            },
+          ),
+        );
       },
     ));
   }

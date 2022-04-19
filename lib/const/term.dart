@@ -1,4 +1,4 @@
-enum Term { s1, s2, a1, a2 }
+/*enum Term { s1, s2, a1, a2 }
 
 extension TermExtension on Term {
   String get label {
@@ -11,6 +11,34 @@ extension TermExtension on Term {
         return 'A1ターム';
       case Term.a2:
         return 'A2ターム';
+    }
+  }
+}*/
+
+enum YearTerm {
+  oneS1,
+  oneS2,
+  oneA1,
+  oneA2,
+  twoS1,
+  twoS2,
+}
+
+extension YearTermExtension on YearTerm {
+  String get label {
+    switch (this) {
+      case YearTerm.oneS1:
+        return '1年 S1ターム';
+      case YearTerm.oneS2:
+        return '1年 S2ターム';
+      case YearTerm.oneA1:
+        return '1年 A1ターム';
+      case YearTerm.oneA2:
+        return '1年 A2ターム';
+      case YearTerm.twoS1:
+        return '2年 S1ターム';
+      case YearTerm.twoS2:
+        return '2年 S2ターム';
     }
   }
 }

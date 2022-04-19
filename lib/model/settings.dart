@@ -19,4 +19,9 @@ class Settings {
   setCourse(String course) {
     _course = course; //上書きを実装してください
   }
+
+  //表示する学年タームを返す
+  getYearTerm() {
+    return '1S1';
+  }
 }

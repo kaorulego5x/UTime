@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:utime/model/settings.dart';
 import 'package:utime/view/pages/average/coming_soon.dart';
 import 'package:utime/view/pages/credits/credits_number.dart';
 import 'package:utime/view/pages/Timetable/Timetables_display.dart';
@@ -33,8 +34,10 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  Settings settings = Settings();
   @override
   Widget build(BuildContext context) {
+    String yearTerm = settings.getYearTerm();
     return CupertinoTabScaffold(
         tabBar: CupertinoTabBar(
           items: const <BottomNavigationBarItem>[
