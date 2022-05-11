@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:utime/model/settings.dart';
 import 'package:utime/view/pages/credits/credit_details_dialog.dart';
 import 'package:utime/model/credits_number_data.dart';
 import 'package:utime/const/utime_colors.dart';
 
 class ShowCreditDetails {
-  final String course; //科類
+  String course; //科類
   final double showstatusWidth; //必要単位数確認ボタンウィジェットの横幅
   final BuildContext context;
   ShowCreditDetails(this.course, this.showstatusWidth, this.context);
+
+  Settings settings = Settings();
 
   //単位詳細確認ボタンウィジェットの横幅
   double creditDetailsWidth = 0;
@@ -60,6 +63,7 @@ class ShowCreditDetails {
 
   ///必要単位数をCreditsNumberDataクラスから持ってくる
   _getCreditsNumberData() {
+    course = settings.getCourse(); //これ要る？
     CreditsNumberData creditsNumberData = CreditsNumberData(course);
     Map<String, int> takenUnits =
         creditsNumberData.getCreditsNumberData(course);
@@ -124,6 +128,7 @@ class ShowCreditDetails {
 
   ///単位詳細確認ボタンウィジェット
   SizedBox _showCreditDetails(String title, Color color) {
+    String course = settings.getCourse();
     return SizedBox(
       child: (Container(
         width: getcreditDetailsWidth(),
@@ -394,6 +399,7 @@ class ShowCreditDetails {
 
   //取得単位のセット
   showTakenCredits(String course) {
+    course = settings.getCourse();
     if (course == '理科一類' || course == '理科二類' || course == '理科三類') {
       return Column(children: [
         Row(

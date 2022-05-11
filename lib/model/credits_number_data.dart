@@ -35,8 +35,8 @@ class CreditsNumberData {
 
   ///必要単位数のマップデータを返す
   getCreditsNumberData(course) {
-    Map<String, int> CreditsNumberData = _getMap(course);
-    return CreditsNumberData;
+    Map<String, int> creditsNumberData = _getMap(course);
+    return creditsNumberData;
   }
 
   ///科類別必要単位数のマップデータを取得

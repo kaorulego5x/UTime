@@ -46,7 +46,8 @@ class _TimetablesDisplayState extends State<TimetablesDisplay> {
     intensiveCourseWidth = screenWidth - 36 - 28 - 32; //集中講義の横幅
 
     //表示するターム
-    String yearTerm = timetablesData.getYearTerm();
+    String yearTermToShow = timetablesData.getYearTermToShow();
+    String yearTermData = timetablesData.getYearTermData();
 
     return Scaffold(
       //ドロワー
@@ -71,7 +72,7 @@ class _TimetablesDisplayState extends State<TimetablesDisplay> {
             child: Column(
               children: [
                 //ターム
-                _showPeriod(yearTerm),
+                _showPeriod(yearTermToShow),
                 //曜日
                 Container(
                   width: screenWidth,
@@ -135,17 +136,17 @@ class _TimetablesDisplayState extends State<TimetablesDisplay> {
                       margin: const EdgeInsets.only(left: 4.0, right: 28.0),
                       child: Column(
                         children: [
-                          _period(yearTerm, '1'), //1時間目の組
+                          _period(yearTermData, '1'), //1時間目の組
                           const SizedBox(height: 12),
-                          _period(yearTerm, '2'), //2時間目の組
+                          _period(yearTermData, '2'), //2時間目の組
                           const SizedBox(height: 12),
-                          _period(yearTerm, '3'), //3時間目の組
+                          _period(yearTermData, '3'), //3時間目の組
                           const SizedBox(height: 12),
-                          _period(yearTerm, '4'), //4時間目の組
+                          _period(yearTermData, '4'), //4時間目の組
                           const SizedBox(height: 12),
-                          _period(yearTerm, '5'), //5時間目の組
+                          _period(yearTermData, '5'), //5時間目の組
                           const SizedBox(height: 12),
-                          _period(yearTerm, '6'), //6時間目の組
+                          _period(yearTermData, '6'), //6時間目の組
                         ],
                       ),
                     )

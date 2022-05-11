@@ -24,7 +24,7 @@ enum YearTerm {
   twoS2,
 }
 
-extension YearTermExtension on YearTerm {
+extension YearTermExtensionToString on YearTerm {
   String get label {
     switch (this) {
       case YearTerm.oneS1:
@@ -39,6 +39,25 @@ extension YearTermExtension on YearTerm {
         return '2年 S1ターム';
       case YearTerm.twoS2:
         return '2年 S2ターム';
+    }
+  }
+}
+
+extension YearTermExtensionToKey on YearTerm {
+  String get key {
+    switch (this) {
+      case YearTerm.oneS1:
+        return '1s1';
+      case YearTerm.oneS2:
+        return '1s2';
+      case YearTerm.oneA1:
+        return '1a1';
+      case YearTerm.oneA2:
+        return '1a2';
+      case YearTerm.twoS1:
+        return '2s1';
+      case YearTerm.twoS2:
+        return '2s2';
     }
   }
 }

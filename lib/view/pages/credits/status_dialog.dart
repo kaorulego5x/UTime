@@ -15,16 +15,7 @@ class StatusDialog extends StatefulWidget {
 
 class _StatusDialogState extends State<StatusDialog> {
   Settings settings = Settings();
-/*
-  List<String> courseList = [
-    '理科一類',
-    '理科二類',
-    '理科三類',
-    '理科三類',
-    '文科一類',
-    '文科二類',
-    '文科三類'
-  ];*/
+
   List<Enum> courseList = [
     RadioValue.s1,
     RadioValue.s2,
@@ -48,6 +39,7 @@ class _StatusDialogState extends State<StatusDialog> {
         //閉じた時の処理
 
         settings.setCourse(_radioValueToTitle(_groupValue));
+        settings.saveCourse();
         print(settings.getCourse());
 
         return true;

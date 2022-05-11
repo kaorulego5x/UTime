@@ -67,7 +67,7 @@ class _CreditsNumberState extends State<CreditsNumber> {
                 //必要単位数
                 _showRequiredCredits(),
                 //取得単位
-                showCreditDetails.showTakenCredits(course),
+                showCreditDetails.showTakenCredits(settings.getCourse()),
               ],
             ),
           ),
@@ -80,7 +80,8 @@ class _CreditsNumberState extends State<CreditsNumber> {
   SizedBox _showStatus(String course) {
     return SizedBox(
       child: GestureDetector(
-          onTap: () {
+          //科類変更することってないので選択できなくした方がよくないですか？
+          /*onTap: () {
             Navigator.push(
                 context,
                 ModalOverlay(
@@ -91,51 +92,49 @@ class _CreditsNumberState extends State<CreditsNumber> {
               setState(() {
                 course = settings.getCourse();
               });
-
-              print(course);
             });
-          },
+          },*/
           child: Container(
-            width: showStatusWidth,
-            height: 84,
-            decoration: BoxDecoration(
-              color: UtimeColors.white,
-              borderRadius: BorderRadius.circular(8),
+        width: showStatusWidth,
+        height: 84,
+        decoration: BoxDecoration(
+          color: UtimeColors.white,
+          borderRadius: BorderRadius.circular(8),
+        ),
+        margin: const EdgeInsets.only(top: 32, bottom: 32),
+        //child: ElevatedButton(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+              alignment: Alignment.center,
+              child: const Text(
+                'あなたは',
+                style: TextStyle(
+                  fontSize: 18,
+                  color: UtimeColors.lightTextColor,
+                ),
+              ),
             ),
-            margin: const EdgeInsets.only(top: 32, bottom: 32),
-            //child: ElevatedButton(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Container(
-                  alignment: Alignment.center,
-                  child: const Text(
-                    'あなたは',
-                    style: TextStyle(
-                      fontSize: 18,
-                      color: UtimeColors.lightTextColor,
-                    ),
-                  ),
-                ),
-                const SizedBox(
-                  width: 40,
-                  child: Spacer(),
-                ),
-                Container(
-                  alignment: Alignment.center,
-                  child: Text(
-                    course,
-                    style: const TextStyle(
-                      fontSize: 24,
-                      color: UtimeColors.textColor,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                ),
-              ],
+            const SizedBox(
+              width: 40,
+              child: Spacer(),
             ),
+            Container(
+              alignment: Alignment.center,
+              child: Text(
+                course,
+                style: const TextStyle(
+                  fontSize: 24,
+                  color: UtimeColors.textColor,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ),
+          ],
+        ),
 
-            /*style: ElevatedButton.styleFrom(
+        /*style: ElevatedButton.styleFrom(
               primary: UtimeColors.white,
               elevation: 0,
               shape: RoundedRectangleBorder(
@@ -148,7 +147,7 @@ class _CreditsNumberState extends State<CreditsNumber> {
               ).showStatusDialog();
             },
           ),*/
-          )),
+      )),
     );
   }
 

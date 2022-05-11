@@ -21,17 +21,22 @@ class TimetablesData {
     return term;
   }*/
 
-  //現在表示するタームを返す
-  String getYearTerm() {
+  //現在表示するタームの文字列を返す
+  String getYearTermToShow() {
     YearTerm yearTerm = YearTerm.oneS1;
     return yearTerm.label;
+  }
+
+  //yearTermの文字列からuserdataのタグに変換
+  String getYearTermData() {
+    YearTerm yearTerm = YearTerm.oneS1;
+    return yearTerm.key;
   }
 
   //１コマのデータを取ってくる
   _getLectureData(Map lectureData, String lectureName, String subjectType,
       String yearTerm, String day, String period) async {
-    //Map lectureData = await userData.getTimetable(yearTerm, day, period);
-    lectureData = await userData.getTimetable(yearTerm, day, period);
+    lectureData = await userData.getTimetable("1s1", day, period);
     lectureName = lectureData["lectureName"];
     subjectType = lectureData["subjectType"];
   }
