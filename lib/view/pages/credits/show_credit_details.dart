@@ -105,7 +105,7 @@ class ShowCreditDetails {
       return kiso!;
     } else if (title == 'L系列') {
       return seriesL!;
-    } else if (title == '列A~D系') {
+    } else if (title == 'A~D系列') {
       return seriesAtoD; //理系用(文系ならnull)
     } else if (title == 'E~F系列') {
       return seriesEtoF; //理系用(文系ならnull)
@@ -134,7 +134,7 @@ class ShowCreditDetails {
             children: [
               //科目区分名
               Container(
-                margin: const EdgeInsets.only(top: 10),
+                margin: const EdgeInsets.only(top: 12),
                 alignment: Alignment.center,
                 width: 80,
                 child: Stack(children: <Widget>[
@@ -160,20 +160,26 @@ class ShowCreditDetails {
               ),
               //取得単位数/必要単位数
               Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
+                  //取得単位数
                   Container(
-                    margin: const EdgeInsets.only(top: 20, left: 32),
-                    child: Text(
-                      _getTakenUnitsSum(title).toString(),
-                      style: const TextStyle(
-                        fontSize: 36,
-                        color: UtimeColors.textColor,
-                        fontWeight: FontWeight.bold,
+                    margin: const EdgeInsets.only(top: 20, left: 12),
+                    width: 60, //危ないハードコーディングしてます
+                    child: Center(
+                      child: Text(
+                        _getTakenUnitsSum(title).toString(),
+                        style: const TextStyle(
+                          fontSize: 36,
+                          color: UtimeColors.textColor,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
                   ),
+                  //必要単位数
                   Container(
-                    margin: const EdgeInsets.only(top: 36, left: 20),
+                    margin: const EdgeInsets.only(top: 36, right: 12),
                     child: Text(
                       '/ ' + _getCreditsNumberDataSum(course, title).toString(),
                       style: const TextStyle(

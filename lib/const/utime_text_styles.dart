@@ -9,32 +9,32 @@ class UtimeTextStyles {
   );
 
   //時間割タブのターム
-  static const timeTablesTerm = TextStyle(
+  static const TimetablesDisplayTerm = TextStyle(
     fontSize: 18,
     fontWeight: FontWeight.bold,
     color: UtimeColors.textColor,
   );
 
   //時間割タブの曜日
-  static const timeTablesDay = TextStyle(
+  static const TimetablesDisplayDay = TextStyle(
     fontSize: 12,
     color: UtimeColors.textColor,
   );
 
   //時間割タブの時間表示
-  static const timeTablesTime = TextStyle(
+  static const TimetablesDisplayTime = TextStyle(
     fontSize: 10,
     color: UtimeColors.textColor,
   );
 
   //時間割タブの時限
-  static const timeTablesPeriod = TextStyle(
+  static const TimetablesDisplayPeriod = TextStyle(
     fontSize: 12,
     color: UtimeColors.textColor,
   );
 
   //時間割タブの科目名
-  static const timeTablesLectureName = TextStyle(
+  static const TimetablesDisplayLectureName = TextStyle(
     fontSize: 8,
     color: UtimeColors.textColor,
   );
@@ -52,13 +52,13 @@ class UtimeTextStyles {
   );
 
   //ドロワーメニューのタイトル
-  static const timeTablesMenuTitle = TextStyle(
+  static const TimetablesDisplayMenuTitle = TextStyle(
     fontSize: 18,
     color: UtimeColors.menuAccent,
   );
 
   //ドロワーメニューの学年表示
-  static const timeTablesMenuGrade = TextStyle(
+  static const TimetablesDisplayMenuGrade = TextStyle(
     fontSize: 16,
     color: UtimeColors.menuAccent,
   );
@@ -85,7 +85,13 @@ class UtimeTextStyles {
 
   //ComingSoonの文字
   static const comingSoonText = TextStyle(
-    fontSize: 24,
+    fontSize: 20,
     color: UtimeColors.lightTextColor,
+  );
+
+  //科類選択Radioの文字
+  static const courseListText = TextStyle(
+    fontSize: 16,
+    color: UtimeColors.textColor,
   );
 }

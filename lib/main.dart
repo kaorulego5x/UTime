@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:utime/model/settings.dart';
 import 'package:utime/view/pages/average/coming_soon.dart';
 import 'package:utime/view/pages/credits/credits_number.dart';
-import 'package:utime/view/pages/timetable/timetables.dart';
+import 'package:utime/view/pages/Timetable/Timetables_display.dart';
 import 'package:utime/const/utime_colors.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -33,23 +34,41 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  Settings settings = Settings();
   @override
   Widget build(BuildContext context) {
+    String yearTerm = settings.getYearTerm();
     return CupertinoTabScaffold(
         tabBar: CupertinoTabBar(
           items: const <BottomNavigationBarItem>[
-            BottomNavigationBarItem(icon: Icon(Icons.home), label: '時間割'),
             BottomNavigationBarItem(
-                icon: Icon(Icons.account_balance), label: '単位'),
-            BottomNavigationBarItem(icon: Icon(Icons.poll), label: '平均点'),
+                icon: Icon(
+                  Icons.home,
+                  size: 28,
+                ),
+                label: '時間割'),
+            BottomNavigationBarItem(
+                icon: Icon(
+                  Icons.account_balance,
+                  size: 28,
+                ),
+                label: '単位'),
+            BottomNavigationBarItem(
+                icon: Icon(
+                  Icons.poll,
+                  size: 28,
+                ),
+                label: '平均点'),
           ],
           activeColor: UtimeColors.tabAccent,
+          backgroundColor: UtimeColors.white,
+          border: const Border(top: BorderSide(color: UtimeColors.white)),
           height: 64,
         ),
         tabBuilder: (context, index) {
           switch (index) {
             case 0: // 1番左のタブが選ばれた時の画面
-              return const TimeTables();
+              return const TimetablesDisplay();
             case 1: // 真ん中のタブが選ばれた時の画面
               return const CreditsNumber();
             case 2: // 1番右のタブが選ばれた時の画面
@@ -57,7 +76,7 @@ class _HomePageState extends State<HomePage> {
             //実装したら以下のコメントアウトを外す
             //return const AverageScore();
             default:
-              return const TimeTables();
+              return const TimetablesDisplay();
           }
         });
   }

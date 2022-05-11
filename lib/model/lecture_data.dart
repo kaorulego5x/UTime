@@ -56,22 +56,39 @@ class LectureData {
     return lectureData;
   }
 
+  ///デフォルトの授業データをセット
+  setDefaultLectureData(Map lectureDataToReset) {
+    lectureDataToReset['lectureName'] = '';
+    lectureDataToReset['openTerm'] = '';
+    lectureDataToReset['subjectType'] = '';
+    lectureDataToReset['creditsNumber'] = 2.0;
+    lectureDataToReset['score'] = 0;
+    lectureDataToReset['teacherName'] = '';
+    lectureDataToReset['classroom'] = '';
+    lectureDataToReset['notes'] = '';
+    lectureDataToReset['classTime'] = 90;
+    lectureDataToReset['dialogColor'] = UtimeColors.darkSubject7;
+    lectureDataToReset['lectureName'] = UtimeColors.darkSubject7;
+
+    return lectureDataToReset;
+  }
+
   ///subjectTypeに応じてdialogColorを返す
   Color getDialogColor(String course, String subjectType) {
     //文理共通
     if (subjectType == '基礎科目') {
       return UtimeColors.subject1;
-    } else if (subjectType == 'L系列') {
+    } else if (subjectType == '総合科目L系列') {
       return UtimeColors.subject2;
-    } else if (subjectType == 'A系列') {
+    } else if (subjectType == '総合科目A系列') {
       return UtimeColors.subject3;
-    } else if (subjectType == 'B系列') {
+    } else if (subjectType == '総合科目B系列') {
       return UtimeColors.subject3;
-    } else if (subjectType == 'C系列') {
+    } else if (subjectType == '総合科目C系列') {
       return UtimeColors.subject3;
-    } else if (subjectType == 'E系列') {
+    } else if (subjectType == '総合科目E系列') {
       return UtimeColors.subject5;
-    } else if (subjectType == 'F系列') {
+    } else if (subjectType == '総合科目F系列') {
       return UtimeColors.subject5;
     } else if (subjectType == '主題科目') {
       return UtimeColors.subject6;
@@ -81,13 +98,13 @@ class LectureData {
 
     //文理共通でない
     if (course == '理科一類' || course == '理科二類' || course == '理科三類') {
-      if (subjectType == 'D系列') {
+      if (subjectType == '総合科目D系列') {
         return UtimeColors.subject3;
       } else {
         throw Exception('subjectType is ' + subjectType);
       }
     } else if (course == '文科一類' || course == '文科二類' || course == '文科三類') {
-      if (subjectType == 'D系列') {
+      if (subjectType == '総合科目D系列') {
         return UtimeColors.subject5;
       } else {
         throw Exception('subjectType is ' + subjectType);

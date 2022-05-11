@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:utime/model/settings.dart';
 import 'package:utime/view/pages/credits/credit_details_dialog.dart';
 import 'package:utime/view/pages/credits/required_credits_dialog.dart';
 import 'package:utime/view/pages/credits/show_credit_details.dart';
-import 'package:utime/view/pages/timetable/status_dialog.dart';
 import 'package:utime/const/utime_colors.dart';
+import 'package:utime/view/pages/credits/status_dialog.dart';
+import 'package:utime/view/widgets/modal_overlay.dart';
 
 class CreditsNumber extends StatefulWidget {
   const CreditsNumber({Key? key}) : super(key: key);
@@ -14,15 +16,22 @@ class CreditsNumber extends StatefulWidget {
 }
 
 class _CreditsNumberState extends State<CreditsNumber> {
-  //科類
-  String course = '文科一類';
+  Settings settings = Settings();
+
+  RadioValue _radioValue = RadioValue.s1;
 
   //サイズ用の変数
   double showStatusWidth = 0;
   double creditDetailsWidth = 0;
 
+  //科類を取得
+  String _getCourse() {
+    return settings.getCourse();
+  }
+
   @override
   Widget build(BuildContext context) {
+    String course = _getCourse();
     // デバイスの縦幅と横幅を取得する
     final double screenHeight = MediaQuery.of(context).size.height;
     final double screenWidth = MediaQuery.of(context).size.width;
@@ -70,55 +79,76 @@ class _CreditsNumberState extends State<CreditsNumber> {
   //学年・科類確認ボタンウィジェット
   SizedBox _showStatus(String course) {
     return SizedBox(
-      child: (Container(
-        width: showStatusWidth,
-        height: 84,
-        margin: const EdgeInsets.only(top: 32, bottom: 32),
-        child: ElevatedButton(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Container(
-                alignment: Alignment.center,
-                child: const Text(
-                  'あなたは',
-                  style: TextStyle(
-                    fontSize: 18,
-                    color: UtimeColors.lightTextColor,
-                  ),
-                ),
-              ),
-              const SizedBox(
-                width: 40,
-                child: Spacer(),
-              ),
-              Container(
-                alignment: Alignment.center,
-                child: Text(
-                  course,
-                  style: const TextStyle(
-                    fontSize: 24,
-                    color: UtimeColors.textColor,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-              ),
-            ],
-          ),
-          style: ElevatedButton.styleFrom(
-            primary: UtimeColors.white,
-            elevation: 0,
-            shape: RoundedRectangleBorder(
+      child: GestureDetector(
+          onTap: () {
+            Navigator.push(
+                context,
+                ModalOverlay(
+                  StatusDialog(context),
+                  //backボタンを有効にするかどうか
+                  isAndroidBackEnable: true,
+                )).then((value) {
+              setState(() {
+                course = settings.getCourse();
+              });
+
+              print(course);
+            });
+          },
+          child: Container(
+            width: showStatusWidth,
+            height: 84,
+            decoration: BoxDecoration(
+              color: UtimeColors.white,
               borderRadius: BorderRadius.circular(8),
             ),
-          ),
-          onPressed: () {
-            StatusDialog(
-              context,
-            ).showStatusDialog();
-          },
-        ),
-      )),
+            margin: const EdgeInsets.only(top: 32, bottom: 32),
+            //child: ElevatedButton(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                  alignment: Alignment.center,
+                  child: const Text(
+                    'あなたは',
+                    style: TextStyle(
+                      fontSize: 18,
+                      color: UtimeColors.lightTextColor,
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  width: 40,
+                  child: Spacer(),
+                ),
+                Container(
+                  alignment: Alignment.center,
+                  child: Text(
+                    course,
+                    style: const TextStyle(
+                      fontSize: 24,
+                      color: UtimeColors.textColor,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+
+            /*style: ElevatedButton.styleFrom(
+              primary: UtimeColors.white,
+              elevation: 0,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8),
+              ),
+            ),
+            onPressed: () {
+              StatusDialog(
+                context,
+              ).showStatusDialog();
+            },
+          ),*/
+          )),
     );
   }
 
