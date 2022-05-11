@@ -5,6 +5,7 @@ import 'package:utime/view/pages/credits/credits_number.dart';
 import 'package:utime/view/pages/Timetable/Timetables_display.dart';
 import 'package:utime/const/utime_colors.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:shared_preferences/shared_preferences.dart'; // 追記する
 
 void main() {
   runApp(const MyApp());
