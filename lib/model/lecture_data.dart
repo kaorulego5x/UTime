@@ -1,6 +1,109 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:utime/const/utime_colors.dart';
 
+part 'lecture_data.freezed.dart';
+
+@freezed
+class TimetableData with _$TimetableData {
+  const factory TimetableData({
+    @Default({}) Map<String, String> lectureData,
+    @Default('') String day,
+    @Default('') String period,
+  }) = _TimetableData;
+  // LectureData
+  // key:
+  // lectureName,
+  // openTerm,
+  // subjectType,
+  // creditNumber,
+  // score,
+  // teacherName,
+  // classroom,
+  // notes,
+  // classTime,
+  // dialogColor,
+  // dropDownColor,
+}
+
+class TimetableDataNotifier extends StateNotifier<TimetableData> {
+  TimetableDataNotifier() : super(const TimetableData());
+
+  /// Change subject Type
+  void changeSubjectType(String newValue) {
+    final Map<String, String> newLectureData = state.lectureData;
+    newLectureData['subjectType'] = newValue;
+    state = state.copyWith(lectureData: newLectureData);
+  }
+  /// Change Lecture Name
+  void changeLectureName (String newValue) {
+    final Map<String, String> newLectureData = state.lectureData;
+    newLectureData['lectureName'] = newValue;
+    state = state.copyWith(lectureData: newLectureData);
+  }
+  /// Change teacher Name
+  void changeTeacherName(String newValue) {
+    final Map<String, String> newLectureData = state.lectureData;
+    newLectureData['teacherName'] = newValue;
+    state = state.copyWith(lectureData: newLectureData);
+  }
+  /// Change classroom
+  void changeClassroom(String newValue) {
+    final Map<String, String> newLectureData = state.lectureData;
+    newLectureData['classroom'] = newValue;
+    state = state.copyWith(lectureData: newLectureData);
+  }
+  /// Change openTerm
+  void changeOpenTerm(String newValue) {
+    final Map<String, String> newLectureData = state.lectureData;
+    newLectureData['classroom'] = newValue;
+    state = state.copyWith(lectureData: newLectureData);
+  }
+  /// Change CreditNumber
+  void changeCreditNumber(String newValue) {
+    final Map<String, String> newLectureData = state.lectureData;
+    newLectureData['classroom'] = newValue;
+    state = state.copyWith(lectureData: newLectureData);
+  }
+  /// Change Notes
+  void changeNotes(String newValue) {
+    final Map<String, String> newLectureData = state.lectureData;
+    newLectureData['notes'] = newValue;
+    state = state.copyWith(lectureData: newLectureData);
+  }
+  /// Change classTime
+  void changeClassTime(String newValue) {
+    final Map<String, String> newLectureData = state.lectureData;
+    newLectureData['classTime'] = newValue;
+    state = state.copyWith(lectureData: newLectureData);
+  }
+}
+
+/// LectureDialog の開講科目名、教員名、教室の状態管理
+final timeTableDataProvider = StateNotifierProvider<TimetableDataNotifier, TimetableData>((ref) {
+  return TimetableDataNotifier();
+});
+
+final lectureDialogTitleProvider = StateProvider<String>((ref) {
+  return '';
+});
+
+final lectureDialogTitleDataProvider = Provider<String>((ref) {
+  final String lectureDialogTitle = ref.watch(lectureDialogTitleProvider);
+  final Map<String, String> lectureDialogData = ref.watch(timeTableDataProvider).lectureData;
+  switch(lectureDialogTitle) {
+    case '開講科目名':
+      return lectureDialogData['lectureName'] ?? '';
+    case '教員名':
+      return lectureDialogData['teacherName'] ?? '';
+    case '教室':
+      return lectureDialogData['classroom'] ?? '';
+
+  }
+});
+
+/*
 class LectureData {
   ///授業データを取得
   getLectureData(String day, String period) {
@@ -156,4 +259,4 @@ class LectureData {
     return classTime;
   }
   */
-}
+}*/
