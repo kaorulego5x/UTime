@@ -85,9 +85,6 @@ class LectureDialog extends StatelessWidget {
                     child: _showLargeDropdown(
                       context,
                       title: '科目区分',
-                      itemList: lectureDialogList.getSubjectTypeList(),
-                      // TODO implement Colors
-                      dialogColor: Colors.amber,
                       // TODO:implement below
                       // selectedValue: selectedSubjectType,
                     ),
@@ -124,30 +121,18 @@ class LectureDialog extends StatelessWidget {
                         //開講区分
                         Container(
                           key: _widgetKey2,
-                          child: _smallDropdown(
+                          child: _openTermDropDown(
                             context,
                             dropDownType: DropDownType.openTerm,
-                            title: '開講区分',
-                            itemList: lectureDialogList.getOpenTermList(),
-                            // TODO:implement Color
-                            dialogColor: Colors.cyan,
-                            // TODO:implement selectedValue (?)
-                            // selectedValue : ,
                           ),
                         ),
                         const SizedBox(width: 24, child: Spacer()),
                         //単位数
                         Container(
                           key: _widgetKey3,
-                          child: _smallDropdown(
+                          child: _creditsNumberDropdown(
                             context,
                             dropDownType: DropDownType.credits,
-                            title: '単位数',
-                            itemList: lectureDialogList.getCreditsNumberList(),
-                            // TODO:implement color
-                            dialogColor: Colors.cyan,
-                            // TODO:implement selectedCredits (?)
-                            // selectedValue: selectedCredits,
                           ),
                         ),
                       ],
@@ -220,7 +205,6 @@ class LectureDialog extends StatelessWidget {
     );
   }
 
-
   //セクション名
   Text _section(String section) {
     return (Text(
@@ -234,105 +218,171 @@ class LectureDialog extends StatelessWidget {
   Column _showLargeDropdown(
     BuildContext context, {
     required String title,
-    required List<ItemModel> itemList,
-    required Color dialogColor,
     String? selectedValue,
   }) {
     return Column(
       children: [
         //セクション名
         Container(
-            height: 12,
-            margin: const EdgeInsets.only(bottom: 4),
-            child: Text(
-              title,
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 10,
-                color: UtimeColors.white.withOpacity(0.75),
-              ),
-            )),
-        //ドロップダウンボタン
-        GestureDetector(
-          onTap: () {
-            RenderBox box = _getWidgetPosition(title);
-            DropdownBuilder(
-              context,
-            ).showSubjectTypeDropdownList(216, dialogColor, box);
-          },
-          child: Container(
-            height: 32,
-            width: 216,
-            decoration: BoxDecoration(
-              color: UtimeColors.white,
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: Center(
-              child: Text('選択して下さい',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 12,
-                    fontWeight: FontWeight.bold,
-                    color: dialogColor,
-                  )),
+          height: 12,
+          margin: const EdgeInsets.only(bottom: 4),
+          child: Text(
+            '科目区分',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 10,
+              color: UtimeColors.white.withOpacity(0.75),
             ),
           ),
+        ),
+        //ドロップダウンボタン
+        Consumer(
+          builder: (context, ref, child) {
+            final Color dialogColor =
+                ref.watch(lectureDialogDataProvider).lectureData['dialogColor'] ??
+                    UtimeColors.subject1;
+            final String selectedSubjectType = ref.watch(lectureDialogDataProvider).lectureData['subjectType'] ?? '選択して下さい';
+            return GestureDetector(
+              onTap: () {
+                RenderBox box = _getWidgetPosition('科目区分');
+                DropdownBuilder(
+                  context,
+                ).showSubjectTypeDropdownList(216, dialogColor, box);
+              },
+              child: Container(
+                height: 32,
+                width: 216,
+                decoration: BoxDecoration(
+                  color: UtimeColors.white,
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Center(
+                  child: Text(
+                    selectedSubjectType,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.bold,
+                      color: dialogColor,
+                    ),
+                  ),
+                ),
+              ),
+            );
+          },
         )
       ],
     );
   }
 
-  /// 開講区分と単位数のドロップダウンボタン
-  Column _smallDropdown(
+  /// 開講区分のドロップダウンボタン
+  // TODO:Container はConsumerからはずせる
+  Consumer _openTermDropDown(
     BuildContext context, {
     required DropDownType dropDownType,
-    required String title,
-    required List<ItemModel> itemList,
-    required Color dialogColor,
     String? selectedValue,
   }) {
-    return Column(
-      children: [
-        //セクション名
-        Container(
+    return Consumer(
+      builder: (context, ref, child) {
+        final Color dialogColor =
+            ref.watch(lectureDialogDataProvider).lectureData['dialogColor'] ??
+                UtimeColors.subject1;
+        final String selectedOpenTerm =
+            ref.watch(lectureDialogDataProvider).lectureData['openTerm'] ??
+                '選択して下さい';
+        return Column(
+          children: [
+            Container(
+              height: 12,
+              margin: const EdgeInsets.only(bottom: 4),
+              child: _section(dropDownType.label),
+            ),
+            GestureDetector(
+              onTap: () {
+                RenderBox box = _getWidgetPosition('開講区分');
+                DropdownBuilder(
+                  context,
+                ).showOpenTermDropdownList(108, dialogColor, box);
+              },
+              child: Container(
+                height: 32,
+                width: 108,
+                decoration: BoxDecoration(
+                  color: dialogColor,
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Center(
+                  child: Text(
+                    selectedOpenTerm,
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.bold,
+                      color: UtimeColors.white,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  /// 単位数のドロップダウン
+  Consumer _creditsNumberDropdown(
+    BuildContext context, {
+    required DropDownType dropDownType,
+    String? selectedValue,
+  }) {
+    return Consumer(builder: (context, ref, child) {
+      Color dialogColor =
+          ref.watch(lectureDialogDataProvider).lectureData['dialogColor'] ??
+              UtimeColors.subject1;
+      final String selectedCreditsNumber =
+          ref.watch(lectureDialogDataProvider).lectureData['creditNumber'] ??
+              '選択して下さい';
+
+      return Column(
+        children: [
+          //セクション名
+          Container(
             height: 12,
             margin: const EdgeInsets.only(bottom: 4),
-            child: _section(dropDownType.label)),
-        //ドロップダウンボタン
-        GestureDetector(
-          onTap: () {
-            if (title == '開講区分') {
-              RenderBox box = _getWidgetPosition(title);
-              DropdownBuilder(
-                context,
-              ).showOpenTermDropdownList(108, dialogColor, box);
-            } else if (title == '単位数') {
-              RenderBox box = _getWidgetPosition(title);
+            child: _section(dropDownType.label),
+          ),
+          //ドロップダウンボタン
+          GestureDetector(
+            onTap: () {
+              RenderBox box = _getWidgetPosition('単位数');
               DropdownBuilder(
                 context,
               ).showCreditsNumberDropdownList(108, dialogColor, box);
-            }
-          },
-          child: Container(
-            height: 32,
-            width: 108,
-            decoration: BoxDecoration(
-              color: dialogColor,
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: Center(
-              child: Text('選択して下さい',
+            },
+            child: Container(
+              height: 32,
+              width: 108,
+              decoration: BoxDecoration(
+                color: dialogColor,
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Center(
+                child: Text(
+                  selectedCreditsNumber,
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 12,
                     fontWeight: FontWeight.bold,
                     color: UtimeColors.white,
-                  )),
+                  ),
+                ),
+              ),
             ),
           ),
-        )
-      ],
-    );
+        ],
+      );
+    });
   }
 
   /// widgetの位置を取得
@@ -436,7 +486,6 @@ class LectureDialog extends StatelessWidget {
 
 /// lectureDialog　の　Title のセット
 /// 開講区分、教員名、教室
-// TODO: ConsumerWidget内にt1までも含まれている
 class LectureDialogTitle extends StatelessWidget {
   const LectureDialogTitle(this.t1, {Key? key}) : super(key: key);
   final String t1;
@@ -463,14 +512,13 @@ class LectureDialogTitle extends StatelessWidget {
             ),
           ),
           Consumer(
-            builder: (context, ref,Widget? child) {
-              final String value = ref.watch(lectureDialogTitleDataProvider);
+            builder: (context, ref, Widget? child) {
               return Container(
                 alignment: Alignment.center,
                 height: 32,
                 width: 160,
                 child: TextFormField(
-                  initialValue: value,
+                  initialValue: '',
                   textAlign: TextAlign.center,
                   maxLines: 1,
                   style: UtimeTextStyles.lectureDialogTitle,
@@ -479,9 +527,7 @@ class LectureDialogTitle extends StatelessWidget {
                     isDense: true,
                     isCollapsed: true,
                   ),
-                  onChanged: (String? value){
-                    
-                  },
+                  onChanged: (String? value) {},
                 ),
               );
             },

@@ -16,7 +16,7 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$LectureDialogData {
-  Map<String, String> get lectureData => throw _privateConstructorUsedError;
+  Map<String, dynamic> get lectureData => throw _privateConstructorUsedError;
   String get day => throw _privateConstructorUsedError;
   String get period => throw _privateConstructorUsedError;
 
@@ -30,7 +30,7 @@ abstract class $LectureDialogDataCopyWith<$Res> {
   factory $LectureDialogDataCopyWith(
           LectureDialogData value, $Res Function(LectureDialogData) then) =
       _$LectureDialogDataCopyWithImpl<$Res>;
-  $Res call({Map<String, String> lectureData, String day, String period});
+  $Res call({Map<String, dynamic> lectureData, String day, String period});
 }
 
 /// @nodoc
@@ -52,7 +52,7 @@ class _$LectureDialogDataCopyWithImpl<$Res>
       lectureData: lectureData == freezed
           ? _value.lectureData
           : lectureData // ignore: cast_nullable_to_non_nullable
-              as Map<String, String>,
+              as Map<String, dynamic>,
       day: day == freezed
           ? _value.day
           : day // ignore: cast_nullable_to_non_nullable
@@ -72,7 +72,7 @@ abstract class _$$_LectureDialogDataCopyWith<$Res>
           $Res Function(_$_LectureDialogData) then) =
       __$$_LectureDialogDataCopyWithImpl<$Res>;
   @override
-  $Res call({Map<String, String> lectureData, String day, String period});
+  $Res call({Map<String, dynamic> lectureData, String day, String period});
 }
 
 /// @nodoc
@@ -96,7 +96,7 @@ class __$$_LectureDialogDataCopyWithImpl<$Res>
       lectureData: lectureData == freezed
           ? _value._lectureData
           : lectureData // ignore: cast_nullable_to_non_nullable
-              as Map<String, String>,
+              as Map<String, dynamic>,
       day: day == freezed
           ? _value.day
           : day // ignore: cast_nullable_to_non_nullable
@@ -113,15 +113,15 @@ class __$$_LectureDialogDataCopyWithImpl<$Res>
 
 class _$_LectureDialogData implements _LectureDialogData {
   const _$_LectureDialogData(
-      {final Map<String, String> lectureData = const {},
+      {final Map<String, dynamic> lectureData = const {},
       this.day = '',
       this.period = ''})
       : _lectureData = lectureData;
 
-  final Map<String, String> _lectureData;
+  final Map<String, dynamic> _lectureData;
   @override
   @JsonKey()
-  Map<String, String> get lectureData {
+  Map<String, dynamic> get lectureData {
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableMapView(_lectureData);
   }
@@ -165,12 +165,12 @@ class _$_LectureDialogData implements _LectureDialogData {
 
 abstract class _LectureDialogData implements LectureDialogData {
   const factory _LectureDialogData(
-      {final Map<String, String> lectureData,
+      {final Map<String, dynamic> lectureData,
       final String day,
       final String period}) = _$_LectureDialogData;
 
   @override
-  Map<String, String> get lectureData => throw _privateConstructorUsedError;
+  Map<String, dynamic> get lectureData => throw _privateConstructorUsedError;
   @override
   String get day => throw _privateConstructorUsedError;
   @override
