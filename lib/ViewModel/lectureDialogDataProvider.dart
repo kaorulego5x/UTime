@@ -92,7 +92,3 @@ class LectureDialogDataNotifier extends StateNotifier<LectureDialogData> {
   }
 
 }
-
-
-
-/// LectureDialog における開講科目名、教員名、教室のTextFormFieldの状態管理

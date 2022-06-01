@@ -85,15 +85,13 @@ class LectureDialog extends StatelessWidget {
                     child: _showLargeDropdown(
                       context,
                       title: '科目区分',
-                      // TODO:implement below
-                      // selectedValue: selectedSubjectType,
                     ),
                   ),
 
                   //授業情報
-                  const LectureDialogTitle('開講科目名'),
-                  const LectureDialogTitle('教員名'),
-                  const LectureDialogTitle('教室'),
+                  _lectureNameField(),
+                  _teacherNameField(),
+                  _classroomField(),
                 ],
               ),
             ),
@@ -214,11 +212,167 @@ class LectureDialog extends StatelessWidget {
     ));
   }
 
+  /// 開講科目名のテキストフォームフィールド
+  Container _lectureNameField() {
+    return Container(
+      margin: const EdgeInsets.only(top: 12),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Container(
+            alignment: Alignment.center,
+            height: 32,
+            width: 80,
+            child: Text(
+              '開講科目名',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 12,
+                fontWeight: FontWeight.bold,
+                color: UtimeColors.white.withOpacity(0.75),
+              ),
+            ),
+          ),
+          Consumer(
+            builder: (context, ref, Widget? child) {
+              final String initialValue =
+                  ref.watch(lectureDialogDataProvider).lectureData['lectureName'] ??
+                      '入力してください';
+              return Container(
+                alignment: Alignment.center,
+                height: 32,
+                width: 160,
+                child: TextFormField(
+                  initialValue: initialValue,
+                  textAlign: TextAlign.center,
+                  maxLines: 1,
+                  style: UtimeTextStyles.lectureDialogTitle,
+                  decoration: const InputDecoration(
+                    border: InputBorder.none,
+                    isDense: true,
+                    isCollapsed: true,
+                  ),
+                  onChanged: (String value) {
+                    ref.watch(lectureDialogDataProvider.notifier).changeLectureName(value);
+                  },
+                ),
+              );
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+  /// 開講科目名のテキストフォームフィールド
+  Container _teacherNameField() {
+    return Container(
+      margin: const EdgeInsets.only(top: 12),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Container(
+            alignment: Alignment.center,
+            height: 32,
+            width: 80,
+            child: Text(
+              '教員名',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 12,
+                fontWeight: FontWeight.bold,
+                color: UtimeColors.white.withOpacity(0.75),
+              ),
+            ),
+          ),
+          Consumer(
+            builder: (context, ref, Widget? child) {
+              final String initialValue =
+                  ref.watch(lectureDialogDataProvider).lectureData['teacherName'] ??
+                      '入力してください';
+              return Container(
+                alignment: Alignment.center,
+                height: 32,
+                width: 160,
+                child: TextFormField(
+                  initialValue: initialValue,
+                  textAlign: TextAlign.center,
+                  maxLines: 1,
+                  style: UtimeTextStyles.lectureDialogTitle,
+                  decoration: const InputDecoration(
+                    border: InputBorder.none,
+                    isDense: true,
+                    isCollapsed: true,
+                  ),
+                  onChanged: (String value) {
+                    ref.watch(lectureDialogDataProvider.notifier).changeTeacherName(value);
+                  },
+                ),
+              );
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+  /// 開講科目名のテキストフォームフィールド
+  Container _classroomField() {
+    return Container(
+      margin: const EdgeInsets.only(top: 12),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Container(
+            alignment: Alignment.center,
+            height: 32,
+            width: 80,
+            child: Text(
+              '教室',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 12,
+                fontWeight: FontWeight.bold,
+                color: UtimeColors.white.withOpacity(0.75),
+              ),
+            ),
+          ),
+          Consumer(
+            builder: (context, ref, Widget? child) {
+              final String initialValue =
+                  ref.watch(lectureDialogDataProvider).lectureData['classroom'] ??
+                      '入力してください';
+              return Container(
+                alignment: Alignment.center,
+                height: 32,
+                width: 160,
+                child: TextFormField(
+                  initialValue: initialValue,
+                  textAlign: TextAlign.center,
+                  maxLines: 1,
+                  style: UtimeTextStyles.lectureDialogTitle,
+                  decoration: const InputDecoration(
+                    border: InputBorder.none,
+                    isDense: true,
+                    isCollapsed: true,
+                  ),
+                  onChanged: (String value) {
+                    ref.watch(lectureDialogDataProvider.notifier).changeClassroom(value);
+                  },
+                ),
+              );
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+
   /// 科目区分のドロップダウンボタン
   Column _showLargeDropdown(
     BuildContext context, {
     required String title,
-    String? selectedValue,
   }) {
     return Column(
       children: [
@@ -238,10 +392,14 @@ class LectureDialog extends StatelessWidget {
         //ドロップダウンボタン
         Consumer(
           builder: (context, ref, child) {
-            final Color dialogColor =
-                ref.watch(lectureDialogDataProvider).lectureData['dialogColor'] ??
-                    UtimeColors.subject1;
-            final String selectedSubjectType = ref.watch(lectureDialogDataProvider).lectureData['subjectType'] ?? '選択して下さい';
+            final Color dialogColor = ref
+                    .watch(lectureDialogDataProvider)
+                    .lectureData['dialogColor'] ??
+                UtimeColors.subject1;
+            final String selectedSubjectType = ref
+                    .watch(lectureDialogDataProvider)
+                    .lectureData['subjectType'] ??
+                '選択して下さい';
             return GestureDetector(
               onTap: () {
                 RenderBox box = _getWidgetPosition('科目区分');
@@ -280,7 +438,6 @@ class LectureDialog extends StatelessWidget {
   Consumer _openTermDropDown(
     BuildContext context, {
     required DropDownType dropDownType,
-    String? selectedValue,
   }) {
     return Consumer(
       builder: (context, ref, child) {
@@ -334,7 +491,6 @@ class LectureDialog extends StatelessWidget {
   Consumer _creditsNumberDropdown(
     BuildContext context, {
     required DropDownType dropDownType,
-    String? selectedValue,
   }) {
     return Consumer(builder: (context, ref, child) {
       Color dialogColor =
@@ -371,7 +527,7 @@ class LectureDialog extends StatelessWidget {
                 child: Text(
                   selectedCreditsNumber,
                   textAlign: TextAlign.center,
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 12,
                     fontWeight: FontWeight.bold,
                     color: UtimeColors.white,
@@ -418,27 +574,37 @@ class LectureDialog extends StatelessWidget {
             margin: const EdgeInsets.only(top: 4, bottom: 4),
             child: _section('メモ')),
         Container(
-          height: 144,
-          width: 232,
-          padding: const EdgeInsets.only(right: 12, left: 12),
-          decoration: BoxDecoration(
-            border: Border.all(color: dialogColor),
-            borderRadius: BorderRadius.circular(8),
-          ),
-          child: const TextField(
-            keyboardType: TextInputType.multiline,
-            maxLines: null,
-            style: TextStyle(
-              color: UtimeColors.textColor,
-              fontSize: 16,
+            height: 144,
+            width: 232,
+            padding: const EdgeInsets.only(right: 12, left: 12),
+            decoration: BoxDecoration(
+              border: Border.all(color: dialogColor),
+              borderRadius: BorderRadius.circular(8),
             ),
-            decoration: InputDecoration(
-              hintText: "メモを入力",
-              hintStyle: TextStyle(fontSize: 12),
-              border: InputBorder.none,
-            ),
-          ),
-        ),
+            child: Consumer(
+              builder: (context, ref, child) {
+                return TextFormField(
+                  initialValue:
+                      ref.watch(lectureDialogDataProvider).lectureData['notes'],
+                  keyboardType: TextInputType.multiline,
+                  maxLines: null,
+                  style: const TextStyle(
+                    color: UtimeColors.textColor,
+                    fontSize: 16,
+                  ),
+                  decoration: const InputDecoration(
+                    hintText: "メモを入力",
+                    hintStyle: TextStyle(fontSize: 12),
+                    border: InputBorder.none,
+                  ),
+                  onChanged: (String value) {
+                    ref
+                        .watch(lectureDialogDataProvider.notifier)
+                        .changeNotes(value);
+                  },
+                );
+              },
+            )),
       ],
     );
   }
@@ -481,59 +647,5 @@ class LectureDialog extends StatelessWidget {
   List<bool> _getClassPeriodFlag(bool isPeriodLong) {
     if (isPeriodLong) return <bool>[true, false];
     return <bool>[false, true];
-  }
-}
-
-/// lectureDialog　の　Title のセット
-/// 開講区分、教員名、教室
-class LectureDialogTitle extends StatelessWidget {
-  const LectureDialogTitle(this.t1, {Key? key}) : super(key: key);
-  final String t1;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.only(top: 12),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Container(
-            alignment: Alignment.center,
-            height: 32,
-            width: 80,
-            child: Text(
-              t1,
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 12,
-                fontWeight: FontWeight.bold,
-                color: UtimeColors.white.withOpacity(0.75),
-              ),
-            ),
-          ),
-          Consumer(
-            builder: (context, ref, Widget? child) {
-              return Container(
-                alignment: Alignment.center,
-                height: 32,
-                width: 160,
-                child: TextFormField(
-                  initialValue: '',
-                  textAlign: TextAlign.center,
-                  maxLines: 1,
-                  style: UtimeTextStyles.lectureDialogTitle,
-                  decoration: const InputDecoration(
-                    border: InputBorder.none,
-                    isDense: true,
-                    isCollapsed: true,
-                  ),
-                  onChanged: (String? value) {},
-                ),
-              );
-            },
-          ),
-        ],
-      ),
-    );
   }
 }
