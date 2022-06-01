@@ -1,6 +1,6 @@
-/**
- * DropdownBuilderで使われてるドロップダウンボタンのリストまとめ
- */
+///
+/// DropdownBuilderで使われてるドロップダウンボタンのリストまとめ
+///
 class LectureDialogList {
   //開講区分
   final List<String> _openTermList = [

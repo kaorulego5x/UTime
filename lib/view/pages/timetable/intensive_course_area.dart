@@ -5,8 +5,13 @@ import 'package:utime/const/utime_text_styles.dart';
 import 'package:utime/view/widgets/modal_overlay.dart';
 
 class IntensiveCourseArea {
-  BuildContext context;
-  IntensiveCourseArea(this.context);
+  IntensiveCourseArea({
+    required this.context,
+    required this.yearTerm,
+  });
+
+  final BuildContext context;
+  final String yearTerm;
 
   Container showIntensiveCourseArea() {
     return //集中講義
@@ -81,7 +86,7 @@ class IntensiveCourseArea {
           elevation: 0,
         ),
         onPressed: () {
-          _showLectureDialog('intensive', '');
+          _showLectureDialog('intensive', '', yearTerm);
         },
       ),
     ));
@@ -103,28 +108,36 @@ class IntensiveCourseArea {
         color: UtimeColors.intensiveAdd,
         icon: const Icon(Icons.add_circle_outline),
         onPressed: () {
-          _showNewLectureDialog('intensive', '');
+          _showNewLectureDialog('intensive', '', yearTerm);
         },
       ),
     ));
   }
 
-  _showLectureDialog(String day, String period) {
+  _showLectureDialog(String day, String period, String yearTerm) {
     Navigator.push(
         context,
         ModalOverlay(
-          LectureDialog(day: day, period: period),
+          LectureDialog(
+            day: day,
+            period: period,
+            yearTerm: yearTerm,
+          ),
           //backボタンを有効にするかどうか
           isAndroidBackEnable: true,
         ));
   }
 
   //+ボタンを押したとき
-  _showNewLectureDialog(String day, String period) {
+  _showNewLectureDialog(String day, String period, String yearTerm) {
     Navigator.push(
         context,
         ModalOverlay(
-          LectureDialog(day: day, period: period),
+          LectureDialog(
+            day: day,
+            period: period,
+            yearTerm: yearTerm,
+          ),
           //backボタンを有効にするかどうか
           isAndroidBackEnable: true,
         ));

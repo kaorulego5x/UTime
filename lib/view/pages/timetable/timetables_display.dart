@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:utime/model/settings.dart';
 import 'package:utime/view/pages/Timetable/intensive_course_area.dart';
 import 'package:utime/ViewModel/lectureDialogDataProvider.dart';
@@ -19,8 +20,10 @@ class TimetablesDisplay extends StatefulWidget {
 class _TimetablesDisplayState extends State<TimetablesDisplay> {
   //表示する時間割データ
   TimetablesData timetablesData = TimetablesData();
+
   //ユーザーのステータスのデータ
   Settings settings = Settings();
+
   //授業データ
   // LectureData lectureData = LectureData();
 
@@ -153,7 +156,7 @@ class _TimetablesDisplayState extends State<TimetablesDisplay> {
                   ],
                 ),
                 //集中講義
-                _showIntensiveCourseArea(),
+                _showIntensiveCourseArea(yearTermData),
               ],
             ),
           ),
@@ -173,28 +176,28 @@ class _TimetablesDisplayState extends State<TimetablesDisplay> {
 
   //曜日のウィジェット
   SizedBox _day(String day) {
-    return (SizedBox(
+    return SizedBox(
       width: classWidth,
       child: Text(
         day,
         textAlign: TextAlign.center,
         style: UtimeTextStyles.TimetablesDisplayDay,
       ),
-    ));
+    );
   }
 
   //時間割の区切りの時間を表示するウィジェット
   Text _time(String time) {
-    return (Text(
+    return Text(
       time,
       textAlign: TextAlign.center,
       style: UtimeTextStyles.TimetablesDisplayTime,
-    ));
+    );
   }
 
   //何限かを表示するウィジェット
   Container _periodNumber(String period) {
-    return (Container(
+    return Container(
       width: 24,
       height: classHeight - 20,
       alignment: Alignment.center,
@@ -202,35 +205,42 @@ class _TimetablesDisplayState extends State<TimetablesDisplay> {
         period,
         style: UtimeTextStyles.TimetablesDisplayPeriod,
       ),
-    ));
+    );
   }
 
-  ///1コマのウィジェット
+  /// 1コマのウィジェット
   SizedBox _lecture(String yearTerm, String day, String period) {
     Map<String, dynamic> lectureBoxData = timetablesData.getLectureBoxData(
         settings.getCourse(), yearTerm, day, period);
-    return (SizedBox(
+    return SizedBox(
       width: classWidth,
       height: classHeight,
-      child: ElevatedButton(
-        child: Text(
-          lectureBoxData["lectureName"],
-          style: UtimeTextStyles.TimetablesDisplayLectureName,
-        ),
-        style: ElevatedButton.styleFrom(
-          primary: lectureBoxData["lectureColor"],
-          elevation: 0,
-        ),
-        onPressed: () {
-          _showLectureDialog(day, period);
+      child: Consumer(
+        builder: (context, ref, child) {
+          return ElevatedButton(
+            child: Text(
+              lectureBoxData["lectureName"],
+              style: UtimeTextStyles.TimetablesDisplayLectureName,
+            ),
+            style: ElevatedButton.styleFrom(
+              primary: lectureBoxData["lectureColor"],
+              elevation: 0,
+            ),
+            onPressed: () {
+              ref
+                  .watch(lectureDialogDataProvider.notifier)
+                  .getDialogData(yearTerm: yearTerm, day: day, period: period);
+              _showLectureDialog(day:day,period: period, yearTerm: yearTerm);
+            },
+          );
         },
       ),
-    ));
+    );
   }
 
   ///コマを何限かによって行でまとめたウィジェット
   SizedBox _period(String yearTerm, String period) {
-    return (SizedBox(
+    return SizedBox(
       child: Row(
         children: [
           _lecture(yearTerm, 'Mon', period),
@@ -244,61 +254,68 @@ class _TimetablesDisplayState extends State<TimetablesDisplay> {
           _lecture(yearTerm, 'Fri', period),
         ],
       ),
-    ));
+    );
   }
 
   //集中講義エリアを表示
-  _showIntensiveCourseArea() {
-    IntensiveCourseArea intensiveCourseArea = IntensiveCourseArea(context);
+  _showIntensiveCourseArea(String yearTerm) {
+    IntensiveCourseArea intensiveCourseArea = IntensiveCourseArea(context:context, yearTerm:yearTerm,);
     return intensiveCourseArea.showIntensiveCourseArea();
   }
 
-  _showLectureDialog(String day, String period) {
+  _showLectureDialog({
+    required String day,
+    required String period,
+    required String yearTerm,
+  }) {
     Navigator.push(
-        context,
-        ModalOverlay(
-          LectureDialog(day: day, period: period),
-          //backボタンを有効にするかどうか
-          isAndroidBackEnable: true,
-        ));
+      context,
+      ModalOverlay(
+        LectureDialog(day: day, period: period, yearTerm: yearTerm),
+        //backボタンを有効にするかどうか
+        isAndroidBackEnable: true,
+      ),
+    );
   }
 
   //メニューボタンをタップした時
   _onMenuButtonTapped() {
-    return (ListView(children: <Widget>[
-      const SizedBox(
-        height: 64,
-        width: 160,
-        child: DrawerHeader(
-          child:
-              Text('UTime', style: UtimeTextStyles.TimetablesDisplayMenuTitle),
-          decoration: BoxDecoration(
-            color: UtimeColors.white,
-            border: Border(
-              bottom: BorderSide(color: UtimeColors.menuAccent),
+    return ListView(
+      children: <Widget>[
+        const SizedBox(
+          height: 64,
+          width: 160,
+          child: DrawerHeader(
+            child: Text('UTime',
+                style: UtimeTextStyles.TimetablesDisplayMenuTitle),
+            decoration: BoxDecoration(
+              color: UtimeColors.white,
+              border: Border(
+                bottom: BorderSide(color: UtimeColors.menuAccent),
+              ),
             ),
           ),
         ),
-      ),
-      const ListTile(
-        title: Text('1年', style: UtimeTextStyles.TimetablesDisplayMenuGrade),
-      ),
-      _listTitle('S1ターム', '1S1'),
-      _listTitle('S2ターム', '1S2'),
-      _listTitle('A1ターム', '1A1'),
-      _listTitle('A2ターム', '1A2'),
-      const ListTile(
-        title: Text('2年',
-            style: TextStyle(
-              fontSize: 16,
-              color: UtimeColors.menuAccent,
-            )),
-      ),
-      _listTitle('S1ターム', '2S1'),
-      _listTitle('S2ターム', '2S2'),
-      _listTitle('A1ターム', '2A1'),
-      _listTitle('A2ターム', '2A2'),
-    ]));
+        const ListTile(
+          title: Text('1年', style: UtimeTextStyles.TimetablesDisplayMenuGrade),
+        ),
+        _listTitle('S1ターム', '1S1'),
+        _listTitle('S2ターム', '1S2'),
+        _listTitle('A1ターム', '1A1'),
+        _listTitle('A2ターム', '1A2'),
+        const ListTile(
+          title: Text('2年',
+              style: TextStyle(
+                fontSize: 16,
+                color: UtimeColors.menuAccent,
+              )),
+        ),
+        _listTitle('S1ターム', '2S1'),
+        _listTitle('S2ターム', '2S2'),
+        _listTitle('A1ターム', '2A1'),
+        _listTitle('A2ターム', '2A2'),
+      ],
+    );
   }
 
   //メニューに表示されているリストの要素

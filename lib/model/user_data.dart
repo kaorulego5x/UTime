@@ -8,10 +8,10 @@ import 'dart:convert';
 class UserData {
   static Map<String, dynamic> defaultTimetable = {
     "lectureName": "", // 任意の文字列（30文字以内？）
-    "openTerm": "", // "s", "a", "s1", "s2", "a1", "a2", "w"
+    "openTerm": "選択して下さい", // "s", "a", "s1", "s2", "a1", "a2", "w"
     "subjectType":
-        "", // "kiso", "l", "a", "b", "c", "d", "e", "f", "shudai", "tenkai"
-    "creditNumber": 0.0, // 1.0, 2.0
+        "選択して下さい", // "kiso", "l", "a", "b", "c", "d", "e", "f", "shudai", "tenkai"
+    "creditNumber": "選択して下さい", // 1.0, 2.0
     "score": 0, // 0～100の整数
     "teacherName": "", // 任意の文字列（30文字以内？）
     "classroom": "", // 任意の文字列（30文字以内？）
@@ -70,10 +70,10 @@ class UserData {
   // }
 
   /// 現在の "user"というkeyのvalueを取得（なければデフォルトのもの）にしてMap型の userData として取得
-  Future<Map> getUserData() async {
+  Future<Map<String, dynamic>> getUserData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String userString = prefs.getString("user") ?? jsonEncode(defaultUserData);
-    Map userData = jsonDecode(userString);
+    Map<String, dynamic> userData = jsonDecode(userString);
     return userData;
   }
 
@@ -87,9 +87,8 @@ class UserData {
   /// 表示する時はこんな感じ（関数名はこうではなくそのまま取得できると思う）
   /// 「科類を取得 → 表示する」例
   Future<String> getCourse() async {
-    String course = "";
     Map userData = await getUserData();
-    course = userData["course"];
+    String course = userData["course"] ?? '';
     return course;
   }
 
@@ -135,23 +134,24 @@ class UserData {
   }
 
   Future<Map> getTimetable(String? yearTerm, String? day, period) async {
-    Map Timetable;
+    Map timetable;
     Map userData = await getUserData();
-    Timetable = userData["TimetablesDisplay"][yearTerm][day][period];
-    return Timetable;
+    timetable = userData["TimetablesDisplay"][yearTerm][day][period];
+    return timetable;
   }
 
-  void setTimetable(
-      {Map? Timetable,
-      String? yearTerm,
-      String? day,
-      String period = "0"}) async {
+  void setTimetable({
+    required Map timetable,
+    required String yearTerm,
+    required String day,
+    required String period,
+  }) async {
     Map userData = await getUserData();
     Map termTimetablesDisplay = userData["TimetablesDisplay"][yearTerm];
     if (day == "intensive") {
-      termTimetablesDisplay[day].add(Timetable);
+      termTimetablesDisplay[day].add(timetable);
     } else {
-      termTimetablesDisplay[day][period] = Timetable;
+      termTimetablesDisplay[day][period] = timetable;
     }
     setUserData(userData);
   }

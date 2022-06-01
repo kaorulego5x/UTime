@@ -26,15 +26,19 @@ extension DropDownTypeExtension on DropDownType {
 }
 
 class LectureDialog extends StatelessWidget {
-  LectureDialog({Key? key, required this.day, required this.period})
-      : super(key: key);
-
+  LectureDialog({
+    Key? key,
+    required this.day,
+    required this.yearTerm,
+    required this.period,
+  }) : super(key: key);
+  final String yearTerm;
   final String day;
   final String period;
   final LectureDialogList lectureDialogList = LectureDialogList();
   final UtimeColors utimeColors = UtimeColors();
 
-  //List<bool> _isOpen = [true];
+  // List<bool> _isOpen = [true];
   final GlobalKey _widgetKey1 = GlobalKey();
   final GlobalKey _widgetKey2 = GlobalKey();
   final GlobalKey _widgetKey3 = GlobalKey();
@@ -59,7 +63,7 @@ class LectureDialog extends StatelessWidget {
               width: 280,
               decoration: const BoxDecoration(
                 // TODO:Implement Color Setting
-                color: Colors.black,
+                color: UtimeColors.subject1,
                 borderRadius: BorderRadius.only(
                   topRight: Radius.circular(12),
                   topLeft: Radius.circular(12),
@@ -138,20 +142,21 @@ class LectureDialog extends StatelessWidget {
                   ),
                   //メモ
                   // TODO:implement Colors
-                  _memo(Colors.cyan),
+                  _memo(UtimeColors.subject1),
                   // _memo(_dataToShow['dialogColor']),
                   //授業時間ボタン
                   // TODO:implement This
-                  /*
                   Container(
                     width: 232,
                     margin: const EdgeInsets.only(top: 12),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
+                        /*
                         //授業時間ボタン
                         _classTimeToggle(_dataToShow['classTime'],
                             _dataToShow['dialogColor']),
+                         */
                         //点数入力欄
                         /* Container(
                                   width: 28,
@@ -181,6 +186,26 @@ class LectureDialog extends StatelessWidget {
                                 ),
                               ),
                             */
+                        // TODO:Design はおまかせします
+                        Consumer(
+                          builder: (context, ref, child) {
+                            return OutlinedButton(
+                              child: const Text(
+                                '決定',
+                                style: TextStyle(color: UtimeColors.textColor),
+                              ),
+                              onPressed: () {
+                                ref
+                                    .watch(lectureDialogDataProvider.notifier)
+                                    .setDialogData(
+                                        yearTerm: yearTerm,
+                                        day: day,
+                                        period: period);
+                                Navigator.pop(context);
+                              },
+                            );
+                          },
+                        ),
                         //クリアボタン
                         IconButton(
                           iconSize: 24,
@@ -193,7 +218,6 @@ class LectureDialog extends StatelessWidget {
                       ],
                     ),
                   ),
-                  */
                 ],
               ),
             ),
@@ -235,9 +259,10 @@ class LectureDialog extends StatelessWidget {
           ),
           Consumer(
             builder: (context, ref, Widget? child) {
-              final String initialValue =
-                  ref.watch(lectureDialogDataProvider).lectureData['lectureName'] ??
-                      '入力してください';
+              final String initialValue = ref
+                      .watch(lectureDialogDataProvider)
+                      .lectureData['lectureName'] ??
+                  '入力してください';
               return Container(
                 alignment: Alignment.center,
                 height: 32,
@@ -253,7 +278,9 @@ class LectureDialog extends StatelessWidget {
                     isCollapsed: true,
                   ),
                   onChanged: (String value) {
-                    ref.watch(lectureDialogDataProvider.notifier).changeLectureName(value);
+                    ref
+                        .watch(lectureDialogDataProvider.notifier)
+                        .changeLectureName(value);
                   },
                 ),
               );
@@ -287,9 +314,10 @@ class LectureDialog extends StatelessWidget {
           ),
           Consumer(
             builder: (context, ref, Widget? child) {
-              final String initialValue =
-                  ref.watch(lectureDialogDataProvider).lectureData['teacherName'] ??
-                      '入力してください';
+              final String initialValue = ref
+                      .watch(lectureDialogDataProvider)
+                      .lectureData['teacherName'] ??
+                  '';
               return Container(
                 alignment: Alignment.center,
                 height: 32,
@@ -305,7 +333,9 @@ class LectureDialog extends StatelessWidget {
                     isCollapsed: true,
                   ),
                   onChanged: (String value) {
-                    ref.watch(lectureDialogDataProvider.notifier).changeTeacherName(value);
+                    ref
+                        .watch(lectureDialogDataProvider.notifier)
+                        .changeTeacherName(value);
                   },
                 ),
               );
@@ -339,9 +369,10 @@ class LectureDialog extends StatelessWidget {
           ),
           Consumer(
             builder: (context, ref, Widget? child) {
-              final String initialValue =
-                  ref.watch(lectureDialogDataProvider).lectureData['classroom'] ??
-                      '入力してください';
+              final String initialValue = ref
+                      .watch(lectureDialogDataProvider)
+                      .lectureData['classroom'] ??
+                  '入力してください';
               return Container(
                 alignment: Alignment.center,
                 height: 32,
@@ -357,7 +388,9 @@ class LectureDialog extends StatelessWidget {
                     isCollapsed: true,
                   ),
                   onChanged: (String value) {
-                    ref.watch(lectureDialogDataProvider.notifier).changeClassroom(value);
+                    ref
+                        .watch(lectureDialogDataProvider.notifier)
+                        .changeClassroom(value);
                   },
                 ),
               );
@@ -367,7 +400,6 @@ class LectureDialog extends StatelessWidget {
       ),
     );
   }
-
 
   /// 科目区分のドロップダウンボタン
   Column _showLargeDropdown(
@@ -574,43 +606,44 @@ class LectureDialog extends StatelessWidget {
             margin: const EdgeInsets.only(top: 4, bottom: 4),
             child: _section('メモ')),
         Container(
-            height: 144,
-            width: 232,
-            padding: const EdgeInsets.only(right: 12, left: 12),
-            decoration: BoxDecoration(
-              border: Border.all(color: dialogColor),
-              borderRadius: BorderRadius.circular(8),
-            ),
-            child: Consumer(
-              builder: (context, ref, child) {
-                return TextFormField(
-                  initialValue:
-                      ref.watch(lectureDialogDataProvider).lectureData['notes'],
-                  keyboardType: TextInputType.multiline,
-                  maxLines: null,
-                  style: const TextStyle(
-                    color: UtimeColors.textColor,
-                    fontSize: 16,
-                  ),
-                  decoration: const InputDecoration(
-                    hintText: "メモを入力",
-                    hintStyle: TextStyle(fontSize: 12),
-                    border: InputBorder.none,
-                  ),
-                  onChanged: (String value) {
-                    ref
-                        .watch(lectureDialogDataProvider.notifier)
-                        .changeNotes(value);
-                  },
-                );
-              },
-            )),
+          height: 144,
+          width: 232,
+          padding: const EdgeInsets.only(right: 12, left: 12),
+          decoration: BoxDecoration(
+            border: Border.all(color: dialogColor),
+            borderRadius: BorderRadius.circular(8),
+          ),
+          child: Consumer(
+            builder: (context, ref, child) {
+              return TextFormField(
+                initialValue:
+                    ref.watch(lectureDialogDataProvider).lectureData['notes'],
+                keyboardType: TextInputType.multiline,
+                maxLines: null,
+                style: const TextStyle(
+                  color: UtimeColors.textColor,
+                  fontSize: 16,
+                ),
+                decoration: const InputDecoration(
+                  hintText: "メモを入力",
+                  hintStyle: TextStyle(fontSize: 12),
+                  border: InputBorder.none,
+                ),
+                onChanged: (String value) {
+                  ref
+                      .watch(lectureDialogDataProvider.notifier)
+                      .changeNotes(value);
+                },
+              );
+            },
+          ),
+        ),
       ],
     );
   }
 
-  //授業時間のトグルボタン
-  //TODO:implement This!
+  /// 授業時間のトグルボタン
+  // TODO:Implement!!
   /*
   SizedBox _classTimeToggle(int classTime, Color dialogColor) {
     return SizedBox(
@@ -633,16 +666,12 @@ class LectureDialog extends StatelessWidget {
         //選択されている方の背景色
         selectedBorderColor: dialogColor,
         //選択されている方の枠の色
-        onPressed: (int index) {
-          setState(() {
-            isPeriodLong = index == 0;
-          });
-        },
+        onPressed: (int index) {},
         isSelected: _getClassPeriodFlag(isPeriodLong),
       ),
     );
   }
-  */
+   */
 
   List<bool> _getClassPeriodFlag(bool isPeriodLong) {
     if (isPeriodLong) return <bool>[true, false];
