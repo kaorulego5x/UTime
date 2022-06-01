@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:utime/model/settings.dart';
 import 'package:utime/view/pages/Timetable/intensive_course_area.dart';
-import 'package:utime/model/lecture_data.dart';
+import 'package:utime/ViewModel/lectureDialogDataProvider.dart';
 import 'package:utime/view/pages/Timetable/lecture_dialog.dart';
 import 'package:utime/const/utime_colors.dart';
 import 'package:utime/const/utime_text_styles.dart';
@@ -22,7 +22,7 @@ class _TimetablesDisplayState extends State<TimetablesDisplay> {
   //ユーザーのステータスのデータ
   Settings settings = Settings();
   //授業データ
-  LectureData lectureData = LectureData();
+  // LectureData lectureData = LectureData();
 
   //サイズ
   double screenHeight = 0;

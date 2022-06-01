@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 //<<<<<<< HEAD:lib/view/pages/Timetable/lecture_dialog.dart
 import 'package:utime/const/term.dart';
-import 'package:utime/model/lecture_data.dart';
+import 'package:utime/ViewModel/lectureDialogDataProvider.dart';
 import 'package:utime/model/lecture_dialog_list.dart';
 import 'package:utime/const/utime_colors.dart';
 import 'package:utime/const/utime_text_styles.dart';
@@ -79,24 +79,28 @@ class LectureDialog extends StatelessWidget {
                   //科目区分ドロップダウンボタン
                   //TODO:開講区分ドロップダウンの実装
                   Container(
-                      key: _widgetKey1,
-                      margin: const EdgeInsets.only(bottom: 8),
-                      height: 48,
-                      child: _showLargeDropdown(
-                          '科目区分',
-                          lectureDialogList.getSubjectTypeList(),
-                          _dataToShow['dialogColor'],
-                          selectedSubjectType),),
+                    key: _widgetKey1,
+                    margin: const EdgeInsets.only(bottom: 8),
+                    height: 48,
+                    child: _showLargeDropdown(
+                      context,
+                      title: '科目区分',
+                      itemList: lectureDialogList.getSubjectTypeList(),
+                      // TODO implement Colors
+                      dialogColor: Colors.amber,
+                      // TODO:implement below
+                      // selectedValue: selectedSubjectType,
+                    ),
+                  ),
 
                   //授業情報
-                  const TimetableTitle('開講科目名'),
-                  const TimetableTitle('教員名'),
-                  const TimetableTitle('教室'),
+                  const LectureDialogTitle('開講科目名'),
+                  const LectureDialogTitle('教員名'),
+                  const LectureDialogTitle('教室'),
                 ],
               ),
             ),
             //白い部分
-            // TODO: 以下触れていません。がんばれいで！！　by 6/1 3:41の井出
             Container(
               height: 318,
               width: 280,
@@ -121,29 +125,41 @@ class LectureDialog extends StatelessWidget {
                         Container(
                           key: _widgetKey2,
                           child: _smallDropdown(
-                              DropDownType.openTerm,
-                              '開講区分',
-                              lectureDialogList.getOpenTermList(),
-                              _dataToShow['dialogColor'],
-                              selectedOpenTerm),
+                            context,
+                            dropDownType: DropDownType.openTerm,
+                            title: '開講区分',
+                            itemList: lectureDialogList.getOpenTermList(),
+                            // TODO:implement Color
+                            dialogColor: Colors.cyan,
+                            // TODO:implement selectedValue (?)
+                            // selectedValue : ,
+                          ),
                         ),
                         const SizedBox(width: 24, child: Spacer()),
                         //単位数
                         Container(
                           key: _widgetKey3,
                           child: _smallDropdown(
-                              DropDownType.credits,
-                              '単位数',
-                              lectureDialogList.getCreditsNumberList(),
-                              _dataToShow['dialogColor'],
-                              selectedCredits),
+                            context,
+                            dropDownType: DropDownType.credits,
+                            title: '単位数',
+                            itemList: lectureDialogList.getCreditsNumberList(),
+                            // TODO:implement color
+                            dialogColor: Colors.cyan,
+                            // TODO:implement selectedCredits (?)
+                            // selectedValue: selectedCredits,
+                          ),
                         ),
                       ],
                     ),
                   ),
                   //メモ
-                  _memo(_dataToShow['dialogColor']),
+                  // TODO:implement Colors
+                  _memo(Colors.cyan),
+                  // _memo(_dataToShow['dialogColor']),
                   //授業時間ボタン
+                  // TODO:implement This
+                  /*
                   Container(
                     width: 232,
                     margin: const EdgeInsets.only(top: 12),
@@ -188,15 +204,13 @@ class LectureDialog extends StatelessWidget {
                           color: UtimeColors.deleteIcon,
                           icon: const Icon(Icons.delete),
                           onPressed: () {
-                            setState(() {
-                              _dataToShow = lectureData
-                                  .setDefaultLectureData(_dataToShow);
-                            });
+                            // TODO:全データを消去する処理の実装
                           },
                         )
                       ],
                     ),
                   ),
+                  */
                 ],
               ),
             ),
@@ -206,43 +220,6 @@ class LectureDialog extends StatelessWidget {
     );
   }
 
-  ///表示する授業データを取得
-  getLectureData(String day, String period) {
-    Map lectureMapData = lectureData.getLectureData(day, period);
-    return lectureMapData;
-  }
-
-  ///取っている（データがある）授業を表示
-  /*void showTakenLectureDialog(String day, String period) {
-    Map dataToShow = lectureData.getLectureData(day, period);
-    _showLectureDialog(day, period, dataToShow);
-  }
-
-  ///空のデフォルトLectureDialogを表示
-  void showDefaultLectureDialog(String day, String period) {
-    Map dataToShow = lectureData.getDefaultLectureData(day, period);
-    _showLectureDialog(day, period, dataToShow);
-  }*/
-
-  /*
-   * 表示
-   */
-  /*void _showLectureDialog(String day, String period, Map dataToShow) {
-    Navigator.push(
-        context,
-        ModalOverlay(
-
-          //backボタンを有効にするかどうか
-          isAndroidBackEnable: true,
-        ));
-  }*/
-
-  /*
-   * 非表示
-   */
-  void hideCustomDialog() {
-    Navigator.of(context).pop();
-  }
 
   //セクション名
   Text _section(String section) {
@@ -253,9 +230,14 @@ class LectureDialog extends StatelessWidget {
     ));
   }
 
-  //科目区分のドロップダウンボタン
-  Column _showLargeDropdown(String title, List<ItemModel> itemList,
-      Color dialogColor, String? selectedValue) {
+  /// 科目区分のドロップダウンボタン
+  Column _showLargeDropdown(
+    BuildContext context, {
+    required String title,
+    required List<ItemModel> itemList,
+    required Color dialogColor,
+    String? selectedValue,
+  }) {
     return Column(
       children: [
         //セクション名
@@ -300,9 +282,15 @@ class LectureDialog extends StatelessWidget {
     );
   }
 
-  //開講区分と単位数のドロップダウンボタン
-  Column _smallDropdown(DropDownType dropDownType, String title,
-      List<ItemModel> itemList, Color dialogColor, String? selectedValue) {
+  /// 開講区分と単位数のドロップダウンボタン
+  Column _smallDropdown(
+    BuildContext context, {
+    required DropDownType dropDownType,
+    required String title,
+    required List<ItemModel> itemList,
+    required Color dialogColor,
+    String? selectedValue,
+  }) {
     return Column(
       children: [
         //セクション名
@@ -347,7 +335,7 @@ class LectureDialog extends StatelessWidget {
     );
   }
 
-  //widgetの位置を取得
+  /// widgetの位置を取得
   _getWidgetPosition(String title) {
     final RenderBox renderBox1 =
         _widgetKey1.currentContext?.findRenderObject() as RenderBox;
@@ -372,7 +360,7 @@ class LectureDialog extends StatelessWidget {
     }
   }
 
-  //メモウィジェット
+  /// メモウィジェット
   Column _memo(Color dialogColor) {
     return Column(
       children: [
@@ -380,31 +368,34 @@ class LectureDialog extends StatelessWidget {
             margin: const EdgeInsets.only(top: 4, bottom: 4),
             child: _section('メモ')),
         Container(
-            height: 144,
-            width: 232,
-            padding: const EdgeInsets.only(right: 12, left: 12),
-            decoration: BoxDecoration(
-              border: Border.all(color: dialogColor),
-              borderRadius: BorderRadius.circular(8),
+          height: 144,
+          width: 232,
+          padding: const EdgeInsets.only(right: 12, left: 12),
+          decoration: BoxDecoration(
+            border: Border.all(color: dialogColor),
+            borderRadius: BorderRadius.circular(8),
+          ),
+          child: const TextField(
+            keyboardType: TextInputType.multiline,
+            maxLines: null,
+            style: TextStyle(
+              color: UtimeColors.textColor,
+              fontSize: 16,
             ),
-            child: const TextField(
-              keyboardType: TextInputType.multiline,
-              maxLines: null,
-              style: TextStyle(
-                color: UtimeColors.textColor,
-                fontSize: 16,
-              ),
-              decoration: InputDecoration(
-                hintText: "メモを入力",
-                hintStyle: TextStyle(fontSize: 12),
-                border: InputBorder.none,
-              ),
-            )),
+            decoration: InputDecoration(
+              hintText: "メモを入力",
+              hintStyle: TextStyle(fontSize: 12),
+              border: InputBorder.none,
+            ),
+          ),
+        ),
       ],
     );
   }
 
   //授業時間のトグルボタン
+  //TODO:implement This!
+  /*
   SizedBox _classTimeToggle(int classTime, Color dialogColor) {
     return SizedBox(
       height: 32,
@@ -435,6 +426,7 @@ class LectureDialog extends StatelessWidget {
       ),
     );
   }
+  */
 
   List<bool> _getClassPeriodFlag(bool isPeriodLong) {
     if (isPeriodLong) return <bool>[true, false];
@@ -445,13 +437,12 @@ class LectureDialog extends StatelessWidget {
 /// lectureDialog　の　Title のセット
 /// 開講区分、教員名、教室
 // TODO: ConsumerWidget内にt1までも含まれている
-class TimetableTitle extends ConsumerWidget {
-  const TimetableTitle(this.t1, {Key? key}) : super(key: key);
+class LectureDialogTitle extends StatelessWidget {
+  const LectureDialogTitle(this.t1, {Key? key}) : super(key: key);
   final String t1;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final String value = ref.watch(lectureDialogTitleDataProvider);
+  Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.only(top: 12),
       child: Row(
@@ -471,21 +462,29 @@ class TimetableTitle extends ConsumerWidget {
               ),
             ),
           ),
-          Container(
-            alignment: Alignment.center,
-            height: 32,
-            width: 160,
-            child: TextFormField(
-              initialValue: value,
-              textAlign: TextAlign.center,
-              maxLines: 1,
-              style: UtimeTextStyles.lectureDialogTitle,
-              decoration: const InputDecoration(
-                border: InputBorder.none,
-                isDense: true,
-                isCollapsed: true,
-              ),
-            ),
+          Consumer(
+            builder: (context, ref,Widget? child) {
+              final String value = ref.watch(lectureDialogTitleDataProvider);
+              return Container(
+                alignment: Alignment.center,
+                height: 32,
+                width: 160,
+                child: TextFormField(
+                  initialValue: value,
+                  textAlign: TextAlign.center,
+                  maxLines: 1,
+                  style: UtimeTextStyles.lectureDialogTitle,
+                  decoration: const InputDecoration(
+                    border: InputBorder.none,
+                    isDense: true,
+                    isCollapsed: true,
+                  ),
+                  onChanged: (String? value){
+                    
+                  },
+                ),
+              );
+            },
           ),
         ],
       ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:utime/model/settings.dart';
 import 'package:utime/view/pages/average/coming_soon.dart';
 import 'package:utime/view/pages/credits/credits_number.dart';
@@ -8,7 +9,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:shared_preferences/shared_preferences.dart'; // 追記する
 
 void main() {
-  runApp(const MyApp());
+  runApp(const ProviderScope(child: MyApp()));
 }
 
 class MyApp extends StatelessWidget {

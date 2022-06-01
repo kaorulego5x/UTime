@@ -3,15 +3,15 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:utime/const/utime_colors.dart';
 
-part 'lecture_data.freezed.dart';
+part 'lectureDialogDataProvider.freezed.dart';
 
 @freezed
-class TimetableData with _$TimetableData {
-  const factory TimetableData({
+class LectureDialogData with _$LectureDialogData {
+  const factory LectureDialogData({
     @Default({}) Map<String, String> lectureData,
     @Default('') String day,
     @Default('') String period,
-  }) = _TimetableData;
+  }) = _LectureDialogData;
   // LectureData
   // key:
   // lectureName,
@@ -27,8 +27,8 @@ class TimetableData with _$TimetableData {
   // dropDownColor,
 }
 
-class TimetableDataNotifier extends StateNotifier<TimetableData> {
-  TimetableDataNotifier() : super(const TimetableData());
+class LectureDialogDataNotifier extends StateNotifier<LectureDialogData> {
+  LectureDialogDataNotifier() : super(const LectureDialogData());
 
   /// Change subject Type
   void changeSubjectType(String newValue) {
@@ -80,9 +80,10 @@ class TimetableDataNotifier extends StateNotifier<TimetableData> {
   }
 }
 
+
 /// LectureDialog の開講科目名、教員名、教室の状態管理
-final timeTableDataProvider = StateNotifierProvider<TimetableDataNotifier, TimetableData>((ref) {
-  return TimetableDataNotifier();
+final lectureDialogDataProvider = StateNotifierProvider<LectureDialogDataNotifier, LectureDialogData>((ref) {
+  return LectureDialogDataNotifier();
 });
 
 final lectureDialogTitleProvider = StateProvider<String>((ref) {
@@ -91,7 +92,7 @@ final lectureDialogTitleProvider = StateProvider<String>((ref) {
 
 final lectureDialogTitleDataProvider = Provider<String>((ref) {
   final String lectureDialogTitle = ref.watch(lectureDialogTitleProvider);
-  final Map<String, String> lectureDialogData = ref.watch(timeTableDataProvider).lectureData;
+  final Map<String, String> lectureDialogData = ref.watch(lectureDialogDataProvider).lectureData;
   switch(lectureDialogTitle) {
     case '開講科目名':
       return lectureDialogData['lectureName'] ?? '';
@@ -99,7 +100,8 @@ final lectureDialogTitleDataProvider = Provider<String>((ref) {
       return lectureDialogData['teacherName'] ?? '';
     case '教室':
       return lectureDialogData['classroom'] ?? '';
-
+    default:
+      return 'Something went wrong.';
   }
 });
 
