@@ -103,6 +103,15 @@ class LectureDialogDataNotifier extends StateNotifier<LectureDialogData> {
   }
 
   ///
+  /// 初期化
+  ///
+
+  void resetDialogData() {
+    final Map newLectureData = UserData.defaultTimetable;
+    state = state.copyWith(lectureData: newLectureData);
+  }
+
+  ///
   /// ゲット部分（ダイアログを開いたときにデータを取得する初期値）
   ///
 
@@ -120,6 +129,7 @@ class LectureDialogDataNotifier extends StateNotifier<LectureDialogData> {
   ///
   ///  セット部分（ダイアログを閉じたとき）
   ///
+
   void setDialogData({
     required String yearTerm,
     required String day,
@@ -184,5 +194,4 @@ final lectureDialogColorProvider = Provider<Color>((ref) {
       }
     }
    */
-
 });

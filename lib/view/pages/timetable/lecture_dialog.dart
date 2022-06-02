@@ -209,14 +209,7 @@ class LectureDialog extends StatelessWidget {
                           },
                         ),
                         //クリアボタン
-                        IconButton(
-                          iconSize: 24,
-                          color: UtimeColors.deleteIcon,
-                          icon: const Icon(Icons.delete),
-                          onPressed: () {
-                            // TODO:全データを消去する処理の実装
-                          },
-                        )
+                        resetButton(),
                       ],
                     ),
                   ),
@@ -457,7 +450,7 @@ class LectureDialog extends StatelessWidget {
                       fontWeight: FontWeight.bold,
                       // TODO:文字色まで変化させると見ずらい
                       // 色も変える必要があるかも？
-                      // パステルカラーバックグラウンド　x 白文字　は　UI よくない
+                      // パステルカラーバックグラウンド　x 白文字　は　見ずらい
                       color: ref.watch(lectureDialogColorProvider),
                     ),
                   ),
@@ -572,6 +565,22 @@ class LectureDialog extends StatelessWidget {
         ],
       );
     });
+  }
+
+  /// clearButton
+  Consumer resetButton() {
+    return Consumer(
+      builder: (context, ref, child) {
+        return IconButton(
+          iconSize: 24,
+          color: UtimeColors.deleteIcon,
+          icon: const Icon(Icons.delete),
+          onPressed: () {
+            ref.watch(lectureDialogDataProvider.notifier).resetDialogData();
+          },
+        );
+      },
+    );
   }
 
   /// widgetの位置を取得
