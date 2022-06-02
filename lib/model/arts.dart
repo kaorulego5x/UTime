@@ -1,3 +1,5 @@
+//文系
+
 class Arts {
   //科類
   final String course;
