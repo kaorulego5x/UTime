@@ -97,9 +97,10 @@ class LectureDialogDataNotifier extends StateNotifier<LectureDialogData> {
   }
 
   /// Change classTime
-  void changeClassTime(String newValue) {
+  void changeClassTime(int index) {
     final Map newLectureData = {...state.lectureData};
-    newLectureData['classTime'] = newValue;
+    final List<String> classTime = ['90', '105'];
+    newLectureData['classTime'] = classTime[index];
     state = state.copyWith(lectureData: newLectureData);
   }
 
