@@ -154,11 +154,7 @@ class LectureDialog extends StatelessWidget {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        /*
-                        //授業時間ボタン
-                        _classTimeToggle(_dataToShow['classTime'],
-                            _dataToShow['dialogColor']),
-                         */
+                        _classTimeToggle(),
                         //点数入力欄
                         /* Container(
                                   width: 28,
@@ -464,7 +460,6 @@ class LectureDialog extends StatelessWidget {
   }
 
   /// 開講区分のドロップダウンボタン
-  // TODO:Container はConsumerからはずせる
   Consumer _openTermDropDown(
     BuildContext context, {
     required DropDownType dropDownType,
@@ -654,37 +649,40 @@ class LectureDialog extends StatelessWidget {
 
   /// 授業時間のトグルボタン
   // TODO:Implement!!
-  /*
-  SizedBox _classTimeToggle(int classTime, Color dialogColor) {
+
+  SizedBox _classTimeToggle() {
     return SizedBox(
       height: 32,
       width: 108,
-      child: ToggleButtons(
-        children: const [
-          Text('105分'),
-          Text('90分'),
-        ],
-        textStyle: const TextStyle(fontSize: 12, color: UtimeColors.textColor),
-        borderWidth: 1,
-        borderColor: dialogColor,
-        //枠の色
-        borderRadius: BorderRadius.circular(8),
-        selectedColor: UtimeColors.white,
-        //選択されている方の文字色
-
-        fillColor: dialogColor,
-        //選択されている方の背景色
-        selectedBorderColor: dialogColor,
-        //選択されている方の枠の色
-        onPressed: (int index) {},
-        isSelected: _getClassPeriodFlag(isPeriodLong),
+      child: Consumer(
+        builder: (context, ref, child) {
+          final Color dialogColor = ref.watch(lectureDialogColorProvider);
+          return ToggleButtons(
+            children: const [
+              Text('105分'),
+              Text('90分'),
+            ],
+            textStyle:
+                const TextStyle(fontSize: 12, color: UtimeColors.textColor),
+            borderWidth: 1,
+            borderColor: dialogColor,
+            //枠の色
+            borderRadius: BorderRadius.circular(8),
+            selectedColor: UtimeColors.white,
+            //選択されている方の文字色
+            fillColor: dialogColor,
+            //選択されている方の背景色
+            selectedBorderColor: dialogColor,
+            //選択されている方の枠の色
+            onPressed: (int index) {
+              final List<String> classTime = ['90', '105'];
+              ref.watch(lectureDialogDataProvider.notifier).changeClassTime(classTime[index]);
+              ref.watch(lectureDialogDataProvider.notifier).changeSelectedClassTime(index);
+            },
+            isSelected: ref.watch(lectureDialogDataProvider).selectedClassTime,
+          );
+        },
       ),
     );
-  }
-   */
-
-  List<bool> _getClassPeriodFlag(bool isPeriodLong) {
-    if (isPeriodLong) return <bool>[true, false];
-    return <bool>[false, true];
   }
 }

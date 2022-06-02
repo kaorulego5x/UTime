@@ -16,7 +16,7 @@ class UserData {
     "teacherName": "", // 任意の文字列（30文字以内？）
     "classroom": "", // 任意の文字列（30文字以内？）
     "notes": "", // 任意の文字列（100文字以内？）
-    "classTime": 90 // 105
+    "classTime": '90' // 105
   };
 
   static Map defaultTimetableList6 = {

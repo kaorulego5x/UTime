@@ -20,6 +20,7 @@ mixin _$LectureDialogData {
   String get day => throw _privateConstructorUsedError;
   String get period => throw _privateConstructorUsedError;
   Color get lectureDialogColor => throw _privateConstructorUsedError;
+  List<bool> get selectedClassTime => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $LectureDialogDataCopyWith<LectureDialogData> get copyWith =>
@@ -35,7 +36,8 @@ abstract class $LectureDialogDataCopyWith<$Res> {
       {Map<dynamic, dynamic> lectureData,
       String day,
       String period,
-      Color lectureDialogColor});
+      Color lectureDialogColor,
+      List<bool> selectedClassTime});
 }
 
 /// @nodoc
@@ -53,6 +55,7 @@ class _$LectureDialogDataCopyWithImpl<$Res>
     Object? day = freezed,
     Object? period = freezed,
     Object? lectureDialogColor = freezed,
+    Object? selectedClassTime = freezed,
   }) {
     return _then(_value.copyWith(
       lectureData: lectureData == freezed
@@ -71,6 +74,10 @@ class _$LectureDialogDataCopyWithImpl<$Res>
           ? _value.lectureDialogColor
           : lectureDialogColor // ignore: cast_nullable_to_non_nullable
               as Color,
+      selectedClassTime: selectedClassTime == freezed
+          ? _value.selectedClassTime
+          : selectedClassTime // ignore: cast_nullable_to_non_nullable
+              as List<bool>,
     ));
   }
 }
@@ -86,7 +93,8 @@ abstract class _$$_LectureDialogDataCopyWith<$Res>
       {Map<dynamic, dynamic> lectureData,
       String day,
       String period,
-      Color lectureDialogColor});
+      Color lectureDialogColor,
+      List<bool> selectedClassTime});
 }
 
 /// @nodoc
@@ -106,6 +114,7 @@ class __$$_LectureDialogDataCopyWithImpl<$Res>
     Object? day = freezed,
     Object? period = freezed,
     Object? lectureDialogColor = freezed,
+    Object? selectedClassTime = freezed,
   }) {
     return _then(_$_LectureDialogData(
       lectureData: lectureData == freezed
@@ -124,6 +133,10 @@ class __$$_LectureDialogDataCopyWithImpl<$Res>
           ? _value.lectureDialogColor
           : lectureDialogColor // ignore: cast_nullable_to_non_nullable
               as Color,
+      selectedClassTime: selectedClassTime == freezed
+          ? _value._selectedClassTime
+          : selectedClassTime // ignore: cast_nullable_to_non_nullable
+              as List<bool>,
     ));
   }
 }
@@ -135,8 +148,10 @@ class _$_LectureDialogData implements _LectureDialogData {
       {final Map<dynamic, dynamic> lectureData = const {},
       this.day = '',
       this.period = '',
-      this.lectureDialogColor = UtimeColors.subject7})
-      : _lectureData = lectureData;
+      this.lectureDialogColor = UtimeColors.subject7,
+      final List<bool> selectedClassTime = const <bool>[true, false]})
+      : _lectureData = lectureData,
+        _selectedClassTime = selectedClassTime;
 
   final Map<dynamic, dynamic> _lectureData;
   @override
@@ -155,10 +170,17 @@ class _$_LectureDialogData implements _LectureDialogData {
   @override
   @JsonKey()
   final Color lectureDialogColor;
+  final List<bool> _selectedClassTime;
+  @override
+  @JsonKey()
+  List<bool> get selectedClassTime {
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_selectedClassTime);
+  }
 
   @override
   String toString() {
-    return 'LectureDialogData(lectureData: $lectureData, day: $day, period: $period, lectureDialogColor: $lectureDialogColor)';
+    return 'LectureDialogData(lectureData: $lectureData, day: $day, period: $period, lectureDialogColor: $lectureDialogColor, selectedClassTime: $selectedClassTime)';
   }
 
   @override
@@ -171,7 +193,9 @@ class _$_LectureDialogData implements _LectureDialogData {
             const DeepCollectionEquality().equals(other.day, day) &&
             const DeepCollectionEquality().equals(other.period, period) &&
             const DeepCollectionEquality()
-                .equals(other.lectureDialogColor, lectureDialogColor));
+                .equals(other.lectureDialogColor, lectureDialogColor) &&
+            const DeepCollectionEquality()
+                .equals(other._selectedClassTime, _selectedClassTime));
   }
 
   @override
@@ -180,7 +204,8 @@ class _$_LectureDialogData implements _LectureDialogData {
       const DeepCollectionEquality().hash(_lectureData),
       const DeepCollectionEquality().hash(day),
       const DeepCollectionEquality().hash(period),
-      const DeepCollectionEquality().hash(lectureDialogColor));
+      const DeepCollectionEquality().hash(lectureDialogColor),
+      const DeepCollectionEquality().hash(_selectedClassTime));
 
   @JsonKey(ignore: true)
   @override
@@ -194,7 +219,8 @@ abstract class _LectureDialogData implements LectureDialogData {
       {final Map<dynamic, dynamic> lectureData,
       final String day,
       final String period,
-      final Color lectureDialogColor}) = _$_LectureDialogData;
+      final Color lectureDialogColor,
+      final List<bool> selectedClassTime}) = _$_LectureDialogData;
 
   @override
   Map<dynamic, dynamic> get lectureData => throw _privateConstructorUsedError;
@@ -204,6 +230,8 @@ abstract class _LectureDialogData implements LectureDialogData {
   String get period => throw _privateConstructorUsedError;
   @override
   Color get lectureDialogColor => throw _privateConstructorUsedError;
+  @override
+  List<bool> get selectedClassTime => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   _$$_LectureDialogDataCopyWith<_$_LectureDialogData> get copyWith =>

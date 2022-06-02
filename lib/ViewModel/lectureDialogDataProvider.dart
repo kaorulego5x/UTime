@@ -21,6 +21,7 @@ class LectureDialogData with _$LectureDialogData {
     @Default('') String day,
     @Default('') String period,
     @Default(UtimeColors.subject7) Color lectureDialogColor,
+    @Default(<bool>[true, false]) List<bool> selectedClassTime,
   }) = _LectureDialogData;
 // LectureData
 // key:
@@ -101,6 +102,23 @@ class LectureDialogDataNotifier extends StateNotifier<LectureDialogData> {
     newLectureData['classTime'] = newValue;
     state = state.copyWith(lectureData: newLectureData);
   }
+
+  /// Change selectedClassTime
+  /// toggle Button の状態管理
+  void changeSelectedClassTime(int index) {
+    switch(index){
+      case(0):
+        final List<bool> selectedClassTime = [true, false];
+        state = state.copyWith(selectedClassTime: selectedClassTime);
+        break;
+      case(1):
+        final List<bool> selectedClassTime = [false, true];
+        state = state.copyWith(selectedClassTime: selectedClassTime);
+        break;
+    }
+    throw Exception('List index is out of range.');
+  }
+
 
   ///
   /// 初期化
