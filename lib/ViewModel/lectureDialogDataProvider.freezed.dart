@@ -19,6 +19,7 @@ mixin _$LectureDialogData {
   Map<dynamic, dynamic> get lectureData => throw _privateConstructorUsedError;
   String get day => throw _privateConstructorUsedError;
   String get period => throw _privateConstructorUsedError;
+  Color get lectureDialogColor => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $LectureDialogDataCopyWith<LectureDialogData> get copyWith =>
@@ -30,7 +31,11 @@ abstract class $LectureDialogDataCopyWith<$Res> {
   factory $LectureDialogDataCopyWith(
           LectureDialogData value, $Res Function(LectureDialogData) then) =
       _$LectureDialogDataCopyWithImpl<$Res>;
-  $Res call({Map<dynamic, dynamic> lectureData, String day, String period});
+  $Res call(
+      {Map<dynamic, dynamic> lectureData,
+      String day,
+      String period,
+      Color lectureDialogColor});
 }
 
 /// @nodoc
@@ -47,6 +52,7 @@ class _$LectureDialogDataCopyWithImpl<$Res>
     Object? lectureData = freezed,
     Object? day = freezed,
     Object? period = freezed,
+    Object? lectureDialogColor = freezed,
   }) {
     return _then(_value.copyWith(
       lectureData: lectureData == freezed
@@ -61,6 +67,10 @@ class _$LectureDialogDataCopyWithImpl<$Res>
           ? _value.period
           : period // ignore: cast_nullable_to_non_nullable
               as String,
+      lectureDialogColor: lectureDialogColor == freezed
+          ? _value.lectureDialogColor
+          : lectureDialogColor // ignore: cast_nullable_to_non_nullable
+              as Color,
     ));
   }
 }
@@ -72,7 +82,11 @@ abstract class _$$_LectureDialogDataCopyWith<$Res>
           $Res Function(_$_LectureDialogData) then) =
       __$$_LectureDialogDataCopyWithImpl<$Res>;
   @override
-  $Res call({Map<dynamic, dynamic> lectureData, String day, String period});
+  $Res call(
+      {Map<dynamic, dynamic> lectureData,
+      String day,
+      String period,
+      Color lectureDialogColor});
 }
 
 /// @nodoc
@@ -91,6 +105,7 @@ class __$$_LectureDialogDataCopyWithImpl<$Res>
     Object? lectureData = freezed,
     Object? day = freezed,
     Object? period = freezed,
+    Object? lectureDialogColor = freezed,
   }) {
     return _then(_$_LectureDialogData(
       lectureData: lectureData == freezed
@@ -105,6 +120,10 @@ class __$$_LectureDialogDataCopyWithImpl<$Res>
           ? _value.period
           : period // ignore: cast_nullable_to_non_nullable
               as String,
+      lectureDialogColor: lectureDialogColor == freezed
+          ? _value.lectureDialogColor
+          : lectureDialogColor // ignore: cast_nullable_to_non_nullable
+              as Color,
     ));
   }
 }
@@ -115,7 +134,8 @@ class _$_LectureDialogData implements _LectureDialogData {
   const _$_LectureDialogData(
       {final Map<dynamic, dynamic> lectureData = const {},
       this.day = '',
-      this.period = ''})
+      this.period = '',
+      this.lectureDialogColor = UtimeColors.subject7})
       : _lectureData = lectureData;
 
   final Map<dynamic, dynamic> _lectureData;
@@ -132,10 +152,13 @@ class _$_LectureDialogData implements _LectureDialogData {
   @override
   @JsonKey()
   final String period;
+  @override
+  @JsonKey()
+  final Color lectureDialogColor;
 
   @override
   String toString() {
-    return 'LectureDialogData(lectureData: $lectureData, day: $day, period: $period)';
+    return 'LectureDialogData(lectureData: $lectureData, day: $day, period: $period, lectureDialogColor: $lectureDialogColor)';
   }
 
   @override
@@ -146,7 +169,9 @@ class _$_LectureDialogData implements _LectureDialogData {
             const DeepCollectionEquality()
                 .equals(other._lectureData, _lectureData) &&
             const DeepCollectionEquality().equals(other.day, day) &&
-            const DeepCollectionEquality().equals(other.period, period));
+            const DeepCollectionEquality().equals(other.period, period) &&
+            const DeepCollectionEquality()
+                .equals(other.lectureDialogColor, lectureDialogColor));
   }
 
   @override
@@ -154,7 +179,8 @@ class _$_LectureDialogData implements _LectureDialogData {
       runtimeType,
       const DeepCollectionEquality().hash(_lectureData),
       const DeepCollectionEquality().hash(day),
-      const DeepCollectionEquality().hash(period));
+      const DeepCollectionEquality().hash(period),
+      const DeepCollectionEquality().hash(lectureDialogColor));
 
   @JsonKey(ignore: true)
   @override
@@ -167,7 +193,8 @@ abstract class _LectureDialogData implements LectureDialogData {
   const factory _LectureDialogData(
       {final Map<dynamic, dynamic> lectureData,
       final String day,
-      final String period}) = _$_LectureDialogData;
+      final String period,
+      final Color lectureDialogColor}) = _$_LectureDialogData;
 
   @override
   Map<dynamic, dynamic> get lectureData => throw _privateConstructorUsedError;
@@ -175,6 +202,8 @@ abstract class _LectureDialogData implements LectureDialogData {
   String get day => throw _privateConstructorUsedError;
   @override
   String get period => throw _privateConstructorUsedError;
+  @override
+  Color get lectureDialogColor => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   _$$_LectureDialogDataCopyWith<_$_LectureDialogData> get copyWith =>

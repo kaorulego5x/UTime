@@ -58,48 +58,50 @@ class LectureDialog extends StatelessWidget {
         child: Column(
           children: [
             //色がついている部分
-            Container(
-              height: 256,
-              width: 280,
-              decoration: const BoxDecoration(
-                // TODO:Implement Color Setting
-                color: UtimeColors.subject1,
-                borderRadius: BorderRadius.only(
-                  topRight: Radius.circular(12),
-                  topLeft: Radius.circular(12),
-                ),
-              ),
-              child: Column(
-                children: [
-                  //曜限
-                  Container(
-                    margin: const EdgeInsets.only(top: 24, bottom: 12),
-                    child: Text(
-                      day + ' ' + period,
-                      textAlign: TextAlign.center,
-                      style: UtimeTextStyles.lectureDialogDayPeriod,
+            Consumer(
+              builder: (context, ref, child) {
+                final Color dialogColor = ref.watch(lectureDialogColorProvider);
+                return Container(
+                  height: 256,
+                  width: 280,
+                  decoration: BoxDecoration(
+                    color: dialogColor,
+                    borderRadius: const BorderRadius.only(
+                      topRight: Radius.circular(12),
+                      topLeft: Radius.circular(12),
                     ),
                   ),
-                  //科目区分ドロップダウンボタン
-                  //TODO:開講区分ドロップダウンの実装
-                  Container(
-                    key: _widgetKey1,
-                    margin: const EdgeInsets.only(bottom: 8),
-                    height: 48,
-                    child: _showLargeDropdown(
-                      context,
-                      title: '科目区分',
-                    ),
-                  ),
+                  child: Column(
+                    children: [
+                      //曜限
+                      Container(
+                        margin: const EdgeInsets.only(top: 24, bottom: 12),
+                        child: Text(
+                          day + ' ' + period,
+                          textAlign: TextAlign.center,
+                          style: UtimeTextStyles.lectureDialogDayPeriod,
+                        ),
+                      ),
+                      //科目区分ドロップダウンボタン
+                      Container(
+                        key: _widgetKey1,
+                        margin: const EdgeInsets.only(bottom: 8),
+                        height: 48,
+                        child: _showLargeDropdown(
+                          context,
+                          title: '科目区分',
+                        ),
+                      ),
 
-                  //授業情報
-                  _lectureNameField(),
-                  _teacherNameField(),
-                  _classroomField(),
-                ],
-              ),
-            ),
-            //白い部分
+                      //授業情報
+                      _lectureNameField(),
+                      _teacherNameField(),
+                      _classroomField(),
+                    ],
+                  ),
+                );
+              },
+            ), //白い部分
             Container(
               height: 318,
               width: 280,
@@ -453,7 +455,10 @@ class LectureDialog extends StatelessWidget {
                     style: TextStyle(
                       fontSize: 12,
                       fontWeight: FontWeight.bold,
-                      color: dialogColor,
+                      // TODO:文字色まで変化させると見ずらい
+                      // 色も変える必要があるかも？
+                      // パステルカラーバックグラウンド　x 白文字　は　UI よくない
+                      color: ref.watch(lectureDialogColorProvider),
                     ),
                   ),
                 ),
@@ -473,9 +478,7 @@ class LectureDialog extends StatelessWidget {
   }) {
     return Consumer(
       builder: (context, ref, child) {
-        final Color dialogColor =
-            ref.watch(lectureDialogDataProvider).lectureData['dialogColor'] ??
-                UtimeColors.subject1;
+        final Color dialogColor = ref.watch(lectureDialogColorProvider);
         final String selectedOpenTerm =
             ref.watch(lectureDialogDataProvider).lectureData['openTerm'] ??
                 '選択して下さい';
@@ -525,9 +528,7 @@ class LectureDialog extends StatelessWidget {
     required DropDownType dropDownType,
   }) {
     return Consumer(builder: (context, ref, child) {
-      Color dialogColor =
-          ref.watch(lectureDialogDataProvider).lectureData['dialogColor'] ??
-              UtimeColors.subject1;
+      final Color dialogColor = ref.watch(lectureDialogColorProvider);
       final String selectedCreditsNumber =
           ref.watch(lectureDialogDataProvider).lectureData['creditNumber'] ??
               '選択して下さい';

@@ -20,6 +20,7 @@ class LectureDialogData with _$LectureDialogData {
     @Default({}) Map lectureData,
     @Default('') String day,
     @Default('') String period,
+    @Default(UtimeColors.subject7) Color lectureDialogColor,
   }) = _LectureDialogData;
 // LectureData
 // key:
@@ -33,6 +34,7 @@ class LectureDialogData with _$LectureDialogData {
 // notes,
 // classTime,
 // >>　followings are not sure.
+// >>  no use
 // dialogColor,
 // dropDownColor,
 }
@@ -77,7 +79,6 @@ class LectureDialogDataNotifier extends StateNotifier<LectureDialogData> {
     final Map newLectureData = {...state.lectureData};
     newLectureData['openTerm'] = newValue;
     state = state.copyWith(lectureData: newLectureData);
-    print(state);
   }
 
   /// Change CreditNumber
@@ -98,13 +99,6 @@ class LectureDialogDataNotifier extends StateNotifier<LectureDialogData> {
   void changeClassTime(String newValue) {
     final Map newLectureData = {...state.lectureData};
     newLectureData['classTime'] = newValue;
-    state = state.copyWith(lectureData: newLectureData);
-  }
-
-  /// Change Dialog Color
-  void changeDialogColor(String newValue) {
-    final Map newLectureData = {...state.lectureData};
-    newLectureData['dialogColor'] = newValue;
     state = state.copyWith(lectureData: newLectureData);
   }
 
@@ -141,3 +135,54 @@ class LectureDialogDataNotifier extends StateNotifier<LectureDialogData> {
     );
   }
 }
+
+/// Dialog Color
+final lectureDialogColorProvider = Provider<Color>((ref) {
+  final String subjectType =
+      ref.watch(lectureDialogDataProvider).lectureData['subjectType'];
+
+  if (subjectType == '基礎科目') {
+    return UtimeColors.subject1;
+  } else if (subjectType == '総合科目L系列') {
+    return UtimeColors.subject2;
+  } else if (subjectType == '総合科目A系列') {
+    return UtimeColors.subject3;
+  } else if (subjectType == '総合科目B系列') {
+    return UtimeColors.subject3;
+  } else if (subjectType == '総合科目C系列') {
+    return UtimeColors.subject3;
+  } else if (subjectType == '総合科目E系列') {
+    return UtimeColors.subject5;
+  } else if (subjectType == '総合科目F系列') {
+    return UtimeColors.subject5;
+  } else if (subjectType == '展開科目') {
+    return UtimeColors.subject8;
+  } else if (subjectType == '主題科目') {
+    return UtimeColors.subject6;
+    //
+  } else {
+    //未定
+    return UtimeColors.subject7;
+  }
+  // TODO:implement
+  // lectureDialogData に　course　をもたせるか、？
+  /*
+      //文理別
+    if (course == '理科一類' || course == '理科二類' || course == '理科三類') {
+      if (subjectType == '総合科目D系列') {
+        return UtimeColors.subject3;
+      }
+    } else if (course == '文科一類' || course == '文科二類' || course == '文科三類') {
+      if (subjectType == '総合科目D系列') {
+        return UtimeColors.subject5;
+      }
+      if (subjectType == '人文科学') {
+        return UtimeColors.subject4;
+      }
+      if (subjectType == '社会科学') {
+        return UtimeColors.subject4;
+      }
+    }
+   */
+
+});
