@@ -168,7 +168,7 @@ class LectureDialogDataNotifier extends StateNotifier<LectureDialogData> {
 /// Dialog Color
 final lectureDialogColorProvider = Provider<Color>((ref) {
   final String subjectType =
-      ref.watch(lectureDialogDataProvider).lectureData['subjectType'];
+      ref.watch(lectureDialogDataProvider).lectureData['subjectType'] ?? '';
 
   if (subjectType == '基礎科目') {
     return UtimeColors.subject1;
