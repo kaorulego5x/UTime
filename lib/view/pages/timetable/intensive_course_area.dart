@@ -7,11 +7,9 @@ import 'package:utime/view/widgets/modal_overlay.dart';
 class IntensiveCourseArea {
   IntensiveCourseArea({
     required this.context,
-    required this.yearTerm,
   });
 
   final BuildContext context;
-  final String yearTerm;
 
   Container showIntensiveCourseArea() {
     return //集中講義
@@ -86,7 +84,7 @@ class IntensiveCourseArea {
           elevation: 0,
         ),
         onPressed: () {
-          _showLectureDialog('intensive', '', yearTerm);
+          _showLectureDialog('intensive', '', '1s1');
         },
       ),
     ));
@@ -108,7 +106,7 @@ class IntensiveCourseArea {
         color: UtimeColors.intensiveAdd,
         icon: const Icon(Icons.add_circle_outline),
         onPressed: () {
-          _showNewLectureDialog('intensive', '', yearTerm);
+          _showNewLectureDialog('intensive', '', '1s1');
         },
       ),
     ));
