@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:utime/const/utime_colors.dart';
 
+
+//これ一個の講座データ
 class LectureData {
   ///授業データを取得
   getLectureData(String day, String period) {

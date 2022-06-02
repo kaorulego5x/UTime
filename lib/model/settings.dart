@@ -4,6 +4,7 @@ import 'package:utime/view/pages/credits/status_dialog.dart';
 class Settings {
   String _grade = "1";
   String _course = "理科一類";
+  String _yearterm = "1S1";
 
   //学年を返す
   getGrade() {
@@ -23,5 +24,9 @@ class Settings {
   //表示する学年タームを返す
   getYearTerm() {
     return '1S1';
+  }
+
+  setYearTerm(String yearterm) {
+    _yearterm = yearterm;
   }
 }

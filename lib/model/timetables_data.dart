@@ -22,9 +22,10 @@ class TimetablesData {
   }*/
 
   //現在表示するタームを返す
-  String getYearTerm() {
-    YearTerm yearTerm = YearTerm.oneS1;
-    return yearTerm.label;
+  String getYearTerm(String yearterm) {
+    //yeartermを変更
+    //YearTerm yearTerm = YearTerm.oneA1; //enumからとってくるやつ、ここを現在のにすればいい
+    return yearterm[0]+"年 "+yearterm[1]+yearterm[2]+"ターム" ; //'1年 S1ターム';//yearTerm.label;
   }
 
   //１コマのデータを取ってくる

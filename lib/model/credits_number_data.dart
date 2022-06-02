@@ -1,3 +1,5 @@
+//必要単位数の分母の部分
+
 import 'package:utime/model/arts.dart';
 import 'package:utime/model/sciences.dart';
 
