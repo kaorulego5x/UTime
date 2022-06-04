@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:utime/main.dart';
 import 'package:utime/model/settings.dart';
+import 'package:utime/model/user_data.dart';
 import 'package:utime/provider.dart';
 import 'package:utime/view/pages/Timetable/intensive_course_area.dart';
 import 'package:utime/ViewModel/lectureDialogDataProvider.dart';
@@ -9,7 +10,7 @@ import 'package:utime/view/pages/Timetable/lecture_dialog.dart';
 import 'package:utime/const/utime_colors.dart';
 import 'package:utime/const/utime_text_styles.dart';
 import 'package:utime/const/term.dart';
-import 'package:utime/ViewModel/timetablesDataProvider/timetables_data.dart';
+import 'package:utime/ViewModel/timetablesDataProvider/timetablesProvider.dart';
 import 'package:utime/view/widgets/modal_overlay.dart';
 import 'package:utime/model/settings.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -70,9 +71,9 @@ class _TimetablesDisplayState extends ConsumerState<TimetablesDisplay> {
         ),
         //本体
         body: Consumer(builder: ((context, ref, child) {
-
           final String yearTerm = ref.read(yearProvider.state).state;
-          final String yearTermDisplay = yearTerm[0] + "年 " + yearTerm[1] + yearTerm[2] + "ターム";
+          final String yearTermDisplay =
+              yearTerm[0] + "年 " + yearTerm[1] + yearTerm[2] + "ターム";
 
           return SingleChildScrollView(
             child: Container(
@@ -214,27 +215,60 @@ class _TimetablesDisplayState extends ConsumerState<TimetablesDisplay> {
     );
   }
 
+  SizedBox _oneLecture(String yearTerm, String day, String period) {
+    return SizedBox(
+        width: classWidth,
+        height: classHeight,
+        child: Consumer(
+          builder: (context, ref, child) {
+            return Card(
+              child: InkWell(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      ref.watch(timeTablesDisplayProvider).lectureDataDisplay[day][period]['lectureName'] ?? '',
+                      style: UtimeTextStyles.TimetablesDisplayLectureName,
+                    ),
+                    Text(
+                      ref.watch(timeTablesDisplayProvider).lectureDataDisplay[day][period]['teacherName'] ?? '',
+                      style: UtimeTextStyles.TimetablesDisplayLectureName,
+                    )
+                  ],),
+                onTap: () {
+                  ref.watch(lectureDialogDataProvider.notifier).getDialogData(
+                        yearTerm: yearTerm,
+                        day: day,
+                        period: period,
+                      );
+                  _showLectureDialog(day: day, period: period, yearTerm: yearTerm);
+                },
+              ),
+            );
+          },
+        ));
+  }
+
   /// 1コマのウィジェット
   SizedBox _lecture(String yearTerm, String day, String period) {
-    Map<String, dynamic> lectureBoxData = timetablesData.getLectureBoxData(
-        settings.getCourse(), yearTerm, day, period);
     return SizedBox(
       width: classWidth,
       height: classHeight,
       child: Consumer(
         builder: (context, ref, child) {
+          final Map temp = ref.watch(timeTablesDisplayProvider).lectureDataDisplay[day] ?? {};
+          final Map temp1 = temp[period] ?? {};
           return ElevatedButton(
             child: Text(
-              lectureBoxData["lectureName"],
+              temp1['lectureName'] ?? '',
               style: UtimeTextStyles.TimetablesDisplayLectureName,
             ),
             style: ElevatedButton.styleFrom(
-              primary: lectureBoxData["lectureColor"],
+              // primary: lectureBoxData["lectureColor"],
               elevation: 0,
             ),
             onPressed: () {
-              ref
-                  .watch(lectureDialogDataProvider.notifier)
+              ref.watch(lectureDialogDataProvider.notifier)
                   .getDialogData(yearTerm: yearTerm, day: day, period: period);
               _showLectureDialog(day: day, period: period, yearTerm: yearTerm);
             },
@@ -315,7 +349,7 @@ class _TimetablesDisplayState extends ConsumerState<TimetablesDisplay> {
               style: TextStyle(
                 fontSize: 16,
                 color: UtimeColors.menuAccent,
-              )),
+              ),),
         ),
         _listTitle('S1ターム', '2s1', yearProvider, ref),
         _listTitle('S2ターム', '2s2', yearProvider, ref),
@@ -324,7 +358,6 @@ class _TimetablesDisplayState extends ConsumerState<TimetablesDisplay> {
       ],
     );
   }
-
   //メニューに表示されているリストの要素
   ListTile _listTitle(
       String t1, String t2, StateProvider<String> provider, WidgetRef ref) {
@@ -343,6 +376,7 @@ class _TimetablesDisplayState extends ConsumerState<TimetablesDisplay> {
             },
           ),
         );
+        ref.watch(timeTablesDisplayProvider.notifier).getTimetablesDataDisplay(t2);
       },
     ));
   }

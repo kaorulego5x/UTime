@@ -6,6 +6,45 @@ import 'dart:convert';
 
 import 'package:utime/model/user_data.dart';
 
+
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:utime/const/term.dart';
+import 'package:utime/const/utime_colors.dart';
+import 'package:utime/model/user_data.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:utime/provider.dart';
+
+part 'timetablesProvider.freezed.dart';
+
+final timeTablesDisplayProvider = StateNotifierProvider<TimetablesDataNotifier, TimetablesData>((ref) {
+  return TimetablesDataNotifier();
+});
+
+@freezed
+class TimetablesData with _$TimetablesData {
+  const factory TimetablesData({
+    @Default({}) Map lectureDataDisplay,
+    @Default('') String yearTerm,
+  }) = _TimetablesData;
+}
+
+class TimetablesDataNotifier extends StateNotifier<TimetablesData> {
+  TimetablesDataNotifier() : super(const TimetablesData());
+
+  void getTimetablesDataDisplay (String yearTerm) {
+    UserData userData = UserData();
+    userData.getTermTimetablesDisplay(yearTerm).then((Map value){
+      state = state.copyWith(lectureDataDisplay: value);
+    }, onError: (e){
+      print(e);
+    });
+  }
+}
+
+
+/*
 class TimetablesData {
   UserData userData = UserData();
   UtimeColors utimeColors = UtimeColors();
@@ -62,3 +101,4 @@ class TimetablesData {
     return lectureBoxData;
   }
 }
+ */

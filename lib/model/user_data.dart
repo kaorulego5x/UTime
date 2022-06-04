@@ -73,7 +73,6 @@ class UserData {
   Future<Map<String, dynamic>> getUserData() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     final String userString = prefs.getString("user") ?? jsonEncode(defaultUserData);
-    print(userString);
     Map<String, dynamic> userData = await jsonDecode(userString);
     return userData;
   }

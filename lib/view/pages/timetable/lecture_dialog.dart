@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:utime/ViewModel/timetablesDataProvider/timetablesProvider.dart';
 
 //<<<<<<< HEAD:lib/view/pages/Timetable/lecture_dialog.dart
 import 'package:utime/const/term.dart';
@@ -196,9 +197,11 @@ class LectureDialog extends StatelessWidget {
                                 ref
                                     .watch(lectureDialogDataProvider.notifier)
                                     .setDialogData(
-                                        yearTerm: yearTerm,
-                                        day: day,
-                                        period: period);
+                                      yearTerm: yearTerm,
+                                      day: day,
+                                      period: period,
+                                    );
+                                ref.watch(timeTablesDisplayProvider.notifier).getTimetablesDataDisplay(yearTerm);
                                 Navigator.pop(context);
                               },
                             );
@@ -251,7 +254,7 @@ class LectureDialog extends StatelessWidget {
           Consumer(
             builder: (context, ref, Widget? child) {
               final String initialValue = ref
-                      .watch(lectureDialogDataProvider)
+                      .read(lectureDialogDataProvider)
                       .lectureData['lectureName'] ??
                   '入力してください';
               return Container(
@@ -282,7 +285,7 @@ class LectureDialog extends StatelessWidget {
     );
   }
 
-  /// 開講科目名のテキストフォームフィールド
+  /// 教師名のテキストフォームフィールド
   Container _teacherNameField() {
     return Container(
       margin: const EdgeInsets.only(top: 12),
@@ -306,7 +309,7 @@ class LectureDialog extends StatelessWidget {
           Consumer(
             builder: (context, ref, Widget? child) {
               final String initialValue = ref
-                      .watch(lectureDialogDataProvider)
+                      .read(lectureDialogDataProvider)
                       .lectureData['teacherName'] ??
                   '';
               return Container(
@@ -337,7 +340,7 @@ class LectureDialog extends StatelessWidget {
     );
   }
 
-  /// 開講科目名のテキストフォームフィールド
+  /// 教室のテキストフォームフィールド
   Container _classroomField() {
     return Container(
       margin: const EdgeInsets.only(top: 12),
@@ -361,7 +364,7 @@ class LectureDialog extends StatelessWidget {
           Consumer(
             builder: (context, ref, Widget? child) {
               final String initialValue = ref
-                      .watch(lectureDialogDataProvider)
+                      .read(lectureDialogDataProvider)
                       .lectureData['classroom'] ??
                   '入力してください';
               return Container(
@@ -675,8 +678,12 @@ class LectureDialog extends StatelessWidget {
             selectedBorderColor: dialogColor,
             //選択されている方の枠の色
             onPressed: (int index) {
-              ref.watch(lectureDialogDataProvider.notifier).changeClassTime(index);
-              ref.watch(lectureDialogDataProvider.notifier).changeSelectedClassTime(index);
+              ref
+                  .watch(lectureDialogDataProvider.notifier)
+                  .changeClassTime(index);
+              ref
+                  .watch(lectureDialogDataProvider.notifier)
+                  .changeSelectedClassTime(index);
             },
             isSelected: ref.watch(lectureDialogDataProvider).selectedClassTime,
           );
