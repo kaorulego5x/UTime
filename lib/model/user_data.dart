@@ -71,9 +71,10 @@ class UserData {
 
   /// 現在の "user"というkeyのvalueを取得（なければデフォルトのもの）にしてMap型の userData として取得
   Future<Map<String, dynamic>> getUserData() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String userString = prefs.getString("user") ?? jsonEncode(defaultUserData);
-    Map<String, dynamic> userData = jsonDecode(userString);
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final String userString = prefs.getString("user") ?? jsonEncode(defaultUserData);
+    print(userString);
+    Map<String, dynamic> userData = await jsonDecode(userString);
     return userData;
   }
 

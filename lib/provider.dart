@@ -4,7 +4,6 @@ import 'package:riverpod/riverpod.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 var yearProvider = StateProvider<String>((ref) {
-  return "1S1";
+  return "1s1";
 });
 
-String global = "";

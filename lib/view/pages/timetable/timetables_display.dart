@@ -9,7 +9,7 @@ import 'package:utime/view/pages/Timetable/lecture_dialog.dart';
 import 'package:utime/const/utime_colors.dart';
 import 'package:utime/const/utime_text_styles.dart';
 import 'package:utime/const/term.dart';
-import 'package:utime/model/timetables_data.dart';
+import 'package:utime/ViewModel/timetablesDataProvider/timetables_data.dart';
 import 'package:utime/view/widgets/modal_overlay.dart';
 import 'package:utime/model/settings.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -53,10 +53,6 @@ class _TimetablesDisplayState extends ConsumerState<TimetablesDisplay> {
     classWidth = (screenWidth - 64 - 48) / 5; //1コマの横幅
     intensiveCourseWidth = screenWidth - 36 - 28 - 32; //集中講義の横幅
 
-    //表示するターム
-    String yearTerm =
-        ""; //timetablesData.getYearTerm(ref.read(yearProvider.state).state);//これが原因
-
     return Scaffold(
         //ドロワー
         drawer: Drawer(
@@ -74,8 +70,9 @@ class _TimetablesDisplayState extends ConsumerState<TimetablesDisplay> {
         ),
         //本体
         body: Consumer(builder: ((context, ref, child) {
-          String y = ref.read(yearProvider.state).state;
-          yearTerm = y[0] + "年 " + y[1] + y[2] + "ターム";
+
+          final String yearTerm = ref.read(yearProvider.state).state;
+          final String yearTermDisplay = yearTerm[0] + "年 " + yearTerm[1] + yearTerm[2] + "ターム";
 
           return SingleChildScrollView(
             child: Container(
@@ -84,7 +81,7 @@ class _TimetablesDisplayState extends ConsumerState<TimetablesDisplay> {
                 child: Column(
                   children: [
                     //ターム
-                    _showPeriod(yearTerm), //todo:ここをかえる
+                    _showPeriod(yearTermDisplay), //todo:ここをかえる
                     //曜日
                     Container(
                       width: screenWidth,
@@ -309,10 +306,10 @@ class _TimetablesDisplayState extends ConsumerState<TimetablesDisplay> {
         const ListTile(
           title: Text('1年', style: UtimeTextStyles.TimetablesDisplayMenuGrade),
         ),
-        _listTitle('S1ターム', '1S1', yearProvider, ref),
-        _listTitle('S2ターム', '1S2', yearProvider, ref),
-        _listTitle('A1ターム', '1A1', yearProvider, ref),
-        _listTitle('A2ターム', '1A2', yearProvider, ref),
+        _listTitle('S1ターム', '1s1', yearProvider, ref),
+        _listTitle('S2ターム', '1s2', yearProvider, ref),
+        _listTitle('A1ターム', '1a1', yearProvider, ref),
+        _listTitle('A2ターム', '1a2', yearProvider, ref),
         const ListTile(
           title: Text('2年',
               style: TextStyle(
@@ -320,10 +317,10 @@ class _TimetablesDisplayState extends ConsumerState<TimetablesDisplay> {
                 color: UtimeColors.menuAccent,
               )),
         ),
-        _listTitle('S1ターム', '2S1', yearProvider, ref),
-        _listTitle('S2ターム', '2S2', yearProvider, ref),
-        _listTitle('A1ターム', '2A1', yearProvider, ref),
-        _listTitle('A2ターム', '2A2', yearProvider, ref),
+        _listTitle('S1ターム', '2s1', yearProvider, ref),
+        _listTitle('S2ターム', '2s2', yearProvider, ref),
+        _listTitle('A1ターム', '2a1', yearProvider, ref),
+        _listTitle('A2ターム', '2a2', yearProvider, ref),
       ],
     );
   }
