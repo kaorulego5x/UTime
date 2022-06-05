@@ -7,7 +7,6 @@ import 'package:utime/ViewModel/lectureDialogDataProvider.dart';
 import 'package:utime/model/lecture_dialog_list.dart';
 import 'package:utime/const/utime_colors.dart';
 import 'package:utime/const/utime_text_styles.dart';
-
 import '../../widgets/dropdown_builder.dart';
 
 /// TimetablesDisplayで授業のコマ押したときに出てくるダイアログ

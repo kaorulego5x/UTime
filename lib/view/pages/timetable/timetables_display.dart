@@ -216,13 +216,13 @@ class _TimetablesDisplayState extends ConsumerState<TimetablesDisplay> {
   }
 
   SizedBox _oneLecture(String yearTerm, String day, String period) {
-    // TODO:色の実装
     return SizedBox(
         width: classWidth,
         height: classHeight,
         child: Consumer(
           builder: (context, ref, child) {
             return Card(
+              color: oneLectureColor(day, period),
               child: InkWell(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -251,6 +251,54 @@ class _TimetablesDisplayState extends ConsumerState<TimetablesDisplay> {
             );
           },
         ));
+  }
+
+  Color oneLectureColor(String day, String period) {
+    final String subjectType = ref.read(timeTablesDisplayProvider).lectureDataDisplay[day][period]['subjectType'];
+    if (subjectType == '基礎科目') {
+      return UtimeColors.subject1;
+    } else if (subjectType == '総合科目L系列') {
+      return UtimeColors.subject2;
+    } else if (subjectType == '総合科目A系列') {
+      return UtimeColors.subject3;
+    } else if (subjectType == '総合科目B系列') {
+      return UtimeColors.subject3;
+    } else if (subjectType == '総合科目C系列') {
+      return UtimeColors.subject3;
+    } else if (subjectType == '総合科目E系列') {
+      return UtimeColors.subject5;
+    } else if (subjectType == '総合科目F系列') {
+      return UtimeColors.subject5;
+    } else if (subjectType == '展開科目') {
+      return UtimeColors.subject8;
+    } else if (subjectType == '主題科目') {
+      return UtimeColors.subject6;
+      //
+    } else {
+      //未定
+      return UtimeColors.subject7;
+    }
+    // TODO:implement
+    // lectureDialogData に　course　をもたせるか、？
+    /*
+      //文理別
+    if (course == '理科一類' || course == '理科二類' || course == '理科三類') {
+      if (subjectType == '総合科目D系列') {
+        return UtimeColors.subject3;
+      }
+    } else if (course == '文科一類' || course == '文科二類' || course == '文科三類') {
+      if (subjectType == '総合科目D系列') {
+        return UtimeColors.subject5;
+      }
+      if (subjectType == '人文科学') {
+        return UtimeColors.subject4;
+      }
+      if (subjectType == '社会科学') {
+        return UtimeColors.subject4;
+      }
+    }
+   */
+
   }
 
   ///コマを何限かによって行でまとめたウィジェット

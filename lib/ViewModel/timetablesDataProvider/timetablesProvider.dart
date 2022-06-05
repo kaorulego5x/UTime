@@ -129,7 +129,6 @@ class TimetablesDataNotifier extends StateNotifier<TimetablesData> {
   /// Change DialogColor
   void changeDialogColor (String day, String period) {
     final Map lectureData = {...state.lectureDataDisplay};
-    print(lectureData);
     final Map temp = lectureData[day] ?? {};
     final Map temp1 = temp[period] ?? {};
     final String subjectType = temp1['subjectType'] ?? '';
@@ -195,4 +194,3 @@ class TimetablesDataNotifier extends StateNotifier<TimetablesData> {
     );
   }
 }
-

@@ -46,6 +46,7 @@ class LectureDialogDataNotifier extends StateNotifier<LectureDialogData> {
 
   ///
   /// 変更部分
+  /// * [ ChangeData ]
   ///
 
   /// Change subject Type
