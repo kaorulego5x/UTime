@@ -35,7 +35,7 @@ class UtimeTextStyles {
 
   //時間割タブの科目名
   static const TimetablesDisplayLectureName = TextStyle(
-    fontSize: 8,
+    fontSize: 12,
     color: UtimeColors.textColor,
   );
 

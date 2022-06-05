@@ -145,7 +145,8 @@ class __$$_LectureDialogDataCopyWithImpl<$Res>
 
 class _$_LectureDialogData implements _LectureDialogData {
   const _$_LectureDialogData(
-      {final Map<dynamic, dynamic> lectureData = const {},
+      {final Map<dynamic, dynamic> lectureData =
+          UserData.defaultTermTimetablesDisplay,
       this.day = '',
       this.period = '',
       this.lectureDialogColor = UtimeColors.subject7,

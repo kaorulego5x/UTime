@@ -5,8 +5,41 @@ import 'dart:convert';
 // ありえるパラメータをリストにして、リストにないものは弾く処理
 // Timetable クラスにする？
 
+class InitialLectureData {
+  static const Map<String, dynamic> defaultTimetable = {
+  "lectureName": "", // 任意の文字列（30文字以内？）
+  "openTerm": "選択して下さい", // "s", "a", "s1", "s2", "a1", "a2", "w"
+  "subjectType":
+  "選択して下さい", // "kiso", "l", "a", "b", "c", "d", "e", "f", "shudai", "tenkai"
+  "creditNumber": "選択して下さい", // 1.0, 2.0
+  "score": 0, // 0～100の整数
+  "teacherName": "", // 任意の文字列（30文字以内？）
+  "classroom": "", // 任意の文字列（30文字以内？）
+  "notes": "", // 任意の文字列（100文字以内？）
+  "classTime": '90' // 105
+  };
+  static const Map defaultTimetableList6 = {
+    "1": defaultTimetable,
+    "2": defaultTimetable,
+    "3": defaultTimetable,
+    "4": defaultTimetable,
+    "5": defaultTimetable,
+    "6": defaultTimetable,
+  };
+  static const Map defaultTermTimetablesDisplay = {
+    "Mon": defaultTimetableList6,
+    "Tue": defaultTimetableList6,
+    "Wed": defaultTimetableList6,
+    "Thu": defaultTimetableList6,
+    "Tur": defaultTimetableList6,
+    "Fri": defaultTimetableList6,
+    "intensive": []
+  };
+
+}
+
 class UserData {
-  static Map<String, dynamic> defaultTimetable = {
+   static const Map<String, dynamic> defaultTimetable = {
     "lectureName": "", // 任意の文字列（30文字以内？）
     "openTerm": "選択して下さい", // "s", "a", "s1", "s2", "a1", "a2", "w"
     "subjectType":
@@ -19,7 +52,7 @@ class UserData {
     "classTime": '90' // 105
   };
 
-  static Map defaultTimetableList6 = {
+  static const Map defaultTimetableList6 = {
     "1": defaultTimetable,
     "2": defaultTimetable,
     "3": defaultTimetable,
@@ -28,7 +61,7 @@ class UserData {
     "6": defaultTimetable,
   };
 
-  static Map defaultTermTimetablesDisplay = {
+  static const Map defaultTermTimetablesDisplay = {
     "Mon": defaultTimetableList6,
     "Tue": defaultTimetableList6,
     "Wed": defaultTimetableList6,
@@ -38,7 +71,7 @@ class UserData {
     "intensive": []
   };
 
-  static Map defaultTermTimetablesDisplayList8 = {
+  static const Map defaultTermTimetablesDisplayList8 = {
     "1s1": defaultTermTimetablesDisplay,
     "1s2": defaultTermTimetablesDisplay,
     "1a1": defaultTermTimetablesDisplay,
@@ -148,7 +181,7 @@ class UserData {
   }) async {
     Map userData = await getUserData();
     Map termTimetablesDisplay = userData["TimetablesDisplay"][yearTerm];
-    if (day == "intensive") {
+    if (day  == "intensive") {
       termTimetablesDisplay[day].add(timetable);
     } else {
       termTimetablesDisplay[day][period] = timetable;

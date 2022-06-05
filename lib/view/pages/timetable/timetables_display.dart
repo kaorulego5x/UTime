@@ -39,6 +39,12 @@ class _TimetablesDisplayState extends ConsumerState<TimetablesDisplay> {
   double classHeight = 0;
   double classWidth = 0;
   double intensiveCourseWidth = 0;
+  
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -216,6 +222,7 @@ class _TimetablesDisplayState extends ConsumerState<TimetablesDisplay> {
   }
 
   SizedBox _oneLecture(String yearTerm, String day, String period) {
+    // TODO:色の実装
     return SizedBox(
         width: classWidth,
         height: classHeight,
@@ -236,11 +243,8 @@ class _TimetablesDisplayState extends ConsumerState<TimetablesDisplay> {
                     )
                   ],),
                 onTap: () {
-                  ref.watch(lectureDialogDataProvider.notifier).getDialogData(
-                        yearTerm: yearTerm,
-                        day: day,
-                        period: period,
-                      );
+                  ref.watch(timeTablesDisplayProvider.notifier).getLectureData(yearTerm: yearTerm, day: day, period: period);
+                  ref.watch(timeTablesDisplayProvider.notifier).changeDialogColor(day, period);
                   _showLectureDialog(day: day, period: period, yearTerm: yearTerm);
                 },
               ),
@@ -249,49 +253,20 @@ class _TimetablesDisplayState extends ConsumerState<TimetablesDisplay> {
         ));
   }
 
-  /// 1コマのウィジェット
-  SizedBox _lecture(String yearTerm, String day, String period) {
-    return SizedBox(
-      width: classWidth,
-      height: classHeight,
-      child: Consumer(
-        builder: (context, ref, child) {
-          final Map temp = ref.watch(timeTablesDisplayProvider).lectureDataDisplay[day] ?? {};
-          final Map temp1 = temp[period] ?? {};
-          return ElevatedButton(
-            child: Text(
-              temp1['lectureName'] ?? '',
-              style: UtimeTextStyles.TimetablesDisplayLectureName,
-            ),
-            style: ElevatedButton.styleFrom(
-              // primary: lectureBoxData["lectureColor"],
-              elevation: 0,
-            ),
-            onPressed: () {
-              ref.watch(lectureDialogDataProvider.notifier)
-                  .getDialogData(yearTerm: yearTerm, day: day, period: period);
-              _showLectureDialog(day: day, period: period, yearTerm: yearTerm);
-            },
-          );
-        },
-      ),
-    );
-  }
-
   ///コマを何限かによって行でまとめたウィジェット
   SizedBox _period(String yearTerm, String period) {
     return SizedBox(
       child: Row(
         children: [
-          _lecture(yearTerm, 'Mon', period),
+          _oneLecture(yearTerm, 'Mon', period),
           const SizedBox(width: 12),
-          _lecture(yearTerm, 'Tue', period),
+          _oneLecture(yearTerm, 'Tue', period),
           const SizedBox(width: 12),
-          _lecture(yearTerm, 'Wed', period),
+          _oneLecture(yearTerm, 'Wed', period),
           const SizedBox(width: 12),
-          _lecture(yearTerm, 'Tur', period),
+          _oneLecture(yearTerm, 'Tur', period),
           const SizedBox(width: 12),
-          _lecture(yearTerm, 'Fri', period),
+          _oneLecture(yearTerm, 'Fri', period),
         ],
       ),
     );

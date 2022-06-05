@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:utime/ViewModel/timetablesDataProvider/timetablesProvider.dart';
 import 'package:utime/const/term.dart';
 import 'package:utime/const/utime_colors.dart';
 
@@ -17,7 +18,7 @@ final lectureDialogDataProvider =
 @freezed
 class LectureDialogData with _$LectureDialogData {
   const factory LectureDialogData({
-    @Default({}) Map lectureData,
+    @Default(UserData.defaultTermTimetablesDisplay) Map lectureData,
     @Default('') String day,
     @Default('') String period,
     @Default(UtimeColors.subject7) Color lectureDialogColor,
@@ -54,121 +55,24 @@ class LectureDialogDataNotifier extends StateNotifier<LectureDialogData> {
     state = state.copyWith(lectureData: newLectureData);
   }
 
-  /// Change Lecture Name
-  void changeLectureName(String newValue) {
-    final Map newLectureData = {...state.lectureData};
-    newLectureData['lectureName'] = newValue;
-    state = state.copyWith(lectureData: newLectureData);
-  }
-
-  /// Change teacher Name
-  void changeTeacherName(String newValue) {
-    final Map<String, dynamic> newLectureData = {...state.lectureData};
-    newLectureData['teacherName'] = newValue;
-    state = state.copyWith(lectureData: newLectureData);
-  }
-
-  /// Change classroom
-  void changeClassroom(String newValue) {
-    final Map newLectureData = {...state.lectureData};
-    newLectureData['classroom'] = newValue;
-    state = state.copyWith(lectureData: newLectureData);
-  }
-
-  /// Change openTerm
-  void changeOpenTerm(String newValue) {
-    final Map newLectureData = {...state.lectureData};
-    newLectureData['openTerm'] = newValue;
-    state = state.copyWith(lectureData: newLectureData);
-  }
-
-  /// Change CreditNumber
-  void changeCreditNumber(String newValue) {
-    final Map newLectureData = {...state.lectureData};
-    newLectureData['creditNumber'] = newValue;
-    state = state.copyWith(lectureData: newLectureData);
-  }
-
-  /// Change Notes
-  void changeNotes(String newValue) {
-    final Map newLectureData = {...state.lectureData};
-    newLectureData['notes'] = newValue;
-    state = state.copyWith(lectureData: newLectureData);
-  }
-
-  /// Change classTime
-  void changeClassTime(int index) {
-    final Map newLectureData = {...state.lectureData};
-    final List<String> classTime = ['90', '105'];
-    newLectureData['classTime'] = classTime[index];
-    state = state.copyWith(lectureData: newLectureData);
-  }
-
-  /// Change selectedClassTime
-  /// toggle Button の状態管理
-  void changeSelectedClassTime(int index) {
-    switch(index){
-      case(0):
-        final List<bool> selectedClassTime = [true, false];
-        state = state.copyWith(selectedClassTime: selectedClassTime);
-        break;
-      case(1):
-        final List<bool> selectedClassTime = [false, true];
-        state = state.copyWith(selectedClassTime: selectedClassTime);
-        break;
-    }
-    throw Exception('List index is out of range.');
-  }
-
-
-  ///
-  /// 初期化
-  ///
-
-  void resetDialogData() {
-    final Map newLectureData = UserData.defaultTimetable;
-    state = state.copyWith(lectureData: newLectureData);
-  }
-
   ///
   /// ゲット部分（ダイアログを開いたときにデータを取得する初期値）
   ///
-
   void getDialogData({
     required String yearTerm,
     required String day,
     required String period,
   }) {
     final UserData userData = UserData();
-    userData
-        .getTimetable(yearTerm, day, period)
-        .then((value) => state = state.copyWith(lectureData: value));
-  }
-
-  ///
-  ///  セット部分（ダイアログを閉じたとき）
-  ///
-
-  void setDialogData({
-    required String yearTerm,
-    required String day,
-    required String period,
-  }) {
-    final Map timetable = {...state.lectureData};
-    final UserData userData = UserData();
-    userData.setTimetable(
-      timetable: timetable,
-      yearTerm: yearTerm,
-      day: day,
-      period: period,
-    );
+    userData.getTimetable(yearTerm, day, period).then((value) => state = state.copyWith(lectureData: value));
   }
 }
 
 /// Dialog Color
+/*
 final lectureDialogColorProvider = Provider<Color>((ref) {
   final String subjectType =
-      ref.watch(lectureDialogDataProvider).lectureData['subjectType'] ?? '';
+      ref.watch(timeTablesDisplayProvider).lectureDataDisplay['subjectType'] ?? '';
 
   if (subjectType == '基礎科目') {
     return UtimeColors.subject1;
@@ -214,3 +118,4 @@ final lectureDialogColorProvider = Provider<Color>((ref) {
     }
    */
 });
+*/

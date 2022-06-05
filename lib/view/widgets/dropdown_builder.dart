@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:utime/ViewModel/lectureDialogDataProvider.dart';
+import 'package:utime/ViewModel/timetablesDataProvider/timetablesProvider.dart';
 import 'package:utime/const/utime_colors.dart';
 import 'package:utime/view/widgets/dropdown_modal_overlay.dart';
 import 'package:utime/model/lecture_dialog_list.dart';
@@ -44,31 +45,31 @@ class DropdownBuilder {
 
   ///　科目選択ドロップダウンを表示
   void showSubjectTypeDropdownList(
-      double width, Color dialogColor, RenderBox box) {
+      double width, Color dialogColor, RenderBox box, String day, String period) {
     List<String> listItems = getSubjectTypeList();
-    showDropdownList(480, width, dialogColor, listItems, box, title: '科目区分');
+    showDropdownList(480, width, dialogColor, listItems, box, '科目区分', day, period);
   }
 
   /// 開講区分のドロップダウンを表示
   void showOpenTermDropdownList(
-      double width, Color dialogColor, RenderBox box) {
+      double width, Color dialogColor, RenderBox box, String day, String period) {
     List<String> listItems = getOpenTermList();
-    showDropdownList(224, width, dialogColor, listItems, box, title: '開講区分');
+    showDropdownList(224, width, dialogColor, listItems, box, '開講区分', day, period);
   }
 
   ///単位数ドロップダウンを表示
   void showCreditsNumberDropdownList(
-      double width, Color dialogColor, RenderBox box) {
+      double width, Color dialogColor, RenderBox box, String day, String period) {
     List<String> listItems = getCreditsNumberList();
-    showDropdownList(76, width, dialogColor, listItems, box, title: '単位数');
+    showDropdownList(76, width, dialogColor, listItems, box, '単位数', day, period);
   }
 
   /*
    * 表示
    */
   void showDropdownList(double height, double width, Color dialogColor,
-      List<String> listItems, RenderBox box,
-      {required String title}) {
+      List<String> listItems, RenderBox box, String title, String day, String period,
+      ) {
     Color dropdownColor = getDropdownColor(dialogColor);
     final Offset offset = box.localToGlobal(Offset.zero);
     final Size size = box.size;
@@ -90,6 +91,7 @@ class DropdownBuilder {
                   const EdgeInsets.only(top: 4, bottom: 4, left: 8, right: 8),
               alignment: Alignment.center,
               decoration: BoxDecoration(
+                // TODO:implement This!
                 /*
                   color: listItems[index].selected
                       ? dialogColor //選択されていないときの背景色
@@ -106,20 +108,14 @@ class DropdownBuilder {
                       // Provider つかってもう少しきれいにかけそう
                       switch (title) {
                         case ('科目区分'):
-                          ref
-                              .watch(lectureDialogDataProvider.notifier)
-                              .changeSubjectType(listItems[index]);
-                          print(ref.watch(lectureDialogDataProvider).lectureData['subjectType']);
+                          ref.watch(timeTablesDisplayProvider.notifier).changeSubjectType(listItems[index], day, period);
+                          ref.watch(timeTablesDisplayProvider.notifier).changeDialogColor(day, period);
                           break;
                         case ('開講区分'):
-                          ref
-                              .watch(lectureDialogDataProvider.notifier)
-                              .changeOpenTerm(listItems[index]);
+                          ref.watch(timeTablesDisplayProvider.notifier).changeOpenTerm(listItems[index], day, period);
                           break;
                         case ('単位数'):
-                          ref
-                              .watch(lectureDialogDataProvider.notifier)
-                              .changeCreditNumber(listItems[index]);
+                          ref.watch(timeTablesDisplayProvider.notifier).changeCreditNumber(listItems[index], day, period);
                           break;
                       }
                       hideCustomDialog();

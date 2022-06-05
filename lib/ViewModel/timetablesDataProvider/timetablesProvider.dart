@@ -6,7 +6,6 @@ import 'dart:convert';
 
 import 'package:utime/model/user_data.dart';
 
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -18,87 +17,185 @@ import 'package:utime/provider.dart';
 
 part 'timetablesProvider.freezed.dart';
 
-final timeTablesDisplayProvider = StateNotifierProvider<TimetablesDataNotifier, TimetablesData>((ref) {
+final timeTablesDisplayProvider =
+    StateNotifierProvider<TimetablesDataNotifier, TimetablesData>((ref) {
   return TimetablesDataNotifier();
 });
 
 @freezed
 class TimetablesData with _$TimetablesData {
   const factory TimetablesData({
-    @Default({}) Map lectureDataDisplay,
+    @Default(UserData.defaultTermTimetablesDisplay) Map lectureDataDisplay,
     @Default('') String yearTerm,
+    @Default(UtimeColors.subject7) Color lectureDialogColor,
+    @Default(<bool>[true, false]) List<bool> selectedClassTime,
   }) = _TimetablesData;
 }
 
 class TimetablesDataNotifier extends StateNotifier<TimetablesData> {
   TimetablesDataNotifier() : super(const TimetablesData());
 
-  void getTimetablesDataDisplay (String yearTerm) {
+  ///
+  /// Timetable Data
+  ///
+
+  /// データ取得
+  void getTimetablesDataDisplay(String yearTerm) {
     UserData userData = UserData();
-    userData.getTermTimetablesDisplay(yearTerm).then((Map value){
+    userData.getTermTimetablesDisplay(yearTerm).then((Map value) {
       state = state.copyWith(lectureDataDisplay: value);
-    }, onError: (e){
+    }, onError: (e) {
       print(e);
     });
   }
-}
 
 
-/*
-class TimetablesData {
-  UserData userData = UserData();
-  UtimeColors utimeColors = UtimeColors();
+  ///
+  /// LectureDialog
+  ///
 
-  getTimetableMap(String yearTerm) async {
-    final Map termTimetable = await userData.getTermTimetablesDisplay(yearTerm);
-    return termTimetable;
+  /// Change subject Type
+  void changeSubjectType(String newValue, String day, String period) {
+    final Map newLectureData = {...state.lectureDataDisplay};
+    newLectureData[day][period]['subjectType'] = newValue;
+    state = state.copyWith(lectureDataDisplay: newLectureData);
   }
 
-  //現在表示するタームを返す
-  /*getTerm() {
-    Term term = Term.s1; //要編集
-    return term;
-  }*/
-
-  //現在表示するタームの文字列を返す
-  String getYearTermToShow() {
-    YearTerm yearTerm = YearTerm.oneS1;
-    return yearTerm.label;
+  /// Change Lecture Name
+  void changeLectureName(String newValue, String day, String period) {
+    final Map newLectureData = {...state.lectureDataDisplay};
+    newLectureData[day][period]['lectureName'] = newValue;
+    state = state.copyWith(lectureDataDisplay: newLectureData);
   }
 
-  //yearTermの文字列からuserdataのタグに変換
-  String getYearTermData() {
-    YearTerm yearTerm = YearTerm.oneS1;
-    return yearTerm.key;
+
+  void changeTeacherName(String newValue, String day, String period) {
+    final Map<String, dynamic> newLectureData = {...state.lectureDataDisplay};
+    newLectureData[day][period]['teacherName'] = newValue;
+    state = state.copyWith(lectureDataDisplay: newLectureData);
   }
 
-  //１コマのデータを取ってくる
-  _getLectureData(Map lectureData, String lectureName, String subjectType,
-      String yearTerm, String day, String period) async {
-    lectureData = await userData.getTimetable("1s1", day, period);
-    lectureName = lectureData["lectureName"];
-    subjectType = lectureData["subjectType"];
+  /// Change classroom
+  void changeClassroom(String newValue, String day, String period) {
+    final Map newLectureData = {...state.lectureDataDisplay};
+    newLectureData[day][period]['classroom'] = newValue;
+    state = state.copyWith(lectureDataDisplay: newLectureData);
   }
 
-  //ターム曜限に割り当てられた授業のタイトルと色を返す(一覧用)
-  getLectureBoxData(String course, String yearTerm, String day, String period) {
-    Map<String, dynamic> lectureData = {};
-    String lectureName = '';
-    String subjectType = '';
-    _getLectureData(
-        lectureData, lectureName, subjectType, yearTerm, day, period);
+  /// Change openTerm
+  void changeOpenTerm(String newValue, String day, String period) {
+    final Map newLectureData = {...state.lectureDataDisplay};
+    newLectureData[day][period]['openTerm'] = newValue;
+    state = state.copyWith(lectureDataDisplay: newLectureData);
+  }
 
-    Color lectureColor = utimeColors.getLectureColor(course, subjectType);
-    //もしグレーだった場合は白に変更
-    if (lectureColor == UtimeColors.subject7) {
-      lectureColor = UtimeColors.white;
+  /// Change creditNumber
+  void changeCreditNumber(String newValue, String day, String period) {
+    final Map newLectureData = {...state.lectureDataDisplay};
+    newLectureData[day][period]['creditNumber'] = newValue;
+    state = state.copyWith(lectureDataDisplay: newLectureData);
+  }
+
+  /// Change Notes
+  void changeNotes(String newValue, String day, String period) {
+    final Map newLectureData = {...state.lectureDataDisplay};
+    newLectureData[day][period]['notes'] = newValue;
+    state = state.copyWith(lectureDataDisplay: newLectureData);
+  }
+
+  /// Change classTime
+  void changeClassTime(int index, String day, String period) {
+    final Map newLectureData = {...state.lectureDataDisplay};
+    final List<String> classTime = ['90', '105'];
+    newLectureData[day][period]['classTime'] = classTime[index];
+    state = state.copyWith(lectureDataDisplay: newLectureData);
+  }
+
+  /// Change selectedClassTime toggle Button の状態管理
+  void changeSelectedClassTime(int index) {
+    switch (index) {
+      case (0):
+        final List<bool> selectedClassTime = [true, false];
+        state = state.copyWith(selectedClassTime: selectedClassTime);
+        break;
+      case (1):
+        final List<bool> selectedClassTime = [false, true];
+        state = state.copyWith(selectedClassTime: selectedClassTime);
+        break;
+    }
+    throw Exception('List index is out of range.');
+  }
+
+  /// Change DialogColor
+  void changeDialogColor (String day, String period) {
+    final Map lectureData = {...state.lectureDataDisplay};
+    print(lectureData);
+    final Map temp = lectureData[day] ?? {};
+    final Map temp1 = temp[period] ?? {};
+    final String subjectType = temp1['subjectType'] ?? '';
+
+
+    if (subjectType == '基礎科目') {
+      state = state.copyWith(lectureDialogColor: UtimeColors.subject1);
+    } else if (subjectType == '総合科目L系列') {
+      state = state.copyWith(lectureDialogColor: UtimeColors.subject2);
+    } else if (subjectType == '総合科目A系列') {
+      state = state.copyWith(lectureDialogColor: UtimeColors.subject3);
+    } else if (subjectType == '総合科目B系列') {
+      state = state.copyWith(lectureDialogColor: UtimeColors.subject3);
+    } else if (subjectType == '総合科目C系列') {
+      state = state.copyWith(lectureDialogColor: UtimeColors.subject3);
+    } else if (subjectType == '総合科目E系列') {
+      state = state.copyWith(lectureDialogColor: UtimeColors.subject5);
+    } else if (subjectType == '総合科目F系列') {
+      state = state.copyWith(lectureDialogColor: UtimeColors.subject5);
+    } else if (subjectType == '展開科目') {
+      state = state.copyWith(lectureDialogColor: UtimeColors.subject8);
+    } else if (subjectType == '主題科目') {
+      state = state.copyWith(lectureDialogColor: UtimeColors.subject6);
+    } else {
+      state = state.copyWith(lectureDialogColor: UtimeColors.subject7);
     }
 
-    Map<String, dynamic> lectureBoxData = {
-      'lectureName': lectureName,
-      'lectureColor': lectureColor,
-    };
-    return lectureBoxData;
+  }
+
+  /// 初期化
+  void resetDialogData(String day, String period) {
+    final Map newLectureData = UserData.defaultTimetable;
+    print(UserData.defaultTimetable);
+    final Map origin = state.lectureDataDisplay;
+    origin[day][period] = newLectureData;
+    print(newLectureData['lectureName']);
+    print(newLectureData['subjectType']);
+    state = state.copyWith(lectureDataDisplay: origin);
+  }
+
+  /// Get Data
+  void getLectureData({
+    required String yearTerm,
+    required String day,
+    required String period,
+  }) {
+    final UserData userData = UserData();
+    userData
+        .getTermTimetablesDisplay(yearTerm)
+        .then((value) => state = state.copyWith(lectureDataDisplay: value));
+  }
+
+  /// setData
+  void setDialogData({
+    required String yearTerm,
+    required String day,
+    required String period,
+  }) {
+    final Map timetable = {...state.lectureDataDisplay}[day][period];
+    final UserData userData = UserData();
+    userData.setTimetable(
+      timetable: timetable,
+      yearTerm: yearTerm,
+      day: day,
+      period: period,
+    );
   }
 }
- */
+

@@ -19,6 +19,8 @@ mixin _$TimetablesData {
   Map<dynamic, dynamic> get lectureDataDisplay =>
       throw _privateConstructorUsedError;
   String get yearTerm => throw _privateConstructorUsedError;
+  Color get lectureDialogColor => throw _privateConstructorUsedError;
+  List<bool> get selectedClassTime => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $TimetablesDataCopyWith<TimetablesData> get copyWith =>
@@ -30,7 +32,11 @@ abstract class $TimetablesDataCopyWith<$Res> {
   factory $TimetablesDataCopyWith(
           TimetablesData value, $Res Function(TimetablesData) then) =
       _$TimetablesDataCopyWithImpl<$Res>;
-  $Res call({Map<dynamic, dynamic> lectureDataDisplay, String yearTerm});
+  $Res call(
+      {Map<dynamic, dynamic> lectureDataDisplay,
+      String yearTerm,
+      Color lectureDialogColor,
+      List<bool> selectedClassTime});
 }
 
 /// @nodoc
@@ -46,6 +52,8 @@ class _$TimetablesDataCopyWithImpl<$Res>
   $Res call({
     Object? lectureDataDisplay = freezed,
     Object? yearTerm = freezed,
+    Object? lectureDialogColor = freezed,
+    Object? selectedClassTime = freezed,
   }) {
     return _then(_value.copyWith(
       lectureDataDisplay: lectureDataDisplay == freezed
@@ -56,6 +64,14 @@ class _$TimetablesDataCopyWithImpl<$Res>
           ? _value.yearTerm
           : yearTerm // ignore: cast_nullable_to_non_nullable
               as String,
+      lectureDialogColor: lectureDialogColor == freezed
+          ? _value.lectureDialogColor
+          : lectureDialogColor // ignore: cast_nullable_to_non_nullable
+              as Color,
+      selectedClassTime: selectedClassTime == freezed
+          ? _value.selectedClassTime
+          : selectedClassTime // ignore: cast_nullable_to_non_nullable
+              as List<bool>,
     ));
   }
 }
@@ -67,7 +83,11 @@ abstract class _$$_TimetablesDataCopyWith<$Res>
           _$_TimetablesData value, $Res Function(_$_TimetablesData) then) =
       __$$_TimetablesDataCopyWithImpl<$Res>;
   @override
-  $Res call({Map<dynamic, dynamic> lectureDataDisplay, String yearTerm});
+  $Res call(
+      {Map<dynamic, dynamic> lectureDataDisplay,
+      String yearTerm,
+      Color lectureDialogColor,
+      List<bool> selectedClassTime});
 }
 
 /// @nodoc
@@ -85,6 +105,8 @@ class __$$_TimetablesDataCopyWithImpl<$Res>
   $Res call({
     Object? lectureDataDisplay = freezed,
     Object? yearTerm = freezed,
+    Object? lectureDialogColor = freezed,
+    Object? selectedClassTime = freezed,
   }) {
     return _then(_$_TimetablesData(
       lectureDataDisplay: lectureDataDisplay == freezed
@@ -95,6 +117,14 @@ class __$$_TimetablesDataCopyWithImpl<$Res>
           ? _value.yearTerm
           : yearTerm // ignore: cast_nullable_to_non_nullable
               as String,
+      lectureDialogColor: lectureDialogColor == freezed
+          ? _value.lectureDialogColor
+          : lectureDialogColor // ignore: cast_nullable_to_non_nullable
+              as Color,
+      selectedClassTime: selectedClassTime == freezed
+          ? _value._selectedClassTime
+          : selectedClassTime // ignore: cast_nullable_to_non_nullable
+              as List<bool>,
     ));
   }
 }
@@ -103,9 +133,13 @@ class __$$_TimetablesDataCopyWithImpl<$Res>
 
 class _$_TimetablesData implements _TimetablesData {
   const _$_TimetablesData(
-      {final Map<dynamic, dynamic> lectureDataDisplay = const {},
-      this.yearTerm = ''})
-      : _lectureDataDisplay = lectureDataDisplay;
+      {final Map<dynamic, dynamic> lectureDataDisplay =
+          UserData.defaultTermTimetablesDisplay,
+      this.yearTerm = '',
+      this.lectureDialogColor = UtimeColors.subject7,
+      final List<bool> selectedClassTime = const <bool>[true, false]})
+      : _lectureDataDisplay = lectureDataDisplay,
+        _selectedClassTime = selectedClassTime;
 
   final Map<dynamic, dynamic> _lectureDataDisplay;
   @override
@@ -118,10 +152,20 @@ class _$_TimetablesData implements _TimetablesData {
   @override
   @JsonKey()
   final String yearTerm;
+  @override
+  @JsonKey()
+  final Color lectureDialogColor;
+  final List<bool> _selectedClassTime;
+  @override
+  @JsonKey()
+  List<bool> get selectedClassTime {
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_selectedClassTime);
+  }
 
   @override
   String toString() {
-    return 'TimetablesData(lectureDataDisplay: $lectureDataDisplay, yearTerm: $yearTerm)';
+    return 'TimetablesData(lectureDataDisplay: $lectureDataDisplay, yearTerm: $yearTerm, lectureDialogColor: $lectureDialogColor, selectedClassTime: $selectedClassTime)';
   }
 
   @override
@@ -131,14 +175,20 @@ class _$_TimetablesData implements _TimetablesData {
             other is _$_TimetablesData &&
             const DeepCollectionEquality()
                 .equals(other._lectureDataDisplay, _lectureDataDisplay) &&
-            const DeepCollectionEquality().equals(other.yearTerm, yearTerm));
+            const DeepCollectionEquality().equals(other.yearTerm, yearTerm) &&
+            const DeepCollectionEquality()
+                .equals(other.lectureDialogColor, lectureDialogColor) &&
+            const DeepCollectionEquality()
+                .equals(other._selectedClassTime, _selectedClassTime));
   }
 
   @override
   int get hashCode => Object.hash(
       runtimeType,
       const DeepCollectionEquality().hash(_lectureDataDisplay),
-      const DeepCollectionEquality().hash(yearTerm));
+      const DeepCollectionEquality().hash(yearTerm),
+      const DeepCollectionEquality().hash(lectureDialogColor),
+      const DeepCollectionEquality().hash(_selectedClassTime));
 
   @JsonKey(ignore: true)
   @override
@@ -149,13 +199,19 @@ class _$_TimetablesData implements _TimetablesData {
 abstract class _TimetablesData implements TimetablesData {
   const factory _TimetablesData(
       {final Map<dynamic, dynamic> lectureDataDisplay,
-      final String yearTerm}) = _$_TimetablesData;
+      final String yearTerm,
+      final Color lectureDialogColor,
+      final List<bool> selectedClassTime}) = _$_TimetablesData;
 
   @override
   Map<dynamic, dynamic> get lectureDataDisplay =>
       throw _privateConstructorUsedError;
   @override
   String get yearTerm => throw _privateConstructorUsedError;
+  @override
+  Color get lectureDialogColor => throw _privateConstructorUsedError;
+  @override
+  List<bool> get selectedClassTime => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   _$$_TimetablesDataCopyWith<_$_TimetablesData> get copyWith =>
