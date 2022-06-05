@@ -6,8 +6,6 @@ import 'package:utime/view/pages/credits/credits_number.dart';
 import 'package:utime/view/pages/Timetable/Timetables_display.dart';
 import 'package:utime/const/utime_colors.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:shared_preferences/shared_preferences.dart'; // 追記する
 
 void main() {
   runApp(const ProviderScope(child: MyApp()));
@@ -46,7 +44,6 @@ class _HomePageState extends ConsumerState<HomePage> {
   }
   @override
   Widget build(BuildContext context) {
-    String yearTerm = settings.getYearTerm();
     return CupertinoTabScaffold(
         tabBar: CupertinoTabBar(
           items: const <BottomNavigationBarItem>[

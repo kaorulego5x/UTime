@@ -2,19 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:utime/main.dart';
 import 'package:utime/model/settings.dart';
-import 'package:utime/model/user_data.dart';
 import 'package:utime/provider.dart';
 import 'package:utime/view/pages/Timetable/intensive_course_area.dart';
-import 'package:utime/ViewModel/lectureDialogDataProvider.dart';
 import 'package:utime/view/pages/Timetable/lecture_dialog.dart';
 import 'package:utime/const/utime_colors.dart';
 import 'package:utime/const/utime_text_styles.dart';
-import 'package:utime/const/term.dart';
 import 'package:utime/ViewModel/timetablesDataProvider/timetablesProvider.dart';
 import 'package:utime/view/widgets/modal_overlay.dart';
-import 'package:utime/model/settings.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:utime/provider.dart';
 
 class TimetablesDisplay extends ConsumerStatefulWidget {
   const TimetablesDisplay({Key? key}) : super(key: key);
@@ -25,7 +19,7 @@ class TimetablesDisplay extends ConsumerStatefulWidget {
 
 class _TimetablesDisplayState extends ConsumerState<TimetablesDisplay> {
   //表示する時間割データ
-  TimetablesData timetablesData = TimetablesData();
+  TimetablesData timetablesData = const TimetablesData();
 
   //ユーザーのステータスのデータ
   Settings settings = Settings();
@@ -233,13 +227,19 @@ class _TimetablesDisplayState extends ConsumerState<TimetablesDisplay> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(
-                      ref.watch(timeTablesDisplayProvider).lectureDataDisplay[day][period]['lectureName'] ?? '',
-                      style: UtimeTextStyles.TimetablesDisplayLectureName,
+                    Padding(
+                      padding: const EdgeInsets.only(top: 6),
+                      child: Text(
+                        ref.watch(timeTablesDisplayProvider).lectureDataDisplay[day][period]['lectureName'] ?? '',
+                        style: UtimeTextStyles.TimetablesDisplayLectureName,
+                      ),
                     ),
-                    Text(
-                      ref.watch(timeTablesDisplayProvider).lectureDataDisplay[day][period]['teacherName'] ?? '',
-                      style: UtimeTextStyles.TimetablesDisplayLectureName,
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 6),
+                      child: Text(
+                        ref.watch(timeTablesDisplayProvider).lectureDataDisplay[day][period]['classroom'] ?? '',
+                        style: UtimeTextStyles.timetablesDisplayClassroom,
+                      ),
                     )
                   ],),
                 onTap: () {

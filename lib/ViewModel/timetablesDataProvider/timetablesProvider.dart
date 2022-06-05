@@ -45,7 +45,7 @@ class TimetablesDataNotifier extends StateNotifier<TimetablesData> {
     userData.getTermTimetablesDisplay(yearTerm).then((Map value) {
       state = state.copyWith(lectureDataDisplay: value);
     }, onError: (e) {
-      print(e);
+      throw Exception('/timetablesProvider.dart 48: データの取得に失敗しました。');
     });
   }
 
@@ -161,12 +161,9 @@ class TimetablesDataNotifier extends StateNotifier<TimetablesData> {
 
   /// 初期化
   void resetDialogData(String day, String period) {
-    final Map newLectureData = UserData.defaultTimetable;
-    print(UserData.defaultTimetable);
+    const Map newLectureData = UserData.defaultTimetable;
     final Map origin = state.lectureDataDisplay;
     origin[day][period] = newLectureData;
-    print(newLectureData['lectureName']);
-    print(newLectureData['subjectType']);
     state = state.copyWith(lectureDataDisplay: origin);
   }
 

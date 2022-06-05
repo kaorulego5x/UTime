@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:utime/ViewModel/timetablesDataProvider/timetablesProvider.dart';
 
 //<<<<<<< HEAD:lib/view/pages/Timetable/lecture_dialog.dart
-import 'package:utime/const/term.dart';
 import 'package:utime/ViewModel/lectureDialogDataProvider.dart';
 import 'package:utime/model/lecture_dialog_list.dart';
 import 'package:utime/const/utime_colors.dart';
@@ -346,7 +345,7 @@ class LectureDialog extends StatelessWidget {
           ),
           Consumer(
             builder: (context, ref, Widget? child) {
-              final String initialValue = ref.read(lectureDialogDataProvider).lectureData['classroom'] ?? '';
+              final String initialValue = ref.read(timeTablesDisplayProvider).lectureDataDisplay[day][period]['classroom'] ?? '';
               return Container(
                 alignment: Alignment.center,
                 height: 32,
