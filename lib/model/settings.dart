@@ -1,4 +1,4 @@
-// ユーザーの設定を保存したりするクラス
+//ユーザーの設定を保存したりするクラス
 import 'package:utime/view/pages/credits/status_dialog.dart';
 import 'package:shared_preferences/shared_preferences.dart'; // 追記する
 
