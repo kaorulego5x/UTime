@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:utime/ViewModel/lectureDialogDataProvider.dart';
+//import 'package:utime/ViewModel/lectureDialogDataProvider.dart';
 import 'package:utime/ViewModel/timetablesDataProvider/timetablesProvider.dart';
 import 'package:utime/const/utime_colors.dart';
 import 'package:utime/view/widgets/dropdown_modal_overlay.dart';
