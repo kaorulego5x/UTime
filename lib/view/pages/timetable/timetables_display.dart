@@ -33,12 +33,7 @@ class _TimetablesDisplayState extends ConsumerState<TimetablesDisplay> {
   double classHeight = 0;
   double classWidth = 0;
   double intensiveCourseWidth = 0;
-  
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -49,8 +44,7 @@ class _TimetablesDisplayState extends ConsumerState<TimetablesDisplay> {
     final double screenWidth = MediaQuery.of(context).size.width;
 
     //サイズ用の変数
-    classHeight =
-        (screenHeight - appBarHeight - 64 - 50 - 60 - 24 - 108) / 6; //1コマの高さ
+    classHeight = (screenHeight - appBarHeight - 64 - 50 - 60 - 24 - 108) / 6; //1コマの高さ
     classWidth = (screenWidth - 64 - 48) / 5; //1コマの横幅
     intensiveCourseWidth = screenWidth - 36 - 28 - 32; //集中講義の横幅
 
@@ -72,8 +66,7 @@ class _TimetablesDisplayState extends ConsumerState<TimetablesDisplay> {
         //本体
         body: Consumer(builder: ((context, ref, child) {
           final String yearTerm = ref.read(yearProvider.state).state;
-          final String yearTermDisplay =
-              yearTerm[0] + "年 " + yearTerm[1] + yearTerm[2] + "ターム";
+          final String yearTermDisplay = yearTerm[0] + "年 " + yearTerm[1] + yearTerm[2] + "ターム";
 
           return SingleChildScrollView(
             child: Container(
@@ -82,7 +75,7 @@ class _TimetablesDisplayState extends ConsumerState<TimetablesDisplay> {
                 child: Column(
                   children: [
                     //ターム
-                    _showPeriod(yearTermDisplay), //todo:ここをかえる
+                    _showPeriod(yearTermDisplay),
                     //曜日
                     Container(
                       width: screenWidth,
@@ -162,8 +155,9 @@ class _TimetablesDisplayState extends ConsumerState<TimetablesDisplay> {
                         )
                       ],
                     ),
-                    //集中講義
-                    _showIntensiveCourseArea(),
+                    // 集中講義
+                    // TODO:Implement This!!
+                    // _showIntensiveCourseArea(),
                   ],
                 ),
               ),
@@ -223,38 +217,55 @@ class _TimetablesDisplayState extends ConsumerState<TimetablesDisplay> {
           builder: (context, ref, child) {
             return Card(
               color: oneLectureColor(day, period),
-              child: InkWell(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(top: 6),
-                      child: Text(
-                        ref.watch(timeTablesDisplayProvider).lectureDataDisplay[day][period]['lectureName'] ?? '',
-                        style: UtimeTextStyles.TimetablesDisplayLectureName,
+              child: Padding(
+                padding: const EdgeInsets.all(6),
+                child: InkWell(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      // 授業名
+                      Padding(
+                        padding: const EdgeInsets.only(top: 6),
+                        child: Text(
+                          ref.watch(timeTablesDisplayProvider).lectureDataDisplay[day][period]['lectureName'] ?? '',
+                          style: UtimeTextStyles.TimetablesDisplayLectureName,
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 3,
+                        ),
                       ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 6),
-                      child: Text(
-                        ref.watch(timeTablesDisplayProvider).lectureDataDisplay[day][period]['classroom'] ?? '',
-                        style: UtimeTextStyles.timetablesDisplayClassroom,
-                      ),
-                    )
-                  ],),
-                onTap: () {
-                  ref.watch(timeTablesDisplayProvider.notifier).getLectureData(yearTerm: yearTerm, day: day, period: period);
-                  ref.watch(timeTablesDisplayProvider.notifier).changeDialogColor(day, period);
-                  _showLectureDialog(day: day, period: period, yearTerm: yearTerm);
-                },
+                      // 教室名
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 6),
+                        child: Text(
+                          ref.watch(timeTablesDisplayProvider).lectureDataDisplay[day][period]['classroom'] ?? '',
+                          style: UtimeTextStyles.timetablesDisplayClassroom,
+                        ),
+                      )
+                    ],
+                  ),
+                  onTap: () {
+                    ref
+                        .watch(timeTablesDisplayProvider.notifier)
+                        .getLectureData(
+                            yearTerm: yearTerm, day: day, period: period);
+                    ref
+                        .watch(timeTablesDisplayProvider.notifier)
+                        .changeDialogColor(day, period);
+                    _showLectureDialog(
+                        day: day, period: period, yearTerm: yearTerm);
+                  },
+                ),
               ),
             );
           },
         ));
   }
 
+  /// Dialogの色
   Color oneLectureColor(String day, String period) {
-    final String subjectType = ref.read(timeTablesDisplayProvider).lectureDataDisplay[day][period]['subjectType'];
+    final String subjectType = ref
+        .read(timeTablesDisplayProvider)
+        .lectureDataDisplay[day][period]['subjectType'];
     if (subjectType == '基礎科目') {
       return UtimeColors.subject1;
     } else if (subjectType == '総合科目L系列') {
@@ -279,6 +290,7 @@ class _TimetablesDisplayState extends ConsumerState<TimetablesDisplay> {
       return UtimeColors.subject7;
     }
     // TODO:implement
+    // Courseをどのように管理するか未定のため。
     // lectureDialogData に　course　をもたせるか、？
     /*
       //文理別
@@ -298,29 +310,26 @@ class _TimetablesDisplayState extends ConsumerState<TimetablesDisplay> {
       }
     }
    */
-
   }
 
   ///コマを何限かによって行でまとめたウィジェット
-  SizedBox _period(String yearTerm, String period) {
-    return SizedBox(
-      child: Row(
-        children: [
-          _oneLecture(yearTerm, 'Mon', period),
-          const SizedBox(width: 12),
-          _oneLecture(yearTerm, 'Tue', period),
-          const SizedBox(width: 12),
-          _oneLecture(yearTerm, 'Wed', period),
-          const SizedBox(width: 12),
-          _oneLecture(yearTerm, 'Tur', period),
-          const SizedBox(width: 12),
-          _oneLecture(yearTerm, 'Fri', period),
-        ],
-      ),
+  Row _period(String yearTerm, String period) {
+    return Row(
+      children: [
+        _oneLecture(yearTerm, 'Mon', period),
+        const SizedBox(width: 12),
+        _oneLecture(yearTerm, 'Tue', period),
+        const SizedBox(width: 12),
+        _oneLecture(yearTerm, 'Wed', period),
+        const SizedBox(width: 12),
+        _oneLecture(yearTerm, 'Tur', period),
+        const SizedBox(width: 12),
+        _oneLecture(yearTerm, 'Fri', period),
+      ],
     );
   }
 
-  //集中講義エリアを表示
+  // 集中講義エリアを表示
   _showIntensiveCourseArea() {
     IntensiveCourseArea intensiveCourseArea =
         IntensiveCourseArea(context: context);
@@ -336,7 +345,7 @@ class _TimetablesDisplayState extends ConsumerState<TimetablesDisplay> {
       context,
       ModalOverlay(
         LectureDialog(day: day, period: period, yearTerm: yearTerm),
-        //backボタンを有効にするかどうか
+        // backボタンを有効にするかどうか
         isAndroidBackEnable: true,
       ),
     );
@@ -363,44 +372,51 @@ class _TimetablesDisplayState extends ConsumerState<TimetablesDisplay> {
         const ListTile(
           title: Text('1年', style: UtimeTextStyles.TimetablesDisplayMenuGrade),
         ),
-        _listTitle('S1ターム', '1s1', yearProvider, ref),
-        _listTitle('S2ターム', '1s2', yearProvider, ref),
-        _listTitle('A1ターム', '1a1', yearProvider, ref),
-        _listTitle('A2ターム', '1a2', yearProvider, ref),
+        _listTitle('S1ターム', '1s1'),
+        _listTitle('S2ターム', '1s2'),
+        _listTitle('A1ターム', '1a1'),
+        _listTitle('A2ターム', '1a2'),
         const ListTile(
-          title: Text('2年',
-              style: TextStyle(
-                fontSize: 16,
-                color: UtimeColors.menuAccent,
-              ),),
+          title: Text(
+            '2年',
+            style: TextStyle(
+              fontSize: 16,
+              color: UtimeColors.menuAccent,
+            ),
+          ),
         ),
-        _listTitle('S1ターム', '2s1', yearProvider, ref),
-        _listTitle('S2ターム', '2s2', yearProvider, ref),
-        _listTitle('A1ターム', '2a1', yearProvider, ref),
-        _listTitle('A2ターム', '2a2', yearProvider, ref),
+        _listTitle('S1ターム', '2s1'),
+        _listTitle('S2ターム', '2s2'),
+        _listTitle('A1ターム', '2a1'),
+        _listTitle('A2ターム', '2a2'),
       ],
     );
   }
+
   //メニューに表示されているリストの要素
-  ListTile _listTitle(
-      String t1, String t2, StateProvider<String> provider, WidgetRef ref) {
+  Consumer _listTitle(String t1, String t2) {
     //Providerを
-    return (ListTile(
-      title: Text(t1),
-      onTap: () {
-        //要編集：設定にt2を渡す処理
-        Navigator.pop(context);
-        ref.read(provider.state).state = t2;
-        //描き直すべき？
-        Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (context) {
-              return const MyApp();
-            },
-          ),
+    return Consumer(
+      builder: (context, ref, child) {
+        return ListTile(
+          title: Text(t1),
+          onTap: () {
+            //要編集：設定にt2を渡す処理
+            Navigator.pop(context);
+            ref.read(yearProvider.state).state = t2;
+            //描き直すべき？
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) {
+                  return const MyApp();
+                },
+              ),
+            );
+            // データ取得
+            ref.watch(timeTablesDisplayProvider.notifier).getTimetablesDataDisplay(t2);
+          },
         );
-        ref.watch(timeTablesDisplayProvider.notifier).getTimetablesDataDisplay(t2);
       },
-    ));
+    );
   }
 }
