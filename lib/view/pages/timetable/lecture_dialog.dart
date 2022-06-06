@@ -191,12 +191,7 @@ class LectureDialog extends StatelessWidget {
                               ),
                               onPressed: () {
                                 // 変更内容をDBに送信
-                                ref
-                                    .read(timeTablesDisplayProvider.notifier)
-                                    .setDialogData(
-                                        yearTerm: yearTerm,
-                                        day: day,
-                                        period: period);
+                                ref.read(timeTablesDisplayProvider.notifier).setDialogData(yearTerm: yearTerm, day: day, period: period);
                                 Navigator.pop(context);
                               },
                             );
@@ -248,10 +243,7 @@ class LectureDialog extends StatelessWidget {
           ),
           Consumer(
             builder: (context, ref, Widget? child) {
-              final String initialValue = ref
-                      .read(timeTablesDisplayProvider)
-                      .lectureDataDisplay[day][period]['lectureName'] ??
-                  '';
+              final String initialValue = ref.read(timeTablesDisplayProvider).lectureDataDisplay[day][period]['lectureName'] ?? '';
               return Container(
                 alignment: Alignment.center,
                 height: 32,
@@ -267,9 +259,7 @@ class LectureDialog extends StatelessWidget {
                     isCollapsed: true,
                   ),
                   onChanged: (String value) {
-                    ref
-                        .read(timeTablesDisplayProvider.notifier)
-                        .changeLectureName(value, day, period);
+                    ref.read(timeTablesDisplayProvider.notifier).changeLectureName(value, day, period);
                   },
                 ),
               );
