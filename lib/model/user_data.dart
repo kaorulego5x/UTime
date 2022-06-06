@@ -6,6 +6,7 @@ import 'dart:convert';
 // Timetable クラスにする？
 
 class InitialLectureData {
+
   static const Map<String, dynamic> defaultTimetable = {
   "lectureName": "", // 任意の文字列（30文字以内？）
   "openTerm": "選択して下さい", // "s", "a", "s1", "s2", "a1", "a2", "w"
@@ -18,6 +19,7 @@ class InitialLectureData {
   "notes": "", // 任意の文字列（100文字以内？）
   "classTime": '90' // 105
   };
+
   static const Map defaultTimetableList6 = {
     "1": defaultTimetable,
     "2": defaultTimetable,
@@ -26,6 +28,7 @@ class InitialLectureData {
     "5": defaultTimetable,
     "6": defaultTimetable,
   };
+
   static const Map defaultTermTimetablesDisplay = {
     "Mon": defaultTimetableList6,
     "Tue": defaultTimetableList6,

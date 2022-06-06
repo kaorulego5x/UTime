@@ -8,6 +8,8 @@ class UtimeTextStyles {
     color: UtimeColors.textColor,
   );
 
+  /// 時間割タブ
+
   //時間割タブのターム
   static const TimetablesDisplayTerm = TextStyle(
     fontSize: 18,
@@ -57,6 +59,8 @@ class UtimeTextStyles {
     color: UtimeColors.textColor,
   );
 
+  /// Drawer
+
   //ドロワーメニューのタイトル
   static const TimetablesDisplayMenuTitle = TextStyle(
     fontSize: 18,
@@ -68,6 +72,8 @@ class UtimeTextStyles {
     fontSize: 16,
     color: UtimeColors.menuAccent,
   );
+
+  /// LectureDialog
 
   //LectureDialogの曜限
   static const lectureDialogDayPeriod = TextStyle(

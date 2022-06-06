@@ -3,9 +3,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:utime/model/settings.dart';
 import 'package:utime/view/pages/average/coming_soon.dart';
 import 'package:utime/view/pages/credits/credits_number.dart';
-import 'package:utime/view/pages/Timetable/Timetables_display.dart';
 import 'package:utime/const/utime_colors.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:utime/view/pages/firstsettings/first_settings.dart';
+import 'package:utime/view/pages/timetable/timetables_display.dart';
 
 void main() {
   runApp(const ProviderScope(child: MyApp()));
@@ -20,8 +21,13 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'UTime',
       theme: ThemeData(
-        fontFamily: "Noto Sans JP",
+        fontFamily: "Noto Sans Japanese",
       ),
+      routes: {
+        '/gradeSelection': (BuildContext context) => const GradeSelection(),
+        '/courseSelection' : (BuildContext context) => const CourseSelection(),
+        '/yearTermSelection' : (BuildContext context) => const YearTermSelection(),
+      },
       home: const HomePage(),
     );
   }
@@ -39,7 +45,6 @@ class _HomePageState extends ConsumerState<HomePage> {
 
   @override
   void initState() {
-
     super.initState();
   }
   @override
