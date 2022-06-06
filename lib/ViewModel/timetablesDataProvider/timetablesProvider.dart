@@ -49,7 +49,6 @@ class TimetablesDataNotifier extends StateNotifier<TimetablesData> {
     });
   }
 
-
   ///
   /// LectureDialog
   ///
@@ -67,7 +66,6 @@ class TimetablesDataNotifier extends StateNotifier<TimetablesData> {
     newLectureData[day][period]['lectureName'] = newValue;
     state = state.copyWith(lectureDataDisplay: newLectureData);
   }
-
 
   void changeTeacherName(String newValue, String day, String period) {
     final Map<String, dynamic> newLectureData = {...state.lectureDataDisplay};
@@ -122,17 +120,17 @@ class TimetablesDataNotifier extends StateNotifier<TimetablesData> {
         final List<bool> selectedClassTime = [false, true];
         state = state.copyWith(selectedClassTime: selectedClassTime);
         break;
+      default:
+        throw Exception('List index is out of range.');
     }
-    throw Exception('List index is out of range.');
   }
 
   /// Change DialogColor
-  void changeDialogColor (String day, String period) {
+  void changeDialogColor(String day, String period) {
     final Map lectureData = {...state.lectureDataDisplay};
     final Map temp = lectureData[day] ?? {};
     final Map temp1 = temp[period] ?? {};
     final String subjectType = temp1['subjectType'] ?? '';
-
 
     if (subjectType == '基礎科目') {
       state = state.copyWith(lectureDialogColor: UtimeColors.subject1);
@@ -155,7 +153,6 @@ class TimetablesDataNotifier extends StateNotifier<TimetablesData> {
     } else {
       state = state.copyWith(lectureDialogColor: UtimeColors.subject7);
     }
-
   }
 
   /// 初期化

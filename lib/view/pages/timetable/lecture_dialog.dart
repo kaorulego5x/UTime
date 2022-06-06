@@ -639,7 +639,8 @@ class LectureDialog extends StatelessWidget {
             selectedBorderColor: dialogColor,
             //選択されている方の枠の色
             onPressed: (int index) {
-              ref.watch(timeTablesDisplayProvider.notifier).changeClassTime(index, day, period);
+              ref.watch(timeTablesDisplayProvider.notifier).changeSelectedClassTime(index);
+              ref.read(timeTablesDisplayProvider.notifier).changeClassTime(index, day, period);
             },
             isSelected: ref.watch(timeTablesDisplayProvider).selectedClassTime,
           );
