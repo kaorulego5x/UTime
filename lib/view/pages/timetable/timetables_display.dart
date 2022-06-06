@@ -216,6 +216,7 @@ class _TimetablesDisplayState extends ConsumerState<TimetablesDisplay> {
         child: Consumer(
           builder: (context, ref, child) {
             return Card(
+              elevation: 0,
               color: oneLectureColor(day, period),
               child: Padding(
                 padding: const EdgeInsets.all(6),
