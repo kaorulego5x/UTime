@@ -35,8 +35,14 @@ class UtimeTextStyles {
 
   //時間割タブの科目名
   static const TimetablesDisplayLectureName = TextStyle(
-    fontSize: 8,
+    fontSize: 12,
+    fontWeight: FontWeight.bold,
     color: UtimeColors.textColor,
+  );
+
+  //時間割タブの教員名
+  static const timetablesDisplayClassroom = TextStyle(
+    fontSize: 10,
   );
 
   //時間割タブの「集中講義」って書いてあるところ

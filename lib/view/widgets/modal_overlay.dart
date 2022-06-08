@@ -16,8 +16,9 @@ class ModalOverlay extends ModalRoute<void> {
   Duration get transitionDuration => const Duration(milliseconds: 100);
   @override
   bool get opaque => false;
+  // ダイアログ外を触ったときにダイアログを閉じないように設定
   @override
-  bool get barrierDismissible => true;
+  bool get barrierDismissible => false;
   @override
   Color get barrierColor => Colors.black.withOpacity(0.5);
   @override
