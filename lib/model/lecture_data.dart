@@ -14,7 +14,7 @@ class LectureData {
       'classroom': '1121',
       'notes': 'あいうえお',
       'classTime': 90,
-      'dialogColor': UtimeColors.subject3,
+      'dialogColor': UtimeColors.subject2,
       'dropdownColor': UtimeColors.subject4
     };
     return lectureData;

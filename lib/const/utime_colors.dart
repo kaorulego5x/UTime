@@ -78,6 +78,9 @@ class UtimeColors {
       return UtimeColors.subject8;
     } else if (subjectType == '主題科目') {
       return UtimeColors.subject6;
+    } else if (subjectType == '選択して下さい') {
+      //未選択
+      return UtimeColors.subject7;
     } else if (subjectType == '') {
       //未定
       return UtimeColors.subject7;

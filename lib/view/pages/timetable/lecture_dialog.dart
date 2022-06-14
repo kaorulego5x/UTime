@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:utime/ViewModel/timetablesDataProvider/timetablesProvider.dart';
+
 //<<<<<<< HEAD:lib/view/pages/Timetable/lecture_dialog.dart
-import 'package:utime/const/term.dart';
-import 'package:utime/model/lecture_data.dart';
+import 'package:utime/ViewModel/lectureDialogDataProvider.dart';
 import 'package:utime/model/lecture_dialog_list.dart';
 import 'package:utime/const/utime_colors.dart';
 import 'package:utime/const/utime_text_styles.dart';
@@ -23,47 +25,27 @@ extension DropDownTypeExtension on DropDownType {
   }
 }
 
-class LectureDialog extends StatefulWidget {
+class LectureDialog extends StatelessWidget {
+  LectureDialog({
+    Key? key,
+    required this.day,
+    required this.yearTerm,
+    required this.period,
+  }) : super(key: key);
+  final String yearTerm;
   final String day;
   final String period;
+  final LectureDialogList lectureDialogList = LectureDialogList();
+  final UtimeColors utimeColors = UtimeColors();
+  final UtimeTextStyles utimeTextStyles = UtimeTextStyles();
 
-  LectureDialog({required this.day, required this.period});
-
-  @override
-  State<LectureDialog> createState() => _LectureDialogState();
-}
-
-class _LectureDialogState extends State<LectureDialog> {
-  LectureDialogList lectureDialogList = LectureDialogList();
-  LectureData lectureData = LectureData();
-  UtimeColors utimeColors = UtimeColors();
-
-  //ドロップダウンボタンで使うやつ
-  String? selectedSubjectType;
-  String? selectedOpenTerm;
-  String? selectedCredits;
-  String memo = "";
-  //105分授業かどうか
-  bool isPeriodLong = true;
-  //String? _SelectedKey = null;
-  bool isStretchedDropDown = false;
-  //List<bool> _isOpen = [true];
-  GlobalKey _widgetKey1 = GlobalKey();
-  GlobalKey _widgetKey2 = GlobalKey();
-  GlobalKey _widgetKey3 = GlobalKey();
-
-  //wiget作成時の処理
-  @override
-  void initState() {
-    super.initState();
-  }
+  // List<bool> _isOpen = [true];
+  final GlobalKey _widgetKey1 = GlobalKey();
+  final GlobalKey _widgetKey2 = GlobalKey();
+  final GlobalKey _widgetKey3 = GlobalKey();
 
   @override
   Widget build(BuildContext context) {
-    final String day = widget.day;
-    final String period = widget.period;
-    Map _dataToShow = lectureData.getLectureData(day, period);
-
     return Center(
       child: Container(
         width: 280,
@@ -77,43 +59,51 @@ class _LectureDialogState extends State<LectureDialog> {
         child: Column(
           children: [
             //色がついている部分
-            Container(
-              height: 256,
-              width: 280,
-              decoration: BoxDecoration(
-                color: _dataToShow['dialogColor'],
-                borderRadius: const BorderRadius.only(
-                  topRight: Radius.circular(12),
-                  topLeft: Radius.circular(12),
-                ),
-              ),
-              child: Column(
-                children: [
-                  //曜限
-                  Container(
-                    margin: const EdgeInsets.only(top: 24, bottom: 12),
-                    child: Text(day + ' ' + period,
-                        textAlign: TextAlign.center,
-                        style: UtimeTextStyles.lectureDialogDayPeriod),
+            Consumer(
+              builder: (context, ref, child) {
+                final Color dialogColor =
+                    ref.watch(timeTablesDisplayProvider).lectureDialogColor;
+                return Container(
+                  height: 256,
+                  width: 280,
+                  decoration: BoxDecoration(
+                    color: dialogColor,
+                    borderRadius: const BorderRadius.only(
+                      topRight: Radius.circular(12),
+                      topLeft: Radius.circular(12),
+                    ),
                   ),
-                  //科目区分ドロップダウンボタン
-                  Container(
-                      key: _widgetKey1,
-                      margin: const EdgeInsets.only(bottom: 8),
-                      height: 48,
-                      child: _showLargeDropdown(
-                          '科目区分',
-                          lectureDialogList.getSubjectTypeList(),
-                          _dataToShow['dialogColor'],
-                          selectedSubjectType)),
-                  //授業情報
-                  _titleSet('開講科目名', _dataToShow['lectureName']),
-                  _titleSet('教員名', _dataToShow['teacherName']),
-                  _titleSet('教室', _dataToShow['classroom']),
-                ],
-              ),
-            ),
-            //白い部分
+                  child: Column(
+                    children: [
+                      //曜限
+                      Container(
+                        margin: const EdgeInsets.only(top: 24, bottom: 12),
+                        child: Text(
+                          day + ' ' + period,
+                          textAlign: TextAlign.center,
+                          style: UtimeTextStyles.lectureDialogDayPeriod,
+                        ),
+                      ),
+                      //科目区分ドロップダウンボタン
+                      Container(
+                        key: _widgetKey1,
+                        margin: const EdgeInsets.only(bottom: 8),
+                        height: 48,
+                        child: _subjectTypeDropdown(
+                          context,
+                          title: '科目区分',
+                        ),
+                      ),
+
+                      //授業情報
+                      _lectureNameField(),
+                      _teacherNameField(),
+                      _classroomField(),
+                    ],
+                  ),
+                );
+              },
+            ), //白い部分
             Container(
               height: 318,
               width: 280,
@@ -137,29 +127,26 @@ class _LectureDialogState extends State<LectureDialog> {
                         //開講区分
                         Container(
                           key: _widgetKey2,
-                          child: _smallDropdown(
-                              DropDownType.openTerm,
-                              '開講区分',
-                              lectureDialogList.getOpenTermList(),
-                              _dataToShow['dialogColor'],
-                              selectedOpenTerm),
+                          child: _openTermDropDown(
+                            context,
+                            dropDownType: DropDownType.openTerm,
+                          ),
                         ),
                         const SizedBox(width: 24, child: Spacer()),
                         //単位数
                         Container(
                           key: _widgetKey3,
-                          child: _smallDropdown(
-                              DropDownType.credits,
-                              '単位数',
-                              lectureDialogList.getCreditsNumberList(),
-                              _dataToShow['dialogColor'],
-                              selectedCredits),
+                          child: _creditsNumberDropdown(
+                            context,
+                            dropDownType: DropDownType.credits,
+                          ),
                         ),
                       ],
                     ),
                   ),
                   //メモ
-                  _memo(_dataToShow['dialogColor']),
+                  _memo(context),
+                  // _memo(_dataToShow['dialogColor']),
                   //授業時間ボタン
                   Container(
                     width: 232,
@@ -167,50 +154,12 @@ class _LectureDialogState extends State<LectureDialog> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        //授業時間ボタン
-                        _classTimeToggle(_dataToShow['classTime'],
-                            _dataToShow['dialogColor']),
-                        //点数入力欄
-                        /* Container(
-                                  width: 28,
-                                  margin: const EdgeInsets.only(left: 12),
-                                  child: _section('点数')),
-                              Container(
-                                width: 80,
-                                height: 32,
-                                margin: const EdgeInsets.only(left: 4),
-                                decoration: BoxDecoration(
-                                  border: Border.all(color: dialogColor),
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                                child: TextField(
-                                  keyboardType: TextInputType.number,
-                                  inputFormatters: [
-                                    FilteringTextInputFormatter.digitsOnly
-                                  ],
-                                  style: const TextStyle(
-                                    color: UtimeColors.textColor,
-                                    fontSize: 8,
-                                  ),
-                                  decoration: const InputDecoration(
-                                    hintText: "",
-                                    border: InputBorder.none,
-                                  ),
-                                ),
-                              ),
-                            */
+                        //保存ボタン
+                        _saveButton(),
+                        //授業時間
+                        _classTimeToggle(),
                         //クリアボタン
-                        IconButton(
-                          iconSize: 24,
-                          color: UtimeColors.deleteIcon,
-                          icon: const Icon(Icons.delete),
-                          onPressed: () {
-                            setState(() {
-                              _dataToShow = lectureData
-                                  .setDefaultLectureData(_dataToShow);
-                            });
-                          },
-                        )
+                        _resetButton(),
                       ],
                     ),
                   ),
@@ -223,83 +172,6 @@ class _LectureDialogState extends State<LectureDialog> {
     );
   }
 
-  ///表示する授業データを取得
-  getLectureData(String day, String period) {
-    Map lectureMapData = lectureData.getLectureData(day, period);
-    return lectureMapData;
-  }
-
-  ///取っている（データがある）授業を表示
-  /*void showTakenLectureDialog(String day, String period) {
-    Map dataToShow = lectureData.getLectureData(day, period);
-    _showLectureDialog(day, period, dataToShow);
-  }
-
-  ///空のデフォルトLectureDialogを表示
-  void showDefaultLectureDialog(String day, String period) {
-    Map dataToShow = lectureData.getDefaultLectureData(day, period);
-    _showLectureDialog(day, period, dataToShow);
-  }*/
-
-  /*
-   * 表示
-   */
-  /*void _showLectureDialog(String day, String period, Map dataToShow) {
-    Navigator.push(
-        context,
-        ModalOverlay(
-          
-          //backボタンを有効にするかどうか
-          isAndroidBackEnable: true,
-        ));
-  }*/
-
-  /*
-   * 非表示
-   */
-  void hideCustomDialog() {
-    Navigator.of(context).pop();
-  }
-
-  //タイトルのセット
-  Container _titleSet(String t1, String t2) {
-    return (Container(
-      margin: const EdgeInsets.only(top: 12),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Container(
-            alignment: Alignment.center,
-            height: 32,
-            width: 80,
-            child: Text(
-              t1,
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 12,
-                fontWeight: FontWeight.bold,
-                color: UtimeColors.white.withOpacity(0.75),
-              ),
-            ),
-          ),
-          Container(
-            alignment: Alignment.center,
-            height: 32,
-            width: 160,
-            child: TextFormField(
-              initialValue: t2,
-              textAlign: TextAlign.center,
-              maxLines: 1,
-              style: UtimeTextStyles.lectureDialogTitle,
-              decoration: const InputDecoration(
-                  border: InputBorder.none, isDense: true, isCollapsed: true),
-            ),
-          ),
-        ],
-      ),
-    ));
-  }
-
   //セクション名
   Text _section(String section) {
     return (Text(
@@ -309,101 +181,338 @@ class _LectureDialogState extends State<LectureDialog> {
     ));
   }
 
-  //科目区分のドロップダウンボタン
-  Column _showLargeDropdown(String title, List<ItemModel> itemList,
-      Color dialogColor, String? selectedValue) {
-    return Column(
-      children: [
-        //セクション名
-        Container(
-            height: 12,
-            margin: const EdgeInsets.only(bottom: 4),
+  /// 開講科目名のテキストフォームフィールド
+  Container _lectureNameField() {
+    return Container(
+      margin: const EdgeInsets.only(top: 12),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Container(
+            alignment: Alignment.center,
+            height: 32,
+            width: 80,
             child: Text(
-              title,
+              '開講科目名',
               textAlign: TextAlign.center,
               style: TextStyle(
-                fontSize: 10,
+                fontSize: 12,
+                fontWeight: FontWeight.bold,
                 color: UtimeColors.white.withOpacity(0.75),
               ),
-            )),
-        //ドロップダウンボタン
-        GestureDetector(
-          onTap: () {
-            RenderBox box = _getWidgetPosition(title);
-            DropdownBuilder(
-              context,
-            ).showSubjectTypeDropdownList(216, dialogColor, box);
-          },
-          child: Container(
-            height: 32,
-            width: 216,
-            decoration: BoxDecoration(
-              color: UtimeColors.white,
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: Center(
-              child: Text('選択して下さい',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 12,
-                    fontWeight: FontWeight.bold,
-                    color: dialogColor,
-                  )),
             ),
           ),
-        )
-      ],
+          Consumer(
+            builder: (context, ref, Widget? child) {
+              final String initialValue = ref
+                      .read(timeTablesDisplayProvider)
+                      .lectureDataDisplay[day][period]['lectureName'] ??
+                  '';
+              return Container(
+                alignment: Alignment.center,
+                height: 32,
+                width: 160,
+                child: TextFormField(
+                  initialValue: initialValue,
+                  textAlign: TextAlign.center,
+                  maxLines: 1,
+                  style: UtimeTextStyles.lectureDialogTitle,
+                  decoration: const InputDecoration(
+                    border: InputBorder.none,
+                    isDense: true,
+                    isCollapsed: true,
+                  ),
+                  onChanged: (String value) {
+                    ref
+                        .read(timeTablesDisplayProvider.notifier)
+                        .changeLectureName(value, day, period);
+                  },
+                ),
+              );
+            },
+          ),
+        ],
+      ),
     );
   }
 
-  //開講区分と単位数のドロップダウンボタン
-  Column _smallDropdown(DropDownType dropDownType, String title,
-      List<ItemModel> itemList, Color dialogColor, String? selectedValue) {
+  /// 教師名のテキストフォームフィールド
+  Container _teacherNameField() {
+    return Container(
+      margin: const EdgeInsets.only(top: 12),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Container(
+            alignment: Alignment.center,
+            height: 32,
+            width: 80,
+            child: Text(
+              '教員名',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 12,
+                fontWeight: FontWeight.bold,
+                color: UtimeColors.white.withOpacity(0.75),
+              ),
+            ),
+          ),
+          Consumer(
+            builder: (context, ref, Widget? child) {
+              final String initialValue = ref
+                      .read(timeTablesDisplayProvider)
+                      .lectureDataDisplay[day][period]['teacherName'] ??
+                  '';
+              return Container(
+                alignment: Alignment.center,
+                height: 32,
+                width: 160,
+                child: TextFormField(
+                  initialValue: initialValue,
+                  textAlign: TextAlign.center,
+                  maxLines: 1,
+                  style: UtimeTextStyles.lectureDialogTitle,
+                  decoration: const InputDecoration(
+                    border: InputBorder.none,
+                    isDense: true,
+                    isCollapsed: true,
+                  ),
+                  onChanged: (String value) {
+                    ref
+                        .read(timeTablesDisplayProvider.notifier)
+                        .changeTeacherName(value, day, period);
+                  },
+                ),
+              );
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+  /// 教室のテキストフォームフィールド
+  Container _classroomField() {
+    return Container(
+      margin: const EdgeInsets.only(top: 12),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Container(
+            alignment: Alignment.center,
+            height: 32,
+            width: 80,
+            child: Text(
+              '教室',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 12,
+                fontWeight: FontWeight.bold,
+                color: UtimeColors.white.withOpacity(0.75),
+              ),
+            ),
+          ),
+          Consumer(
+            builder: (context, ref, Widget? child) {
+              final String initialValue = ref
+                      .read(timeTablesDisplayProvider)
+                      .lectureDataDisplay[day][period]['classroom'] ??
+                  '';
+              return Container(
+                alignment: Alignment.center,
+                height: 32,
+                width: 160,
+                child: TextFormField(
+                  initialValue: initialValue,
+                  textAlign: TextAlign.center,
+                  maxLines: 1,
+                  style: UtimeTextStyles.lectureDialogTitle,
+                  decoration: const InputDecoration(
+                    border: InputBorder.none,
+                    isDense: true,
+                    isCollapsed: true,
+                  ),
+                  onChanged: (String value) {
+                    ref
+                        .watch(timeTablesDisplayProvider.notifier)
+                        .changeClassroom(value, day, period);
+                  },
+                ),
+              );
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+  /// 科目区分のドロップダウンボタン
+  Column _subjectTypeDropdown(
+    BuildContext context, {
+    required String title,
+  }) {
     return Column(
       children: [
         //セクション名
         Container(
-            height: 12,
-            margin: const EdgeInsets.only(bottom: 4),
-            child: _section(dropDownType.label)),
-        //ドロップダウンボタン
-        GestureDetector(
-          onTap: () {
-            if (title == '開講区分') {
-              RenderBox box = _getWidgetPosition(title);
-              DropdownBuilder(
-                context,
-              ).showOpenTermDropdownList(108, dialogColor, box);
-            } else if (title == '単位数') {
-              RenderBox box = _getWidgetPosition(title);
-              DropdownBuilder(
-                context,
-              ).showCreditsNumberDropdownList(108, dialogColor, box);
-            }
-          },
-          child: Container(
-            height: 32,
-            width: 108,
-            decoration: BoxDecoration(
-              color: dialogColor,
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: Center(
-              child: Text('選択して下さい',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 12,
-                    fontWeight: FontWeight.bold,
-                    color: UtimeColors.white,
-                  )),
+          height: 12,
+          margin: const EdgeInsets.only(bottom: 4),
+          child: Text(
+            '科目区分',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 10,
+              color: UtimeColors.white.withOpacity(0.75),
             ),
           ),
+        ),
+        //ドロップダウンボタン
+        Consumer(
+          builder: (context, ref, child) {
+            final Color dialogColor =
+                ref.watch(timeTablesDisplayProvider).lectureDialogColor ??
+                    UtimeColors.subject1;
+            final String selectedSubjectType = ref
+                    .watch(timeTablesDisplayProvider)
+                    .lectureDataDisplay[day][period]['subjectType'] ??
+                '選択して下さい';
+            return GestureDetector(
+              onTap: () {
+                RenderBox box = _getWidgetPosition('科目区分');
+                DropdownBuilder(
+                  context,
+                ).showSubjectTypeDropdownList(
+                    216, dialogColor, box, day, period);
+              },
+              child: Container(
+                height: 32,
+                width: 216,
+                decoration: BoxDecoration(
+                  color: UtimeColors.white,
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Center(
+                  child: Text(
+                    selectedSubjectType,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.bold,
+                      // TODO:文字色まで変化させると見ずらい
+                      // 色も変える必要があるかも？
+                      // パステルカラーバックグラウンド　x 白文字　は　見ずらい
+                      color: ref
+                          .watch(timeTablesDisplayProvider)
+                          .lectureDialogColor,
+                    ),
+                  ),
+                ),
+              ),
+            );
+          },
         )
       ],
     );
   }
 
-  //widgetの位置を取得
+  /// 開講区分のドロップダウンボタン
+  Consumer _openTermDropDown(
+    BuildContext context, {
+    required DropDownType dropDownType,
+  }) {
+    return Consumer(
+      builder: (context, ref, child) {
+        final Color dialogColor =
+            ref.watch(timeTablesDisplayProvider).lectureDialogColor;
+        final String selectedOpenTerm = ref
+                .watch(timeTablesDisplayProvider)
+                .lectureDataDisplay[day][period]['openTerm'] ??
+            '選択して下さい';
+        return Column(
+          children: [
+            Container(
+              height: 12,
+              margin: const EdgeInsets.only(bottom: 4),
+              child: _section(dropDownType.label),
+            ),
+            GestureDetector(
+              onTap: () {
+                RenderBox box = _getWidgetPosition('開講区分');
+                DropdownBuilder(
+                  context,
+                ).showOpenTermDropdownList(108, dialogColor, box, day, period);
+              },
+              child: Container(
+                height: 32,
+                width: 108,
+                decoration: BoxDecoration(
+                  color: dialogColor,
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Center(
+                  child: Text(selectedOpenTerm,
+                      textAlign: TextAlign.center,
+                      style: utimeTextStyles
+                          .lectureDialogDropDownStyle(selectedOpenTerm)),
+                ),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  /// 単位数のドロップダウン
+  Consumer _creditsNumberDropdown(
+    BuildContext context, {
+    required DropDownType dropDownType,
+  }) {
+    return Consumer(builder: (context, ref, child) {
+      final Color dialogColor =
+          ref.watch(timeTablesDisplayProvider).lectureDialogColor;
+      final String selectedCreditsNumber = ref
+              .watch(timeTablesDisplayProvider)
+              .lectureDataDisplay[day][period]['creditNumber'] ??
+          '選択して下さい';
+      return Column(
+        children: [
+          //セクション名
+          Container(
+            height: 12,
+            margin: const EdgeInsets.only(bottom: 4),
+            child: _section(dropDownType.label),
+          ),
+          //ドロップダウンボタン
+          GestureDetector(
+            onTap: () {
+              RenderBox box = _getWidgetPosition('単位数');
+              DropdownBuilder(
+                context,
+              ).showCreditsNumberDropdownList(
+                  108, dialogColor, box, day, period);
+            },
+            child: Container(
+              height: 32,
+              width: 108,
+              decoration: BoxDecoration(
+                color: dialogColor,
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Center(
+                child: Text(selectedCreditsNumber,
+                    textAlign: TextAlign.center,
+                    style: utimeTextStyles
+                        .lectureDialogDropDownStyle(selectedCreditsNumber)),
+              ),
+            ),
+          ),
+        ],
+      );
+    });
+  }
+
+  /// widgetの位置を取得
   _getWidgetPosition(String title) {
     final RenderBox renderBox1 =
         _widgetKey1.currentContext?.findRenderObject() as RenderBox;
@@ -428,68 +537,163 @@ class _LectureDialogState extends State<LectureDialog> {
     }
   }
 
-  //メモウィジェット
-  Column _memo(Color dialogColor) {
-    return Column(
-      children: [
-        Container(
-            margin: const EdgeInsets.only(top: 4, bottom: 4),
-            child: _section('メモ')),
-        Container(
-            height: 144,
-            width: 232,
-            padding: const EdgeInsets.only(right: 12, left: 12),
-            decoration: BoxDecoration(
-              border: Border.all(color: dialogColor),
-              borderRadius: BorderRadius.circular(8),
+  /// メモウィジェット
+  Consumer _memo(BuildContext context) {
+    return Consumer(
+      builder: (context, ref, child) {
+        final Color dialogColor =
+            ref.watch(timeTablesDisplayProvider).lectureDialogColor;
+        return Column(
+          children: [
+            Container(
+                margin: const EdgeInsets.only(top: 4, bottom: 4),
+                child: _section('メモ')),
+            Container(
+              height: 144,
+              width: 232,
+              padding: const EdgeInsets.only(right: 12, left: 12),
+              decoration: BoxDecoration(
+                border: Border.all(color: dialogColor),
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: Consumer(
+                builder: (context, ref, child) {
+                  return TextFormField(
+                    initialValue: ref
+                        .watch(lectureDialogDataProvider)
+                        .lectureData['notes'],
+                    keyboardType: TextInputType.multiline,
+                    maxLines: null,
+                    style: const TextStyle(
+                      color: UtimeColors.textColor,
+                      fontSize: 16,
+                    ),
+                    decoration: const InputDecoration(
+                      //TODO:メモが入力済みなら表示
+                      hintText: "メモを入力",
+                      hintStyle: TextStyle(fontSize: 12),
+                      border: InputBorder.none,
+                    ),
+                    onChanged: (String value) {
+                      ref
+                          .read(timeTablesDisplayProvider.notifier)
+                          .changeNotes(value, day, period);
+                    },
+                  );
+                },
+              ),
             ),
-            child: const TextField(
-              keyboardType: TextInputType.multiline,
-              maxLines: null,
-              style: TextStyle(
-                color: UtimeColors.textColor,
-                fontSize: 16,
-              ),
-              decoration: InputDecoration(
-                hintText: "メモを入力",
-                hintStyle: TextStyle(fontSize: 12),
-                border: InputBorder.none,
-              ),
-            )),
-      ],
+          ],
+        );
+      },
     );
   }
 
-  //授業時間のトグルボタン
-  SizedBox _classTimeToggle(int classTime, Color dialogColor) {
+  /// 授業時間のトグルボタン
+  SizedBox _classTimeToggle() {
     return SizedBox(
       height: 32,
       width: 108,
-      child: ToggleButtons(
-        children: const [
-          Text('105分'),
-          Text('90分'),
-        ],
-        textStyle: const TextStyle(fontSize: 12, color: UtimeColors.textColor),
-        borderWidth: 1,
-        borderColor: dialogColor, //枠の色
-        borderRadius: BorderRadius.circular(8),
-        selectedColor: UtimeColors.white, //選択されている方の文字色
-
-        fillColor: dialogColor, //選択されている方の背景色
-        selectedBorderColor: dialogColor, //選択されている方の枠の色
-        onPressed: (int index) {
-          setState(() {
-            isPeriodLong = index == 0;
-          });
+      child: Consumer(
+        builder: (context, ref, child) {
+          final Color dialogColor =
+              ref.watch(timeTablesDisplayProvider).lectureDialogColor;
+          return ToggleButtons(
+            children: const [
+              Text('105分'),
+              Text('90分'),
+            ],
+            textStyle:
+                const TextStyle(fontSize: 12, color: UtimeColors.textColor),
+            borderWidth: 1,
+            borderColor: dialogColor,
+            //枠の色
+            borderRadius: BorderRadius.circular(8),
+            //選択されている方の文字色
+            selectedColor: UtimeColors.white,
+            //選択されている方の背景色
+            fillColor: dialogColor,
+            //選択されている方の枠の色
+            selectedBorderColor: dialogColor,
+            onPressed: (int index) {
+              ref
+                  .watch(timeTablesDisplayProvider.notifier)
+                  .changeClassTime(index, day, period);
+            },
+            isSelected: ref.watch(timeTablesDisplayProvider).selectedClassTime,
+          );
         },
-        isSelected: _getClassPeriodFlag(isPeriodLong),
       ),
     );
   }
 
-  List<bool> _getClassPeriodFlag(bool isPeriodLong) {
-    if (isPeriodLong) return <bool>[true, false];
-    return <bool>[false, true];
+  ///保存ボタン
+  Consumer _saveButton() {
+    return Consumer(
+      builder: (context, ref, child) {
+        return Column(
+          children: [
+            SizedBox(
+              height: 32,
+              width: 32,
+              child: IconButton(
+                iconSize: 32,
+                color: UtimeColors.deleteIcon,
+                icon: const Icon(Icons.file_download),
+                padding: EdgeInsets.zero,
+                constraints: const BoxConstraints(),
+                onPressed: () {
+                  // 変更内容をDBに送信
+                  ref.read(timeTablesDisplayProvider.notifier).setDialogData(
+                      yearTerm: yearTerm, day: day, period: period);
+                  Navigator.pop(context);
+                },
+              ),
+            ),
+            const Text(
+              'Save',
+              textAlign: TextAlign.center,
+              style: UtimeTextStyles.lectureDialogSectionName,
+            )
+          ],
+        );
+      },
+    );
+  }
+
+  /// リセットButton
+  Consumer _resetButton() {
+    return Consumer(
+      builder: (context, ref, child) {
+        return Column(
+          children: [
+            SizedBox(
+              height: 32,
+              width: 32,
+              child: IconButton(
+                iconSize: 24,
+                color: UtimeColors.deleteIcon,
+                icon: const Icon(Icons.delete),
+                padding: EdgeInsets.zero,
+                constraints: const BoxConstraints(),
+                onPressed: () {
+                  ref
+                      .watch(timeTablesDisplayProvider.notifier)
+                      .resetDialogData(day, period);
+                  ref
+                      .watch(timeTablesDisplayProvider.notifier)
+                      .changeDialogColor(day, period);
+                },
+              ),
+            ),
+            const Text(
+              'Delete',
+              textAlign: TextAlign.center,
+              style: UtimeTextStyles.lectureDialogSectionName,
+            )
+          ],
+        );
+      },
+    );
   }
 }

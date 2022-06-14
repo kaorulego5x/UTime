@@ -10,8 +10,8 @@ class UtimeTextStyles {
 
   //時間割タブのターム
   static const TimetablesDisplayTerm = TextStyle(
-    fontSize: 18,
-    fontWeight: FontWeight.bold,
+    fontSize: 16,
+    //fontWeight: FontWeight.bold,
     color: UtimeColors.textColor,
   );
 
@@ -35,8 +35,14 @@ class UtimeTextStyles {
 
   //時間割タブの科目名
   static const TimetablesDisplayLectureName = TextStyle(
-    fontSize: 8,
+    fontSize: 12,
+    fontWeight: FontWeight.bold,
     color: UtimeColors.textColor,
+  );
+
+  //時間割タブの教員名
+  static const timetablesDisplayClassroom = TextStyle(
+    fontSize: 10,
   );
 
   //時間割タブの「集中講義」って書いてあるところ
@@ -82,6 +88,21 @@ class UtimeTextStyles {
     fontSize: 10,
     color: UtimeColors.textColor,
   );
+
+  //LectureDialogのDropDownに表示する文字
+  TextStyle lectureDialogDropDownStyle(String title) {
+    double fontSize = 16.0;
+    if (title == '選択して下さい') {
+      fontSize = 12.0;
+    }
+
+    TextStyle lectureDialogDropDown = TextStyle(
+      fontSize: fontSize,
+      fontWeight: FontWeight.bold,
+      color: UtimeColors.white,
+    );
+    return lectureDialogDropDown;
+  }
 
   //ComingSoonの文字
   static const comingSoonText = TextStyle(

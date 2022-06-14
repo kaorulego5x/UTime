@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:utime/const/term.dart';
 import 'package:utime/const/utime_colors.dart';
@@ -6,7 +7,7 @@ import 'dart:convert';
 
 import 'package:utime/model/user_data.dart';
 
-class TimetablesData {
+class TimetablesContent {
   UserData userData = UserData();
   UtimeColors utimeColors = UtimeColors();
 
@@ -60,5 +61,28 @@ class TimetablesData {
       'lectureColor': lectureColor,
     };
     return lectureBoxData;
+  }
+
+  //科目区分を返す
+  getSubjectType(String subjectType) {
+    if (subjectType == 'kiso') {
+      return '基礎科目';
+    } else if (subjectType == 'l') {
+      return '総合科目L系列';
+    } else if (subjectType == 'a') {
+      return '総合科目A系列';
+    } else if (subjectType == 'b') {
+      return '総合科目B系列';
+    } else if (subjectType == 'c') {
+      return '総合科目C系列';
+    } else if (subjectType == 'd') {
+      return '総合科目D系列';
+    } else if (subjectType == 'e') {
+      return '総合科目E系列';
+    } else if (subjectType == 'f') {
+      return '総合科目F系列';
+    } else if (subjectType == '') {
+      return '';
+    }
   }
 }
