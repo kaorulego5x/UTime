@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:utime/const/utime_colors.dart';
+import 'package:utime/view/pages/firstsettings/custom_button.dart';
 
 /// 学年選択
 class GradeSelection extends StatelessWidget {
@@ -7,6 +8,8 @@ class GradeSelection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final globalKey1 = GlobalKey();
+
     final double width = MediaQuery.of(context).size.width;
     final double height = MediaQuery.of(context).size.height;
     return Scaffold(
@@ -29,56 +32,23 @@ class GradeSelection extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  ElevatedButton(
+                  CustomButton(
+                    key: globalKey1,
+                    text: '１年生',
+                    width: 100,
+                    height: 100,
                     onPressed: () {
+                      print('Hello');
                       Navigator.of(context).pushNamed('/courseSelection');
                     },
-                    style: ElevatedButton.styleFrom(
-                      // TODO: Implement Color
-                      primary: UtimeColors.subject1,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                    ),
-                    child: SizedBox(
-                      width: width * 0.7,
-                      height: 125,
-                      child: const Center(
-                        child: Text(
-                          '１年生',
-                          style: TextStyle(
-                            fontSize: 30,
-                          ),
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
-                    ),
                   ),
-                  const SizedBox(height: 10),
-                  ElevatedButton(
+                  CustomButton(
+                    text: '２年生',
+                    width: 100,
+                    height: 100,
                     onPressed: () {
                       Navigator.of(context).pushNamed('/courseSelection');
                     },
-                    style: ElevatedButton.styleFrom(
-                      // TODO:Implement Colors
-                      primary: UtimeColors.subject1,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                    ),
-                    child: SizedBox(
-                      width: width * 0.7,
-                      height: 125,
-                      child: const Center(
-                        child: Text(
-                          '２年生',
-                          style: TextStyle(
-                            fontSize: 30,
-                          ),
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
-                    ),
                   ),
                 ],
               ),

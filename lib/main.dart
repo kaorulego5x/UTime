@@ -25,10 +25,11 @@ class MyApp extends StatelessWidget {
       ),
       routes: {
         '/gradeSelection': (BuildContext context) => const GradeSelection(),
-        '/courseSelection' : (BuildContext context) => const CourseSelection(),
-        '/yearTermSelection' : (BuildContext context) => const YearTermSelection(),
+        '/courseSelection': (BuildContext context) => const CourseSelection(),
+        '/yearTermSelection': (BuildContext context) =>
+            const YearTermSelection(),
       },
-      home: const HomePage(),
+      home: const GradeSelection(),
     );
   }
 }
@@ -47,6 +48,7 @@ class _HomePageState extends ConsumerState<HomePage> {
   void initState() {
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     return CupertinoTabScaffold(
