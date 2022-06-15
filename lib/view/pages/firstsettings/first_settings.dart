@@ -8,8 +8,6 @@ class GradeSelection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final globalKey1 = GlobalKey();
-
     final double width = MediaQuery.of(context).size.width;
     final double height = MediaQuery.of(context).size.height;
     return Scaffold(
@@ -17,39 +15,15 @@ class GradeSelection extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            const Text(
-              '何年生ですか？',
-              style: TextStyle(
-                fontSize: 40,
-              ),
-            ),
-            const Padding(
-              padding: EdgeInsets.only(top: 8, bottom: 50),
-              child: Text('設定から変更できます'),
-            ),
+            const SettingTitle(title: '何年生ですか？'),
+            const SettingSubTitle(),
             SizedBox(
               height: height / 3,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  CustomButton(
-                    key: globalKey1,
-                    text: '１年生',
-                    width: 100,
-                    height: 100,
-                    onPressed: () {
-                      print('Hello');
-                      Navigator.of(context).pushNamed('/courseSelection');
-                    },
-                  ),
-                  CustomButton(
-                    text: '２年生',
-                    width: 100,
-                    height: 100,
-                    onPressed: () {
-                      Navigator.of(context).pushNamed('/courseSelection');
-                    },
-                  ),
+                  _gradeCustomButton('１年生', height, context),
+                  _gradeCustomButton('２年生', height, context),
                 ],
               ),
             ),
@@ -57,6 +31,18 @@ class GradeSelection extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+
+  CustomButton _gradeCustomButton(
+      String text, double height, BuildContext context,) {
+    return CustomButton(
+      text: text,
+      width: 100,
+      height: height / 3 / 3,
+      onPressed: () {
+        Navigator.of(context).pushNamed('/courseSelection');
+      },
     );
   }
 }
@@ -74,34 +60,27 @@ class CourseSelection extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            const Text(
-              '科類を選択して下さい',
-              style: TextStyle(
-                fontSize: 40,
-              ),
-            ),
-            const Padding(
-              padding: EdgeInsets.only(top: 8, bottom: 50),
-              child: Text('設定から変更できます'),
-            ),
+            const SettingTitle(title: '科類を選択して下さい'),
+            const SettingSubTitle(),
             SizedBox(
               height: height / 3,
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      _courseWidget(context, '理 Ⅰ', width),
-                      _courseWidget(context, '理 Ⅱ', width),
-                      _courseWidget(context, '理 Ⅲ', width),
+                      _courseCustomButton('理 Ⅰ', height, context),
+                      _courseCustomButton('理 Ⅱ', height, context),
+                      _courseCustomButton('理 Ⅲ', height, context),
                     ],
                   ),
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      _courseWidget(context, '文 Ⅰ', width),
-                      _courseWidget(context, '文 Ⅱ', width),
-                      _courseWidget(context, '文 Ⅲ', width),
+                      _courseCustomButton('文 Ⅰ', height, context),
+                      _courseCustomButton('文 Ⅱ', height, context),
+                      _courseCustomButton('文 Ⅲ', height, context),
                     ],
                   ),
                 ],
@@ -119,33 +98,17 @@ class CourseSelection extends StatelessWidget {
     );
   }
 
-  Padding _courseWidget(BuildContext context, String course, double width) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Center(
-        child: SizedBox(
-          width: (width - 90) / 3,
-          height: (width - 90) / 3,
-          child: ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              primary: UtimeColors.subject1,
-              elevation: 0,
-            ),
-            onPressed: () {
-              Navigator.of(context).pushNamed('/yearTermSelection');
-            },
-            child: Text(
-              course,
-              style: const TextStyle(
-                fontSize: 30,
-              ),
-              textAlign: TextAlign.center,
-            ),
-          ),
-        ),
-      ),
+  CustomButton _courseCustomButton(String text, double height, BuildContext context) {
+    return CustomButton(
+      text: text,
+      width: 80,
+      height: height / 3 / 3,
+      onPressed: () {
+        Navigator.of(context).pushNamed('/yearTermSelection');
+      },
     );
   }
+
 }
 
 /// 学期を選択
@@ -161,33 +124,25 @@ class YearTermSelection extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            const Text(
-              '学期を選択して下さい',
-              style: TextStyle(
-                fontSize: 40,
-              ),
-            ),
-            const Padding(
-              padding: EdgeInsets.only(top: 8, bottom: 50),
-              child: Text('設定から変更できます'),
-            ),
+            const SettingTitle(title: '学期を選択してください'),
+            const SettingSubTitle(),
             SizedBox(
               height: height / 3,
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      _yearTermWidget('S 1', width),
-                      _yearTermWidget('S 2', width),
+                      _yearTermButton('S 1', height, context),
+                      _yearTermButton('S 2', height, context),
                     ],
                   ),
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      _yearTermWidget('A 1', width),
-                      _yearTermWidget('A 2', width),
+                      _yearTermButton('A 1', height, context),
+                      _yearTermButton('A 2', height, context),
                     ],
                   ),
                 ],
@@ -205,29 +160,8 @@ class YearTermSelection extends StatelessWidget {
     );
   }
 
-  SizedBox _yearTermWidget(String course, double width) {
-    return SizedBox(
-      width: (width - 50) / 2,
-      height: (width - 50) / 4,
-      child: Padding(
-        padding: const EdgeInsets.all(5),
-        child: ElevatedButton(
-          style: ElevatedButton.styleFrom(
-            primary: UtimeColors.subject1,
-            elevation: 0,
-          ),
-          onPressed: () {},
-          child: Center(
-            child: Text(
-              course,
-              style: const TextStyle(
-                fontSize: 30,
-              ),
-              textAlign: TextAlign.center,
-            ),
-          ),
-        ),
-      ),
-    );
+  CustomButton _yearTermButton (String text, double height, BuildContext context){
+    return CustomButton(text: text, width: 100, height: height / 3 / 3, onPressed: () {});
   }
+
 }
