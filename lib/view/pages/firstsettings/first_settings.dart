@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:utime/ViewModel/settingProvider/settingProvider.dart';
+import 'package:utime/ViewModel/timetablesDataProvider/timetablesProvider.dart';
 import 'package:utime/const/utime_colors.dart';
+import 'package:utime/model/user_data.dart';
 import 'package:utime/view/pages/firstsettings/custom_button.dart';
 
 /// 学年選択
@@ -22,8 +26,8 @@ class GradeSelection extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  _gradeCustomButton('１年生', height, context),
-                  _gradeCustomButton('２年生', height, context),
+                  _gradeCustomButton("1", height, context),
+                  _gradeCustomButton("2", height, context),
                 ],
               ),
             ),
@@ -34,16 +38,22 @@ class GradeSelection extends StatelessWidget {
     );
   }
 
-  CustomButton _gradeCustomButton(
-      String text, double height, BuildContext context,) {
-    return CustomButton(
-      text: text,
-      width: 100,
-      height: height / 3 / 3,
-      onPressed: () {
-        Navigator.of(context).pushNamed('/courseSelection');
-      },
-    );
+  Consumer _gradeCustomButton(
+    String text,
+    double height,
+    BuildContext context,
+  ) {
+    return Consumer(builder: (context, ref, child) {
+      return CustomButton(
+        text: text + '年生',
+        width: 100,
+        height: height / 3 / 3,
+        onPressed: () {
+          Navigator.of(context).pushNamed('/courseSelection');
+          ref.read(userFirstSettingProvider.notifier).setGrade(text);
+        },
+      );
+    });
   }
 }
 
@@ -98,17 +108,36 @@ class CourseSelection extends StatelessWidget {
     );
   }
 
-  CustomButton _courseCustomButton(String text, double height, BuildContext context) {
-    return CustomButton(
-      text: text,
-      width: 80,
-      height: height / 3 / 3,
-      onPressed: () {
-        Navigator.of(context).pushNamed('/yearTermSelection');
-      },
-    );
+  Consumer _courseCustomButton(
+      String text, double height, BuildContext context) {
+    String course;
+    if (text == '理 Ⅰ') {
+      course = 's1';
+    } else if (text == '理 Ⅱ') {
+      course = 's2';
+    } else if (text == '理 Ⅲ') {
+      course = 's3';
+    } else if (text == '文 Ⅰ') {
+      course = 'l1';
+    } else if (text == '文 Ⅱ') {
+      course = 'l2';
+    } else if (text == '文 Ⅲ') {
+      course = 'l3';
+    } else {
+      throw (Exception);
+    }
+    return Consumer(builder: (context, ref, child) {
+      return CustomButton(
+        text: text,
+        width: 80,
+        height: height / 3 / 3,
+        onPressed: () {
+          Navigator.of(context).pushNamed('/yearTermSelection');
+          ref.read(userFirstSettingProvider.notifier).setCourse(course);
+        },
+      );
+    });
   }
-
 }
 
 /// 学期を選択
@@ -160,8 +189,35 @@ class YearTermSelection extends StatelessWidget {
     );
   }
 
-  CustomButton _yearTermButton (String text, double height, BuildContext context){
-    return CustomButton(text: text, width: 100, height: height / 3 / 3, onPressed: () {});
-  }
+  Consumer _yearTermButton(String text, double height, BuildContext context) {
+    return Consumer(builder: (context, ref, child) {
+      String yearTerm;
+      if (text == 'S 1') {
+        yearTerm = 's1';
+      } else if (text == 'S 2') {
+        yearTerm = 's2';
+      } else if (text == 'A 1') {
+        yearTerm = 'a1';
+      } else if (text == 'A 2') {
+        yearTerm = 'a2';
+      } else {
+        throw (Exception);
+      }
+      return CustomButton(
+          text: text, width: 100, height: height / 3 / 3, onPressed: () async {
+            final UserData userData = UserData();
+            // provider にデータ取得
+            ref.read(userFirstSettingProvider.notifier).setYearTerm(yearTerm);
 
+            // 設定した学年と学期を選択。それをもとにデータを取得
+            final String grade = ref.read(userFirstSettingProvider).grade;
+            final String term = ref.read(userFirstSettingProvider).yearTerm;
+            ref.read(timeTablesDisplayProvider.notifier).getTimetablesDataDisplay(grade+term);
+
+            //ページ遷移
+            Navigator.popUntil(context, ModalRoute.withName('/gradeSelection'));
+            Navigator.of(context).pushNamed('/home');
+      });
+    });
+  }
 }

@@ -59,6 +59,7 @@ class LectureDialogDataNotifier extends StateNotifier<LectureDialogData> {
   ///
   /// ゲット部分（ダイアログを開いたときにデータを取得する初期値）
   ///
+
   void getDialogData({
     required String yearTerm,
     required String day,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:utime/ViewModel/timetablesDataProvider/timetablesProvider.dart';
 import 'package:utime/model/settings.dart';
 import 'package:utime/view/pages/average/coming_soon.dart';
 import 'package:utime/view/pages/credits/credits_number.dart';
@@ -7,15 +8,50 @@ import 'package:utime/const/utime_colors.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:utime/view/pages/firstsettings/first_settings.dart';
 import 'package:utime/view/pages/timetable/timetables_display.dart';
+import 'package:utime/model/user_data.dart';
+
+import 'const/pages.dart';
 
 void main() {
   runApp(const ProviderScope(child: MyApp()));
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends ConsumerStatefulWidget {
   const MyApp({Key? key}) : super(key: key);
 
-  // This widget is the root of your application.
+  @override
+  ConsumerState<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends ConsumerState<MyApp> {
+
+  // 情報を取得するまでの待機画面
+  Widget firstPage = const Scaffold(body: Center(child: CircularProgressIndicator()));
+
+  @override
+  void initState()  {
+    super.initState();
+    UserData userData = UserData();
+    Future.delayed(const Duration(seconds: 2)).then((_) async {
+      // データ取得
+      String grade = await userData.getGrade();
+      // 学年の情報があるかないかで場合分け
+      final String yearTerm = ref.read(timeTablesDisplayProvider).yearTerm;
+      ref.read(timeTablesDisplayProvider.notifier).getTimetablesDataDisplay(yearTerm);
+      if (grade != "") {
+        //　情報あるとき
+        setState(() {
+          firstPage = const HomePage();
+        });
+      } else {
+        // 情報ないとき
+        setState(() {
+          firstPage = const GradeSelection();
+        });
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -23,13 +59,8 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         fontFamily: "Noto Sans Japanese",
       ),
-      routes: {
-        '/gradeSelection': (BuildContext context) => const GradeSelection(),
-        '/courseSelection': (BuildContext context) => const CourseSelection(),
-        '/yearTermSelection': (BuildContext context) =>
-            const YearTermSelection(),
-      },
-      home: const GradeSelection(),
+      routes: Pages.pages,
+      home: firstPage,
     );
   }
 }
@@ -44,10 +75,7 @@ class HomePage extends ConsumerStatefulWidget {
 class _HomePageState extends ConsumerState<HomePage> {
   Settings settings = Settings();
 
-  @override
-  void initState() {
-    super.initState();
-  }
+  Widget firstPage = const GradeSelection();
 
   @override
   Widget build(BuildContext context) {

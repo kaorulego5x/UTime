@@ -71,6 +71,7 @@ class UserData {
     "Thu": defaultTimetableList6,
     "Tur": defaultTimetableList6,
     "Fri": defaultTimetableList6,
+    // TODO:intensiveの表示
     "intensive": []
   };
 

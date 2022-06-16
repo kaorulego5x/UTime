@@ -40,13 +40,13 @@ class TimetablesDataNotifier extends StateNotifier<TimetablesData> {
   ///
 
   /// データ取得
-  void getTimetablesDataDisplay(String yearTerm) {
+  void getTimetablesDataDisplay(String yearTerm) async {
     UserData userData = UserData();
-    userData.getTermTimetablesDisplay(yearTerm).then((Map value) {
-      state = state.copyWith(lectureDataDisplay: value);
-    }, onError: (e) {
-      throw Exception('/timetablesProvider.dart 48: データの取得に失敗しました。');
-    });
+    final Map timetablesData = await userData.getTermTimetablesDisplay(yearTerm);
+    print('Hello');
+    print(timetablesData);
+    print('Hello');
+    state = state.copyWith(lectureDataDisplay: timetablesData);
   }
 
   ///

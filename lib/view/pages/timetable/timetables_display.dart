@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:utime/main.dart';
 import 'package:utime/model/settings.dart';
+import 'package:utime/model/user_data.dart';
 import 'package:utime/provider.dart';
 import 'package:utime/view/pages/Timetable/intensive_course_area.dart';
 import 'package:utime/view/pages/Timetable/lecture_dialog.dart';
@@ -33,7 +34,6 @@ class _TimetablesDisplayState extends ConsumerState<TimetablesDisplay> {
   double classHeight = 0;
   double classWidth = 0;
   double intensiveCourseWidth = 0;
-
 
   @override
   Widget build(BuildContext context) {
