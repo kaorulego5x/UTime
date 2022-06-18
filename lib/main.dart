@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:utime/model/settings.dart';
+import 'package:utime/view/pages/average/average_score.dart';
 import 'package:utime/view/pages/average/coming_soon.dart';
 import 'package:utime/view/pages/credits/credits_number.dart';
 import 'package:utime/view/pages/Timetable/Timetables_display.dart';
@@ -39,9 +40,9 @@ class _HomePageState extends ConsumerState<HomePage> {
 
   @override
   void initState() {
-
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     return CupertinoTabScaffold(
@@ -78,7 +79,7 @@ class _HomePageState extends ConsumerState<HomePage> {
             case 1: // 真ん中のタブが選ばれた時の画面
               return const CreditsNumber();
             case 2: // 1番右のタブが選ばれた時の画面
-              return const ComingSoon();
+              return const AverageScore();
             //実装したら以下のコメントアウトを外す
             //return const AverageScore();
             default:

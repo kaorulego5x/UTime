@@ -21,6 +21,8 @@ class _TimetablesDisplayState extends ConsumerState<TimetablesDisplay> {
   //表示する時間割データ
   TimetablesData timetablesData = const TimetablesData();
 
+  UtimeColors utimeColors = UtimeColors();
+
   //ユーザーのステータスのデータ
   Settings settings = Settings();
 
@@ -66,8 +68,6 @@ class _TimetablesDisplayState extends ConsumerState<TimetablesDisplay> {
         //本体
         body: Consumer(builder: ((context, ref, child) {
           final String yearTerm = ref.read(yearProvider.state).state;
-          final String yearTermDisplay =
-              yearTerm[0] + "年 " + yearTerm[1] + yearTerm[2] + "ターム";
 
           return SingleChildScrollView(
             child: Container(
@@ -76,7 +76,7 @@ class _TimetablesDisplayState extends ConsumerState<TimetablesDisplay> {
                 child: Column(
                   children: [
                     //ターム
-                    _showPeriod(yearTermDisplay),
+                    _showPeriod(yearTerm),
                     //曜日
                     Container(
                       width: screenWidth,
@@ -168,9 +168,19 @@ class _TimetablesDisplayState extends ConsumerState<TimetablesDisplay> {
 
   //タームを表示
   Container _showPeriod(String yearTerm) {
+    //タームのアルファベットを大文字に変える
+    String termAlphabet = '';
+    if (yearTerm[1] == 's') {
+      termAlphabet = 'S';
+    } else if (yearTerm[1] == 'a') {
+      termAlphabet = 'A';
+    }
+    final String yearTermDisplay =
+        yearTerm[0] + "年 " + termAlphabet + yearTerm[2] + "ターム";
+
     return Container(
         padding: const EdgeInsets.all(16.0),
-        child: Text(yearTerm,
+        child: Text(yearTermDisplay,
             textAlign: TextAlign.center,
             style: UtimeTextStyles.TimetablesDisplayTerm));
   }
@@ -217,7 +227,7 @@ class _TimetablesDisplayState extends ConsumerState<TimetablesDisplay> {
           builder: (context, ref, child) {
             return Card(
               elevation: 0,
-              color: oneLectureColor(day, period),
+              color: _oneLectureColor(yearTerm, day, period),
               child: Padding(
                 padding: const EdgeInsets.all(6),
                 child: InkWell(
@@ -271,54 +281,21 @@ class _TimetablesDisplayState extends ConsumerState<TimetablesDisplay> {
   }
 
   /// Dialogの色
-  Color oneLectureColor(String day, String period) {
-    final String subjectType = ref
-        .read(timeTablesDisplayProvider)
-        .lectureDataDisplay[day][period]['subjectType'];
-    if (subjectType == '基礎科目') {
-      return UtimeColors.subject1;
-    } else if (subjectType == '総合科目L系列') {
-      return UtimeColors.subject2;
-    } else if (subjectType == '総合科目A系列') {
-      return UtimeColors.subject3;
-    } else if (subjectType == '総合科目B系列') {
-      return UtimeColors.subject3;
-    } else if (subjectType == '総合科目C系列') {
-      return UtimeColors.subject3;
-    } else if (subjectType == '総合科目E系列') {
-      return UtimeColors.subject5;
-    } else if (subjectType == '総合科目F系列') {
-      return UtimeColors.subject5;
-    } else if (subjectType == '展開科目') {
-      return UtimeColors.subject8;
-    } else if (subjectType == '主題科目') {
-      return UtimeColors.subject6;
-      //
-    } else {
-      //未定
-      return UtimeColors.subject7;
+  Color _oneLectureColor(String yearTerm, String day, String period) {
+    Color lectureColor = utimeColors.getLectureColor(
+      '理科一類',
+      ref.watch(timeTablesDisplayProvider).lectureDataDisplay[day][period]
+              ['subjectType'] ??
+          '',
+    );
+    if (lectureColor == UtimeColors.subject7) {
+      //未選択なら白
+      lectureColor = UtimeColors.white;
     }
+    return lectureColor;
     // TODO:implement
     // Courseをどのように管理するか未定のため。
     // lectureDialogData に　course　をもたせるか、？
-    /*
-      //文理別
-    if (course == '理科一類' || course == '理科二類' || course == '理科三類') {
-      if (subjectType == '総合科目D系列') {
-        return UtimeColors.subject3;
-      }
-    } else if (course == '文科一類' || course == '文科二類' || course == '文科三類') {
-      if (subjectType == '総合科目D系列') {
-        return UtimeColors.subject5;
-      }
-      if (subjectType == '人文科学') {
-        return UtimeColors.subject4;
-      }
-      if (subjectType == '社会科学') {
-        return UtimeColors.subject4;
-      }
-    }
-   */
   }
 
   ///コマを何限かによって行でまとめたウィジェット
