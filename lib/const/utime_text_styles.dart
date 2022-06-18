@@ -89,6 +89,21 @@ class UtimeTextStyles {
     color: UtimeColors.textColor,
   );
 
+  //LectureDialogのDropDownに表示する文字
+  TextStyle lectureDialogDropDownStyle(String title) {
+    double fontSize = 16.0;
+    if (title == '選択して下さい') {
+      fontSize = 12.0;
+    }
+
+    TextStyle lectureDialogDropDown = TextStyle(
+      fontSize: fontSize,
+      fontWeight: FontWeight.bold,
+      color: UtimeColors.white,
+    );
+    return lectureDialogDropDown;
+  }
+
   //ComingSoonの文字
   static const comingSoonText = TextStyle(
     fontSize: 20,

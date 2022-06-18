@@ -34,7 +34,6 @@ class _TimetablesDisplayState extends ConsumerState<TimetablesDisplay> {
   double classWidth = 0;
   double intensiveCourseWidth = 0;
 
-
   @override
   Widget build(BuildContext context) {
     //アップバーの高さを取得
@@ -44,8 +43,9 @@ class _TimetablesDisplayState extends ConsumerState<TimetablesDisplay> {
     final double screenWidth = MediaQuery.of(context).size.width;
 
     //サイズ用の変数
-    classHeight = (screenHeight - appBarHeight - 64 - 50 - 60 - 24 - 108) / 6; //1コマの高さ
-    classWidth = (screenWidth - 64 - 48) / 5; //1コマの横幅
+    classHeight =
+        (screenHeight - appBarHeight - 64 - 50 - 60 - 24 - 72) / 6; //1コマの高さ
+    classWidth = (screenWidth - 64 - 24) / 5; //1コマの横幅
     intensiveCourseWidth = screenWidth - 36 - 28 - 32; //集中講義の横幅
 
     return Scaffold(
@@ -66,7 +66,8 @@ class _TimetablesDisplayState extends ConsumerState<TimetablesDisplay> {
         //本体
         body: Consumer(builder: ((context, ref, child) {
           final String yearTerm = ref.read(yearProvider.state).state;
-          final String yearTermDisplay = yearTerm[0] + "年 " + yearTerm[1] + yearTerm[2] + "ターム";
+          final String yearTermDisplay =
+              yearTerm[0] + "年 " + yearTerm[1] + yearTerm[2] + "ターム";
 
           return SingleChildScrollView(
             child: Container(
@@ -80,18 +81,17 @@ class _TimetablesDisplayState extends ConsumerState<TimetablesDisplay> {
                     Container(
                       width: screenWidth,
                       height: 24,
-                      margin: const EdgeInsets.only(
-                          left: 36.0, right: 28.0, bottom: 4.0),
+                      margin: const EdgeInsets.only(left: 44.0, right: 20.0),
                       child: Row(
                         children: [
                           _day('Mon'),
-                          const SizedBox(width: 12, child: Spacer()),
+                          const SizedBox(width: 6, child: Spacer()),
                           _day('Tue'),
-                          const SizedBox(width: 12, child: Spacer()),
+                          const SizedBox(width: 6, child: Spacer()),
                           _day('Wed'),
-                          const SizedBox(width: 12, child: Spacer()),
+                          const SizedBox(width: 6, child: Spacer()),
                           _day('Tur'),
-                          const SizedBox(width: 12, child: Spacer()),
+                          const SizedBox(width: 6, child: Spacer()),
                           _day('Fri'),
                         ],
                       ),
@@ -102,30 +102,30 @@ class _TimetablesDisplayState extends ConsumerState<TimetablesDisplay> {
                         //時間・時限
                         Container(
                           width: 28,
-                          margin: const EdgeInsets.only(left: 4),
+                          margin: const EdgeInsets.only(left: 12),
                           child: Center(
                             child: Column(
                               children: [
                                 _time('8:30'),
                                 _periodNumber('1'),
                                 _time('10:15'),
-                                const SizedBox(height: 8, child: Spacer()),
+                                const SizedBox(height: 4, child: Spacer()),
                                 _time('10:25'),
                                 _periodNumber('2'),
                                 _time('12:10'),
-                                const SizedBox(height: 8, child: Spacer()),
+                                const SizedBox(height: 4, child: Spacer()),
                                 _time('13:00'),
                                 _periodNumber('3'),
                                 _time('14:45'),
-                                const SizedBox(height: 8, child: Spacer()),
+                                const SizedBox(height: 4, child: Spacer()),
                                 _time('14:55'),
                                 _periodNumber('4'),
                                 _time('16:40'),
-                                const SizedBox(height: 8, child: Spacer()),
+                                const SizedBox(height: 4, child: Spacer()),
                                 _time('16:50'),
                                 _periodNumber('5'),
                                 _time('18:35'),
-                                const SizedBox(height: 8, child: Spacer()),
+                                const SizedBox(height: 4, child: Spacer()),
                                 _time('18:45'),
                                 _periodNumber('6'),
                                 _time('20:30'),
@@ -136,19 +136,19 @@ class _TimetablesDisplayState extends ConsumerState<TimetablesDisplay> {
                         //コマ
                         Container(
                           width: screenWidth - 64,
-                          margin: const EdgeInsets.only(left: 4.0, right: 28.0),
+                          margin: const EdgeInsets.only(left: 4.0, right: 20.0),
                           child: Column(
                             children: [
                               _period(yearTerm, '1'), //1時間目の組
-                              const SizedBox(height: 12),
+                              const SizedBox(height: 8),
                               _period(yearTerm, '2'), //2時間目の組
-                              const SizedBox(height: 12),
+                              const SizedBox(height: 8),
                               _period(yearTerm, '3'), //3時間目の組
-                              const SizedBox(height: 12),
+                              const SizedBox(height: 8),
                               _period(yearTerm, '4'), //4時間目の組
-                              const SizedBox(height: 12),
+                              const SizedBox(height: 8),
                               _period(yearTerm, '5'), //5時間目の組
-                              const SizedBox(height: 12),
+                              const SizedBox(height: 8),
                               _period(yearTerm, '6'), //6時間目の組
                             ],
                           ),
@@ -228,7 +228,11 @@ class _TimetablesDisplayState extends ConsumerState<TimetablesDisplay> {
                       Padding(
                         padding: const EdgeInsets.only(top: 6),
                         child: Text(
-                          ref.watch(timeTablesDisplayProvider).lectureDataDisplay[day][period]['lectureName'] ?? '',
+                          ref
+                                      .watch(timeTablesDisplayProvider)
+                                      .lectureDataDisplay[day][period]
+                                  ['lectureName'] ??
+                              '',
                           style: UtimeTextStyles.TimetablesDisplayLectureName,
                           overflow: TextOverflow.ellipsis,
                           maxLines: 3,
@@ -238,7 +242,11 @@ class _TimetablesDisplayState extends ConsumerState<TimetablesDisplay> {
                       Padding(
                         padding: const EdgeInsets.only(bottom: 6),
                         child: Text(
-                          ref.watch(timeTablesDisplayProvider).lectureDataDisplay[day][period]['classroom'] ?? '',
+                          ref
+                                      .watch(timeTablesDisplayProvider)
+                                      .lectureDataDisplay[day][period]
+                                  ['classroom'] ??
+                              '',
                           style: UtimeTextStyles.timetablesDisplayClassroom,
                         ),
                       )
@@ -318,13 +326,13 @@ class _TimetablesDisplayState extends ConsumerState<TimetablesDisplay> {
     return Row(
       children: [
         _oneLecture(yearTerm, 'Mon', period),
-        const SizedBox(width: 12),
+        const SizedBox(width: 6),
         _oneLecture(yearTerm, 'Tue', period),
-        const SizedBox(width: 12),
+        const SizedBox(width: 6),
         _oneLecture(yearTerm, 'Wed', period),
-        const SizedBox(width: 12),
+        const SizedBox(width: 6),
         _oneLecture(yearTerm, 'Tur', period),
-        const SizedBox(width: 12),
+        const SizedBox(width: 6),
         _oneLecture(yearTerm, 'Fri', period),
       ],
     );
@@ -414,7 +422,9 @@ class _TimetablesDisplayState extends ConsumerState<TimetablesDisplay> {
               ),
             );
             // データ取得
-            ref.watch(timeTablesDisplayProvider.notifier).getTimetablesDataDisplay(t2);
+            ref
+                .watch(timeTablesDisplayProvider.notifier)
+                .getTimetablesDataDisplay(t2);
           },
         );
       },
